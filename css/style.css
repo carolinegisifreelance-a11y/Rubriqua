@@ -376,8 +376,6 @@ a.tile-main:hover { border-color: var(--red-dark); background: var(--red-dark); 
   .nav-sub::before { display: none; }
   .main-nav .nav-sub a { padding: 8px 0; color: #cfcbc4; }
   .main-nav .nav-sub a:hover, .main-nav .nav-sub a[aria-current="page"] { background: none; }
-  .clients-row { display: grid; grid-template-columns: 1fr 1fr; justify-items: center; gap: 28px 20px; }
-  .clients-row img { max-height: 32px; max-width: 100%; width: auto; height: auto; }
 }
 
 /* Pourquoi investir en SEO : version mobile compacte, chaque argument dans sa zone */
@@ -447,3 +445,24 @@ a.tile-main:hover { border-color: var(--red-dark); background: var(--red-dark); 
   .nf-lead { font-size: 16px; }
   .nf-grid { grid-template-columns: 1fr; gap: 10px; }
 }
+
+/* Clients et plateformes en carrousel */
+.clients { padding: 32px 0; }
+.clients-marquee { width: 100%; }
+.clients-track { align-items: center; gap: 72px; padding-right: 72px; animation-duration: 35s; }
+.clients-track img { flex: none; width: auto; max-width: 170px; object-fit: contain; }
+.platforms-marquee { flex: 1; min-width: 0; }
+.platforms-track { flex-wrap: wrap; width: auto; gap: 12px; animation: none; }
+.platforms-track .is-clone { display: none; }
+@media (max-width: 760px) {
+  .hero .ai-card { display: none; }
+  .hero-inner { padding-bottom: 56px; }
+  .clients { padding: 24px 0; }
+  .clients-track { gap: 44px; padding-right: 44px; }
+  .clients-track img { max-height: 30px; max-width: 140px; height: auto; }
+  .platforms { flex-direction: column; align-items: stretch; }
+  .platforms-track { flex-wrap: nowrap; width: max-content; gap: 10px; padding-right: 10px; animation: defile 30s linear infinite; }
+  .platforms-track .is-clone { display: inline-flex; }
+  .platform { flex: none; white-space: nowrap; }
+}
+

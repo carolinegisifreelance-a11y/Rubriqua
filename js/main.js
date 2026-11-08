@@ -88,14 +88,14 @@
   }
 
   // Carrousel des outils : on double la liste pour une boucle sans à-coup
-  var track = document.querySelector('[data-marquee]');
-  if (track) {
+  document.querySelectorAll('[data-marquee]').forEach(function (track) {
     Array.prototype.slice.call(track.children).forEach(function (item) {
       var clone = item.cloneNode(true);
       clone.setAttribute('aria-hidden', 'true');
+      clone.classList.add('is-clone');
       track.appendChild(clone);
     });
-  }
+  });
 
   // FAQ : une seule réponse ouverte à la fois
   var faq = document.querySelector('[data-faq]');
