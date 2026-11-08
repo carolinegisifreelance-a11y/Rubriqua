@@ -119,7 +119,7 @@ Les textes des articles ont été récupérés sans leurs liens. Les liens inter
 ## Reprise depuis l'export WordPress du 8 novembre 2026
 
 - Titres et méta descriptions repris de The SEO Framework (l'extension SEO du site actuel, pas Yoast), avec la même forme de titre : titre de la page, puis « | Rubriqua ». Accueil : « Rubriqua - Agence SEO & Growth ». Les deux pages légales n'avaient pas de description propre : celles de la refonte sont conservées.
-- Liens des articles : tous les liens d'origine sont remis (75 liens, internes et externes), plus 8 liens internes ajoutés dans les articles qui en manquaient.
+- Liens des articles : tous les liens d'origine sont remis (77 liens, internes et externes), plus 8 liens internes ajoutés dans les articles qui en manquaient.
 - Balises og (partage LinkedIn et Facebook) ajoutées sur les 22 pages.
 
 ## Redirections 301 (fichier .htaccess)
