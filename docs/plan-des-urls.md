@@ -74,6 +74,10 @@ Points ouverts :
 - Analytics et Automatisation ont une page mais ne sont pas sur l'accueil. Il faut au moins un lien depuis l'accueil ou la page Services pour qu'elles ne restent pas orphelines.
 - Le pied de page actuel envoie SEO et GEO vers la même URL (/seogeo/). C'est à garder tel quel, ou à séparer si on crée une page GEO dédiée plus tard (avec redirection si le slug change).
 
+## Pages à créer plus tard
+
+- Page mère IA : regroupe tous les services autour de l'IA (GEO, IA Ads, automatisation des tâches, prompts et skills IA). Les pages /seogeo/, /pubs-ia-chatgpt/ et /automation/ deviennent ses pages filles, avec un lien vers la page mère et entre elles. Slug à définir. Sur l'accueil, le bloc Les services IA pointera vers cette page.
+
 ## Avant la mise en ligne
 
 1. Crawler l'ancien site et exporter toutes les URL indexables.

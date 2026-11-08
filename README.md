@@ -2,7 +2,17 @@
 
 Refonte du site rubriqua.com, page par page.
 
+## Voir la page d'accueil en local
+
+1. Sur GitHub, bouton Code puis Download ZIP, et décompresser le dossier.
+2. Ouvrir `index.html` dans le navigateur (double-clic).
+
+Les liens internes pointent déjà vers les vrais slugs du site (/seogeo/, /contact/...). En local ils mènent à une erreur, c'est normal : ils fonctionneront une fois le site en ligne.
+
 ## Contenu du dépôt
+
+- `index.html`, `css/style.css`, `js/main.js` : page d'accueil de la refonte
+- `assets/images/web/` : versions allégées (WebP) des photos utilisées sur le site
 
 - `assets/images/logo/` : logo Rubriqua (dragon et R)
 - `assets/images/clients/` : logos clients (Ventouses-Soufflets, Babily, Jouets Menus Enfants, Kermesse Fêtes, Storkeo, Ombralis). Ombralis existe en SVG d'origine et en PNG, car le SVG contient une image intégrée.
