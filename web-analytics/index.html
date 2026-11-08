@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Agence analytics, GA4 et tracking | Rubriqua</title>
+<title>Agence analytics, GA4 et tracking - Rubriqua</title>
 <meta name="description" content="Des données fiables pour mieux décider. Audit GA4, plan de marquage, Consent Mode et tableaux de bord clairs pour piloter votre activité.">
 <link rel="canonical" href="https://rubriqua.com/web-analytics/">
 <meta property="og:type" content="website">
@@ -18,6 +18,147 @@
 <link rel="stylesheet" href="../css/style.css">
 <link rel="stylesheet" href="../css/services.css">
 <link rel="stylesheet" href="../css/seogeo.css">
+<script type="application/ld+json" id="schema">
+{
+ "@context": "https://schema.org",
+ "@graph": [
+  {
+   "@type": "Organization",
+   "@id": "https://rubriqua.com/#organisation",
+   "name": "Rubriqua",
+   "url": "https://rubriqua.com/",
+   "logo": {
+    "@type": "ImageObject",
+    "url": "https://rubriqua.com/assets/images/logo/rubriqua-logo.png"
+   },
+   "description": "Agence SEO, GEO, Google Ads, analytics et automatisation IA pour les industries et les entreprises de toute taille, en France, au Canada et à l’international.",
+   "areaServed": [
+    "FR",
+    "CA"
+   ],
+   "knowsAbout": [
+    "Référencement naturel (SEO)",
+    "Optimisation pour les moteurs IA (GEO)",
+    "Google Ads (SEA)",
+    "Google Analytics 4",
+    "Publicité sur les réseaux sociaux",
+    "Publicité dans les assistants IA",
+    "Automatisation IA"
+   ],
+   "contactPoint": {
+    "@type": "ContactPoint",
+    "contactType": "customer service",
+    "url": "https://rubriqua.com/contact/",
+    "availableLanguage": [
+     "French",
+     "English"
+    ]
+   }
+  },
+  {
+   "@type": "WebPage",
+   "@id": "https://rubriqua.com/web-analytics/#page",
+   "url": "https://rubriqua.com/web-analytics/",
+   "name": "Agence analytics, GA4 et tracking",
+   "description": "Des données fiables pour mieux décider. Audit GA4, plan de marquage, Consent Mode et tableaux de bord clairs pour piloter votre activité.",
+   "inLanguage": "fr-FR",
+   "isPartOf": {
+    "@type": "WebSite",
+    "@id": "https://rubriqua.com/#site",
+    "url": "https://rubriqua.com/",
+    "name": "Rubriqua"
+   },
+   "publisher": {
+    "@id": "https://rubriqua.com/#organisation"
+   },
+   "breadcrumb": {
+    "@id": "https://rubriqua.com/web-analytics/#fil"
+   }
+  },
+  {
+   "@type": "BreadcrumbList",
+   "@id": "https://rubriqua.com/web-analytics/#fil",
+   "itemListElement": [
+    {
+     "@type": "ListItem",
+     "position": 1,
+     "name": "Accueil",
+     "item": "https://rubriqua.com/"
+    },
+    {
+     "@type": "ListItem",
+     "position": 2,
+     "name": "Services",
+     "item": "https://rubriqua.com/services/"
+    },
+    {
+     "@type": "ListItem",
+     "position": 3,
+     "name": "Agence analytics, GA4 et tracking",
+     "item": "https://rubriqua.com/web-analytics/"
+    }
+   ]
+  },
+  {
+   "@type": "Service",
+   "@id": "https://rubriqua.com/web-analytics/#service",
+   "name": "Analytics, GA4 et plan de marquage",
+   "serviceType": "Analytics, GA4 et plan de marquage",
+   "description": "Des données fiables pour mieux décider. Audit GA4, plan de marquage, Consent Mode et tableaux de bord clairs pour piloter votre activité.",
+   "url": "https://rubriqua.com/web-analytics/",
+   "provider": {
+    "@id": "https://rubriqua.com/#organisation"
+   },
+   "areaServed": [
+    "FR",
+    "CA"
+   ],
+   "inLanguage": "fr-FR"
+  },
+  {
+   "@type": "FAQPage",
+   "@id": "https://rubriqua.com/web-analytics/#faq",
+   "mainEntity": [
+    {
+     "@type": "Question",
+     "name": "Pourquoi les conversions dans GA4 ne correspondent-elles pas à mes ventes réelles ?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "C'est l'une des situations les plus fréquentes, et plusieurs causes se cumulent souvent. Les visiteurs qui refusent les cookies ne sont pas mesurés de la même façon, les bloqueurs de publicité et certains navigateurs limitent le suivi, et une partie des ventes se conclut hors ligne ou par téléphone, sans trace dans GA4. S'y ajoutent des erreurs de configuration courantes : un événement de conversion mal déclenché, une page de confirmation comptée deux fois, une étape de paiement externe qui casse le parcours. Un écart de quelques pourcents est normal. Au-delà, un audit du suivi permet d'identifier précisément l'origine du problème et de retrouver des données fiables pour prendre vos décisions."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "Faut-il Google Tag Manager pour installer GA4 ?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Ce n'est pas obligatoire, mais c'est recommandé dès que vous voulez centraliser vos balises, suivre finement les interactions et gérer le consentement."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "Comment gérer le consentement des cookies (Consent Mode) ?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Les règles varient selon les pays. En Europe, le consentement doit être recueilli avant de déposer des cookies de mesure ou publicitaires. Le Consent Mode adapte le comportement des balises selon le choix du visiteur. Mal configuré, il peut faire chuter vos données ou créer un risque juridique."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "Que faites-vous concrètement de mes données ?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Nous les utilisons pour répondre à des questions business : quels canaux sont rentables, quelles pages freinent la conversion, quel budget allouer. Chaque analyse débouche sur des recommandations priorisées."
+     }
+    }
+   ],
+   "isPartOf": {
+    "@id": "https://rubriqua.com/web-analytics/#page"
+   }
+  }
+ ]
+}
+</script>
 </head>
 <body>
 

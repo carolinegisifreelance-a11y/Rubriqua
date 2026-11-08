@@ -136,3 +136,7 @@ Les textes des articles ont été récupérés sans leurs liens. Les liens inter
 Les anciens slugs viennent de l'export : WordPress les redirigeait tout seul, le site statique doit le faire par le fichier .htaccess. L'ancien slug which-web-analytics-metrics-should-you-track était attaché à quatre articles (modèle dupliqué) : il est envoyé vers l'article analytics.
 
 Une page 404 dédiée remplace la page d'erreur de WordPress.
+
+## Données structurées schema.org
+
+Chaque page porte un bloc JSON-LD : Organization sur toutes les pages, WebSite sur l'accueil, WebPage (ContactPage, AboutPage, CollectionPage selon la page), BreadcrumbList, BlogPosting avec dates de publication et de modification sur les articles, Service sur les 6 pages service, Blog sur la page Blog, FAQPage sur les pages qui ont des questions fréquentes. À vérifier après la mise en ligne avec le test des résultats enrichis de Google.
