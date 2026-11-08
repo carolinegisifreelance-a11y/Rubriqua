@@ -4,7 +4,7 @@ Règle de base : chaque page actuelle garde exactement le même slug, barre obli
 
 ## URL relevées sur le site actuel
 
-Liste vérifiée le 8 novembre 2026 avec le sitemap Yoast du site (22 URL : 13 pages et 9 articles). Les 22 URL existent dans la refonte, au même slug. Les catégories du blog ne figurent pas dans les sitemaps de pages et d'articles : à vérifier dans le sitemap des catégories et dans Search Console.
+Liste vérifiée le 8 novembre 2026 avec le sitemap Yoast du site (22 URL : 13 pages et 9 articles). Les 22 URL existent dans la refonte, au même slug. Les catégories du blog ne sont ni dans le sitemap ni indexées (vérifié dans Search Console). Elles restent en ligne pour la navigation du blog, en noindex, follow, et hors du sitemap.
 
 ### Pages principales
 
@@ -105,7 +105,7 @@ Chaque page est rangée dans un dossier qui porte son slug, avec un index.html d
 1. Crawler l'ancien site et exporter toutes les URL indexables.
 2. Crawler le nouveau site en local et comparer les deux listes.
 3. Écrire une redirection 301 pour chaque URL absente du nouveau site.
-4. Vérifier les balises canoniques, le sitemap (sitemap.xml, 22 URL) et le fichier robots.txt. Mettre à jour les dates lastmod du sitemap au jour de la mise en ligne, et y ajouter les catégories du blog si elles restent indexables. Les lignes wp-admin du robots.txt ne servent plus hors WordPress et peuvent être retirées.
+4. Vérifier les balises canoniques, le sitemap (sitemap.xml, 22 URL) et le fichier robots.txt. Mettre à jour les dates lastmod du sitemap au jour de la mise en ligne. Les lignes wp-admin du robots.txt ne servent plus hors WordPress et peuvent être retirées.
 5. Déclarer le sitemap dans Search Console.
 6. Garder les mêmes titres SEO et méta descriptions, sauf choix volontaire.
 7. Après la mise en ligne, suivre les erreurs 404 dans Search Console pendant plusieurs semaines.
