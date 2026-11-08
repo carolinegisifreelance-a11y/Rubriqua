@@ -105,9 +105,10 @@ Chaque page est rangée dans un dossier qui porte son slug, avec un index.html d
 1. Crawler l'ancien site et exporter toutes les URL indexables.
 2. Crawler le nouveau site en local et comparer les deux listes.
 3. Écrire une redirection 301 pour chaque URL absente du nouveau site.
-4. Vérifier les balises canoniques, le sitemap et le fichier robots.txt.
-5. Garder les mêmes titres SEO et méta descriptions, sauf choix volontaire.
-6. Après la mise en ligne, suivre les erreurs 404 dans Search Console pendant plusieurs semaines.
+4. Vérifier les balises canoniques, le sitemap (sitemap.xml, 22 URL) et le fichier robots.txt. Mettre à jour les dates lastmod du sitemap au jour de la mise en ligne, et y ajouter les catégories du blog si elles restent indexables. Les lignes wp-admin du robots.txt ne servent plus hors WordPress et peuvent être retirées.
+5. Déclarer le sitemap dans Search Console.
+6. Garder les mêmes titres SEO et méta descriptions, sauf choix volontaire.
+7. Après la mise en ligne, suivre les erreurs 404 dans Search Console pendant plusieurs semaines.
 
 ## Maillage des articles à reprendre
 
