@@ -1,0 +1,78 @@
+# Envoie le site sur l'hébergement IONOS par SSH.
+# Lancement manuel depuis l'onglet Actions de GitHub (bouton Run workflow).
+# Réglages à créer dans Settings, Secrets and variables, Actions :
+#   SSH_HOST, SSH_USER, SSH_PASS : compte SFTP et SSH créé dans IONOS
+#   REMOTE_DIR : dossier du site sur l'hébergement, par exemple refonte
+#   DB_HOST, DB_NAME, DB_USER, DB_PASS : base MariaDB
+#   MAIL_TO, SMTP_USER, SMTP_PASS : boîte contact@rubriqua.com
+#   DASHBOARD_PASSWORD : mot de passe du tableau de bord (12 caractères minimum)
+
+name: Mise en ligne
+
+on:
+  workflow_dispatch:
+
+concurrency: mise-en-ligne
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Vérifier les réglages
+        env:
+          REMOTE_DIR: ${{ secrets.REMOTE_DIR }}
+        run: |
+          case "$REMOTE_DIR" in
+            ""|"/"|"."|"~"|*..*) echo "REMOTE_DIR invalide : il doit nommer un dossier dédié au nouveau site."; exit 1;;
+          esac
+
+      - name: Préparer le fichier de configuration
+        env:
+          DB_HOST: ${{ secrets.DB_HOST }}
+          DB_NAME: ${{ secrets.DB_NAME }}
+          DB_USER: ${{ secrets.DB_USER }}
+          DB_PASS: ${{ secrets.DB_PASS }}
+          MAIL_TO: ${{ secrets.MAIL_TO }}
+          SMTP_USER: ${{ secrets.SMTP_USER }}
+          SMTP_PASS: ${{ secrets.SMTP_PASS }}
+          DASHBOARD_PASSWORD: ${{ secrets.DASHBOARD_PASSWORD }}
+        run: |
+          php -r '
+            $e = fn($k) => var_export((string)getenv($k), true);
+            $dsn = getenv("DB_HOST") ? "mysql:host=" . getenv("DB_HOST") . ";dbname=" . getenv("DB_NAME") . ";charset=utf8mb4" : "";
+            $hash = getenv("DASHBOARD_PASSWORD") ? password_hash(getenv("DASHBOARD_PASSWORD"), PASSWORD_DEFAULT) : "";
+            $c = "<?php\nif (!defined(\"RUBRIQUA\")) { http_response_code(404); exit; }\nreturn [\n"
+               . "  \"db_dsn\" => " . var_export($dsn, true) . ",\n"
+               . "  \"db_user\" => " . $e("DB_USER") . ",\n"
+               . "  \"db_pass\" => " . $e("DB_PASS") . ",\n"
+               . "  \"mail_to\" => " . $e("MAIL_TO") . ",\n"
+               . "  \"mail_from\" => " . $e("SMTP_USER") . ",\n"
+               . "  \"smtp_user\" => " . $e("SMTP_USER") . ",\n"
+               . "  \"smtp_pass\" => " . $e("SMTP_PASS") . ",\n"
+               . "  \"dashboard_hash\" => " . var_export($hash, true) . ",\n"
+               . "];\n";
+            file_put_contents("api/config.php", $c);
+          '
+
+      - name: Envoyer les fichiers
+        env:
+          SSHPASS: ${{ secrets.SSH_PASS }}
+          SSH_HOST: ${{ secrets.SSH_HOST }}
+          SSH_USER: ${{ secrets.SSH_USER }}
+          REMOTE_DIR: ${{ secrets.REMOTE_DIR }}
+        run: |
+          sudo apt-get install -y -qq sshpass rsync > /dev/null
+          SSH="sshpass -e ssh -o StrictHostKeyChecking=accept-new"
+          $SSH "$SSH_USER@$SSH_HOST" "mkdir -p '$REMOTE_DIR'"
+          # La suppression des fichiers absents n'est activée que dans un dossier déjà marqué comme celui du site,
+          # pour ne jamais effacer un autre contenu (par exemple WordPress) en cas d'erreur de dossier.
+          if $SSH "$SSH_USER@$SSH_HOST" "test -f '$REMOTE_DIR/.site-rubriqua'"; then DELETE="--delete"; else DELETE=""; fi
+          echo "Mode : ${DELETE:-ajout seulement}"
+          touch .site-rubriqua
+          rsync -rlz $DELETE -e "$SSH" \
+            --exclude '.git/' --exclude '.github/' --exclude 'docs/' --exclude 'maquettes/' \
+            --exclude 'README.md' --exclude '.gitignore' --exclude 'donnees/*.sqlite*' \
+            ./ "$SSH_USER@$SSH_HOST:$REMOTE_DIR/"
+          rm -f api/config.php

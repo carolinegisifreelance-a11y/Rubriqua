@@ -46,3 +46,16 @@ Le site a besoin de PHP. Il faut donc un hébergement PHP : l'offre PHP de Deplo
 - Visiteurs venus des IA : ChatGPT, Perplexity, Copilot, Gemini, Claude et Mistral, repérés par le site d'origine ou par le paramètre utm_source que ChatGPT ajoute à ses liens.
 - Les robots et les navigateurs automatiques ne sont pas comptés.
 - Pas de durée de visite ni de taux de rebond : il faudrait suivre le visiteur, ce que la mesure sans cookie évite volontairement.
+
+## Choix retenu, l'hébergement actuel (Hébergement pour WordPress Expand)
+
+Le contrat WordPress actuel comprend un espace web de 49 Go, une base MariaDB, l'accès SFTP et SSH et PHP 8.3. Le nouveau site s'installe dans un dossier séparé de cet espace, sans rien acheter.
+
+1. Créer un compte SFTP et SSH dans IONOS (Projets Web, Rubriqua, Paramètres avancés).
+2. Créer le sous-domaine refonte.rubriqua.com et le relier au dossier du nouveau site.
+3. Renseigner les secrets dans GitHub (liste en tête du fichier .github/workflows/deploy.yml).
+4. Lancer la mise en ligne depuis l'onglet Actions de GitHub, bouton Run workflow.
+5. Tester sur refonte.rubriqua.com, puis faire pointer rubriqua.com vers le même dossier.
+6. Garder WordPress jusqu'aux vérifications finales, puis le désinstaller.
+
+Le premier envoi ne supprime rien sur le serveur. Les suivants suppriment seulement, dans le dossier du site, les fichiers retirés du dépôt.
