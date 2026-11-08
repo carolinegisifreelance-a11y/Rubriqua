@@ -294,7 +294,7 @@ a.tile-main:hover { border-color: var(--red-dark); background: var(--red-dark); 
 
 /* Pied de page */
 .site-footer { background: var(--black); color: var(--white); padding: 64px 0 28px; }
-.footer-grid { display: grid; grid-template-columns: 1.3fr 1fr 1fr 1fr 1fr; gap: 32px; font-size: 15px; }
+.footer-grid { display: grid; grid-template-columns: 1.3fr repeat(5, minmax(0, 1fr)); gap: 32px; font-size: 15px; }
 .footer-grid p { color: #a9a49d; margin-top: 12px; max-width: 280px; }
 .footer-grid nav { display: flex; flex-direction: column; gap: 10px; }
 .footer-grid nav b { color: #a9a49d; }
