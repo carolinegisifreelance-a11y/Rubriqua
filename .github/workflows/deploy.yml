@@ -3,7 +3,7 @@
 # Réglages à créer dans Settings, Secrets and variables, Actions :
 #   SSH_HOST, SSH_USER, SSH_PASS : compte SFTP et SSH créé dans IONOS
 #   REMOTE_DIR : dossier du site sur l'hébergement, par exemple refonte
-#   DB_HOST, DB_NAME, DB_USER, DB_PASS : base MariaDB
+#   DB_HOST, DB_NAME, DB_USER, DB_PASS : facultatifs. Sans eux, le site utilise SQLite dans donnees/
 #   MAIL_TO, SMTP_USER, SMTP_PASS : boîte contact@rubriqua.com
 #   DASHBOARD_PASSWORD : mot de passe du tableau de bord (12 caractères minimum)
 
