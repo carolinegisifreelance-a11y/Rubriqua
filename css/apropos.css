@@ -35,6 +35,13 @@
 .logo-card figcaption b { font-size: 15px; }
 .logo-card figcaption span { font-size: 13px; color: var(--muted); line-height: 1.4; }
 
+.agency-stats { display: flex; gap: 12px; margin-top: 8px; }
+.agency-stats div { flex: 1; background: var(--white); border-radius: var(--radius); padding: 18px 20px; display: flex; flex-direction: column; gap: 4px; }
+.agency-stats b { font-size: 44px; font-weight: 800; color: var(--red); letter-spacing: -0.04em; line-height: 1; }
+.agency-stats span { font-size: 14px; color: var(--text); font-weight: 600; }
+.agency-sectors { list-style: none; margin: 4px 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; }
+.agency-sectors li { font-size: 13px; font-weight: 700; color: var(--ink); background: var(--white); border: 1px solid var(--line); padding: 6px 12px; border-radius: 4px; }
+
 .contact-top { padding-top: 104px; }
 
 @media (max-width: 1024px) {
