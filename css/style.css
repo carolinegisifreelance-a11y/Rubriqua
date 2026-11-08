@@ -379,3 +379,41 @@ a.tile-main:hover { border-color: var(--red-dark); background: var(--red-dark); 
   .clients-row { display: grid; grid-template-columns: 1fr 1fr; justify-items: center; gap: 28px 20px; }
   .clients-row img { max-height: 32px; max-width: 100%; width: auto; height: auto; }
 }
+
+/* Pourquoi investir en SEO : version mobile compacte, chaque argument dans sa zone */
+.zone-arg { display: none; }
+@media (max-width: 760px) {
+  .why h2 { margin-bottom: 24px; }
+  .why .args, .why .switch { display: none; }
+  .serp { padding: 12px; gap: 8px; }
+  .serp-top { margin-bottom: 0; }
+  .serp .search-bar { font-size: 13px; padding: 10px 12px; }
+  .zone { padding: 12px 14px; gap: 6px; }
+  .zone .zone-arg { display: block; font-size: 16px; font-weight: 700; line-height: 1.35; color: var(--ink); }
+  .zone-ia > p:not(.zone-arg), .zone .result.muted { display: none; }
+  .zone .result { padding: 4px 0 4px 10px; }
+  .zone .result b { font-size: 14px; }
+}
+
+
+/* Accueil sur mobile : sections plus compactes */
+@media (max-width: 760px) {
+  .tile { flex-direction: row; gap: 14px; padding: 18px; }
+  .tile .icon { flex: none; width: 40px; height: 40px; }
+  .tile h3 { font-size: 18px; margin-bottom: 2px; }
+  .tile p { font-size: 14px; line-height: 1.5; }
+  .tile-main { flex-direction: column; padding: 24px; }
+  .tile-main h3 { font-size: 28px; }
+  .tile-main p { font-size: 15px; }
+  .tile-ai .chat { display: none; }
+  .org-grid { grid-template-columns: 1fr 1fr; gap: 10px; }
+  .org { aspect-ratio: 4 / 5; }
+  .org-title { left: 14px; right: 14px; bottom: 14px; font-size: 17px; transform: none; }
+  .org-cta { display: none; }
+  .org:hover .org-title, .org:focus-visible .org-title { transform: none; }
+  .tile .icon svg { width: 20px; height: 20px; }
+  .facts { gap: 8px; }
+  .fact { padding: 14px 16px; flex-direction: row; align-items: baseline; gap: 12px; }
+  .fact b { font-size: 24px; flex: none; }
+  .fact span { font-size: 13px; }
+}
