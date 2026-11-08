@@ -1,0 +1,41 @@
+/* Rubriqua, page Glossaire */
+.gl-hero-text { display: flex; flex-direction: column; gap: 12px; max-width: 720px; }
+.gl-lead { color: #cfcbc4; font-size: 18px; line-height: 1.55; }
+
+.gl-bar { position: sticky; top: 72px; z-index: 20; background: var(--white); border-bottom: 1px solid var(--line); }
+.gl-bar-inner { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px 24px; padding-top: 14px; padding-bottom: 14px; }
+.gl-index { display: flex; flex-wrap: wrap; gap: 4px; }
+.gl-index a { min-width: 32px; height: 32px; display: inline-flex; align-items: center; justify-content: center; border-radius: var(--radius-sm); font-weight: 800; font-size: 14px; color: var(--ink); text-decoration: none; }
+.gl-index a:hover { background: var(--beige); color: var(--red); }
+.gl-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.gl-chips .chip-link { font: inherit; font-size: 14px; font-weight: 700; background: var(--white); cursor: pointer; }
+.gl-chips .chip-link.is-on { background: var(--ink); color: var(--white); }
+
+.gl-list .container { max-width: 980px; display: flex; flex-direction: column; gap: 48px; }
+.gl-letter { display: grid; grid-template-columns: 80px minmax(0, 1fr); gap: 24px; scroll-margin-top: 150px; }
+.gl-letter h2 { font-size: 56px; font-weight: 800; color: var(--red); line-height: 1; letter-spacing: -0.04em; }
+.gl-terms { display: flex; flex-direction: column; border-top: 1px solid var(--line); }
+.gl-term { padding: 22px 0; border-bottom: 1px solid var(--line); display: flex; flex-direction: column; gap: 10px; scroll-margin-top: 150px; }
+.gl-term:target { background: linear-gradient(90deg, #fbf1f0, transparent); }
+.gl-term-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 12px; }
+.gl-term h3 { font-size: 21px; letter-spacing: -0.015em; }
+.gl-alt { font-size: 14px; color: var(--muted); font-weight: 600; }
+.gl-term-head .tag { margin-left: auto; }
+.gl-term p { font-size: 16px; line-height: 1.7; color: var(--text); max-width: 720px; }
+.gl-term a { color: var(--red); }
+.gl-empty { color: var(--muted); font-size: 16px; }
+.gl-cta { margin-top: 8px !important; }
+
+@media (max-width: 760px) {
+  .gl-bar { top: 64px; }
+  .gl-bar-inner { padding-top: 10px; padding-bottom: 10px; }
+  .gl-index { flex-wrap: nowrap; overflow-x: auto; width: 100%; scrollbar-width: none; }
+  .gl-index::-webkit-scrollbar { display: none; }
+  .gl-index a { flex: none; }
+  .gl-chips { flex-wrap: nowrap; overflow-x: auto; width: 100%; scrollbar-width: none; }
+  .gl-letter { grid-template-columns: 1fr; gap: 8px; }
+  .gl-letter h2 { font-size: 40px; }
+  .gl-term { padding: 18px 0; }
+  .gl-term h3 { font-size: 19px; }
+  .gl-term p { font-size: 15px; }
+}

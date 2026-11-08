@@ -23,6 +23,7 @@ Liste vérifiée le 8 novembre 2026 avec le sitemap Yoast du site (22 URL : 13 p
 | Contact | /contact/ |
 | Politique de confidentialité | /politique-de-confidentialite/ |
 | Cookies | /cookies/ |
+| Glossaire (nouvelle page) | /glossaire/ |
 
 ### Catégories du blog
 

@@ -294,7 +294,7 @@ a.tile-main:hover { border-color: var(--red-dark); background: var(--red-dark); 
 
 /* Pied de page */
 .site-footer { background: var(--black); color: var(--white); padding: 64px 0 28px; }
-.footer-grid { display: grid; grid-template-columns: 1.3fr 1fr 1fr 1fr; gap: 32px; font-size: 15px; }
+.footer-grid { display: grid; grid-template-columns: 1.3fr 1fr 1fr 1fr 1fr; gap: 32px; font-size: 15px; }
 .footer-grid p { color: #a9a49d; margin-top: 12px; max-width: 280px; }
 .footer-grid nav { display: flex; flex-direction: column; gap: 10px; }
 .footer-grid nav b { color: #a9a49d; }
@@ -473,3 +473,10 @@ a.tile-main:hover { border-color: var(--red-dark); background: var(--red-dark); 
 .footer-social { display: inline-flex; align-items: center; gap: 10px; margin-top: 18px; color: #cfcbc4; text-decoration: none; font-size: 14px; font-weight: 600; }
 .footer-social svg { color: #0a66c2; background: var(--white); border-radius: 3px; }
 .footer-social:hover { color: var(--white); }
+
+/* Pied de page sur mobile : présentation en haut, liens sur deux colonnes */
+@media (max-width: 760px) {
+  .footer-grid { grid-template-columns: 1fr 1fr; gap: 28px 20px; }
+  .footer-grid > div:first-child { grid-column: 1 / -1; }
+}
+
