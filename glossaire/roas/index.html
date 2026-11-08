@@ -1,0 +1,353 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="/favicon.ico" sizes="32x32">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/assets/images/logo/apple-touch-icon.png">
+<title>ROAS, définition, calcul et simulateur - Rubriqua</title>
+<meta name="description" content="Le ROAS mesure le chiffre d’affaires généré par euro de publicité. Formule, exemples, seuil de rentabilité, simulateur et cas des leads B2B.">
+<link rel="canonical" href="https://rubriqua.com/glossaire/roas/">
+<link rel="preload" href="../../assets/fonts/manrope-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../../css/fonts.css">
+<link rel="stylesheet" href="../../css/style.css">
+<link rel="stylesheet" href="../../css/services.css">
+<link rel="stylesheet" href="../../css/seogeo.css">
+<link rel="stylesheet" href="../../css/blog.css">
+<link rel="stylesheet" href="../../css/glossaire.css">
+<script type="application/ld+json" id="schema-terme">
+{
+ "@context": "https://schema.org",
+ "@graph": [
+  {
+   "@type": "DefinedTerm",
+   "@id": "https://rubriqua.com/glossaire/roas/#terme",
+   "name": "ROAS",
+   "alternateName": "Retour sur dépenses publicitaires",
+   "description": "Le ROAS divise le chiffre d’affaires généré par la publicité par son coût. Un ROAS de 4 signifie 4 euros de ventes pour 1 euro investi. Il se lit toujours avec le taux de marge, qui fixe le seuil de rentabilité.",
+   "url": "https://rubriqua.com/glossaire/roas/",
+   "inDefinedTermSet": "https://rubriqua.com/glossaire/#glossaire"
+  },
+  {
+   "@type": "Article",
+   "@id": "https://rubriqua.com/glossaire/roas/#article",
+   "headline": "ROAS, définition, calcul et seuil de rentabilité",
+   "description": "Le ROAS mesure le chiffre d’affaires généré par euro de publicité. Formule, exemples, seuil de rentabilité, simulateur et cas des leads B2B.",
+   "inLanguage": "fr-FR",
+   "dateModified": "2026-11-08",
+   "datePublished": "2026-11-08",
+   "author": {
+    "@id": "https://rubriqua.com/#organisation"
+   },
+   "publisher": {
+    "@id": "https://rubriqua.com/#organisation"
+   },
+   "mainEntityOfPage": "https://rubriqua.com/glossaire/roas/",
+   "about": {
+    "@id": "https://rubriqua.com/glossaire/roas/#terme"
+   }
+  },
+  {
+   "@type": "FAQPage",
+   "@id": "https://rubriqua.com/glossaire/roas/#faq",
+   "mainEntity": [
+    {
+     "@type": "Question",
+     "name": "Qu’est-ce qu’un bon ROAS ?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Un ROAS supérieur à votre seuil de rentabilité, égal à 1 divisé par votre taux de marge. Avec 40% de marge, tout ROAS au-dessus de 2,5 dégage de la marge."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "Comment calculer le ROAS en pourcentage ?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "On multiplie le ratio par 100. Un ROAS de 3,2 correspond à 320%."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "Quelle différence entre ROAS et ROI ?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Le ROAS compare le chiffre d’affaires aux seules dépenses publicitaires. Le ROI compare le gain net à l’ensemble des coûts engagés."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "Un ROAS de 1 est-il rentable ?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Non. Un ROAS de 1 signifie que la publicité rapporte autant de chiffre d’affaires qu’elle coûte. Une fois le coût des produits déduit, la campagne perd de l’argent."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "Comment voir son ROAS dans Google Ads ?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Dans les colonnes de conversions, l’indicateur Valeur de conv. / coût correspond au ROAS. Il suppose que des valeurs de conversion soient bien enregistrées."
+     }
+    }
+   ]
+  }
+ ]
+}
+</script>
+<script type="application/ld+json" id="schema">
+{
+ "@context": "https://schema.org",
+ "@graph": [
+  {
+   "@type": "Organization",
+   "@id": "https://rubriqua.com/#organisation",
+   "name": "Rubriqua",
+   "url": "https://rubriqua.com/",
+   "logo": {
+    "@type": "ImageObject",
+    "url": "https://rubriqua.com/assets/images/logo/rubriqua-logo.png"
+   },
+   "description": "Agence SEO, GEO, Google Ads, analytics et automatisation IA pour les industries et les entreprises de toute taille, en France, au Canada et à l’international.",
+   "areaServed": [
+    "FR",
+    "CA"
+   ],
+   "knowsAbout": [
+    "Référencement naturel (SEO)",
+    "Optimisation pour les moteurs IA (GEO)",
+    "Google Ads (SEA)",
+    "Google Analytics 4",
+    "Publicité sur les réseaux sociaux",
+    "Publicité dans les assistants IA",
+    "Automatisation IA"
+   ],
+   "sameAs": [
+    "https://www.linkedin.com/company/rubriqua-seo"
+   ],
+   "contactPoint": {
+    "@type": "ContactPoint",
+    "contactType": "customer service",
+    "url": "https://rubriqua.com/contact/",
+    "availableLanguage": [
+     "French",
+     "English"
+    ]
+   }
+  },
+  {
+   "@type": "WebPage",
+   "@id": "https://rubriqua.com/glossaire/roas/#page",
+   "url": "https://rubriqua.com/glossaire/roas/",
+   "name": "ROAS, définition, calcul et simulateur",
+   "description": "Le ROAS mesure le chiffre d’affaires généré par euro de publicité. Formule, exemples, seuil de rentabilité, simulateur et cas des leads B2B.",
+   "inLanguage": "fr-FR",
+   "isPartOf": {
+    "@type": "WebSite",
+    "@id": "https://rubriqua.com/#site",
+    "url": "https://rubriqua.com/",
+    "name": "Rubriqua"
+   },
+   "publisher": {
+    "@id": "https://rubriqua.com/#organisation"
+   },
+   "breadcrumb": {
+    "@id": "https://rubriqua.com/glossaire/roas/#fil"
+   }
+  },
+  {
+   "@type": "BreadcrumbList",
+   "@id": "https://rubriqua.com/glossaire/roas/#fil",
+   "itemListElement": [
+    {
+     "@type": "ListItem",
+     "position": 1,
+     "name": "Accueil",
+     "item": "https://rubriqua.com/"
+    },
+    {
+     "@type": "ListItem",
+     "position": 2,
+     "name": "Glossaire",
+     "item": "https://rubriqua.com/glossaire/"
+    },
+    {
+     "@type": "ListItem",
+     "position": 3,
+     "name": "ROAS, définition, calcul et simulateur",
+     "item": "https://rubriqua.com/glossaire/roas/"
+    }
+   ]
+  }
+ ]
+}
+</script>
+</head>
+<body>
+
+<a class="skip" href="#contenu">Aller au contenu</a>
+
+<header class="site-header">
+  <div class="container header-inner">
+    <a class="brand" href="/" aria-label="Rubriqua, accueil">
+      <img src="../../assets/images/logo/rubriqua-logo.png" alt="" width="46" height="34">
+      <span class="brand-name">Rubriqua</span>
+    </a>
+    <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="menu">Menu</button>
+    <nav id="menu" class="main-nav" aria-label="Navigation principale">
+      <div class="nav-drop">
+      <a class="nav-drop-link" href="/services/">Services<svg class="nav-chev" width="10" height="10" viewBox="0 0 10 10" aria-hidden="true"><path d="M2 3.5 5 6.5 8 3.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+      <ul class="nav-sub"><li><a href="/seogeo/">SEO et GEO</a></li><li><a href="/sea-googleads/">SEA et Google Ads</a></li><li><a href="/web-analytics/">Analytics et GA4</a></li><li><a href="/social-ads/">Publicité réseaux sociaux</a></li><li><a href="/automation/">Automatisation IA</a></li><li><a href="/pubs-ia-chatgpt/">IA Ads</a></li></ul>
+    </div>
+      <a href="/a-propos/">À propos</a>
+      <a href="/blog/">Blog</a>
+      <a class="btn btn-primary" href="/contact/">Contactez-nous</a>
+    </nav>
+  </div>
+</header>
+
+<main id="contenu">
+
+<header class="df-head">
+  <div class="container df-head-inner">
+    <nav class="breadcrumb breadcrumb-light" aria-label="Fil d'Ariane"><a href="/">Accueil</a><span aria-hidden="true">/</span><a href="/glossaire/">Glossaire</a><span aria-hidden="true">/</span><span aria-current="page">ROAS</span></nav>
+    <h1>ROAS, définition, calcul et seuil de rentabilité</h1>
+    <p class="df-alt">Return On Ad Spend, retour sur dépenses publicitaires</p>
+    <p class="df-meta">Thème SEA · Mis à jour le 8 novembre 2026 · 10 min de lecture</p>
+    <div class="df-brief"><b>La définition en bref</b><p>Le ROAS divise le chiffre d’affaires généré par la publicité par son coût. Un ROAS de 4 signifie 4 euros de ventes pour 1 euro investi. Il se lit toujours avec le taux de marge, qui fixe le seuil de rentabilité.</p></div>
+  </div>
+</header>
+
+<div class="container df-layout">
+  <article class="df-main">
+<p>Une campagne Google Ads ou Meta qui génère des ventes n’est pas forcément rentable. Tout dépend de ce qu’elle coûte, de la marge réalisée sur chaque commande et de la part des ventes qu’on peut vraiment lui attribuer.</p>
+<p>Le ROAS est l’indicateur le plus utilisé pour faire ce lien entre dépenses publicitaires et chiffre d’affaires. Il se calcule en quelques secondes, ce qui explique son succès, mais il est souvent mal lu&nbsp;: confusion avec le ROI, erreurs de pourcentage, objectifs copiés sur des moyennes sectorielles qui ne correspondent à aucune marge réelle.</p>
+<p>Sa définition, sa formule, le seuil sous lequel une campagne perd de l’argent et la façon de l’adapter à une activité qui vend sur devis sont détaillés ci-dessous, avec un simulateur pour faire le calcul sur vos propres chiffres.</p>
+<div class="df-keep"><h2>À retenir</h2>
+<ul><li>Le ROAS (Return On Ad Spend), ou retour sur dépenses publicitaires, divise le chiffre d’affaires attribué aux annonces par les dépenses publicitaires.</li><li>Un ROAS de 4 signifie 4 euros de chiffre d’affaires pour 1 euro de publicité, soit 400%.</li><li>Le ROAS minimum pour ne pas perdre d’argent est égal à 1 divisé par le taux de marge. Avec 30% de marge, il faut au moins 3,33.</li><li>Il n’existe pas de bon ROAS universel&nbsp;: l’objectif dépend de la marge, du panier moyen et de la valeur des clients dans le temps.</li><li>Une entreprise qui vend sur devis peut aussi suivre un ROAS, à condition de donner une valeur à ses demandes et d’importer ses ventes signées dans Google Ads.</li></ul>
+</div>
+<h2 id="la-definition-du-roas">La définition du ROAS</h2>
+<p>Le ROAS, pour Return On Ad Spend, se traduit par retour sur dépenses publicitaires. Il mesure le chiffre d’affaires généré pour chaque euro investi en publicité, sur une campagne, une plateforme ou une période donnée.</p>
+<p>C’est un indicateur d’efficacité publicitaire. Il indique combien de ventes la publicité a produites par rapport à son coût, sans tenir compte de la marge. Il doit donc toujours être lu avec le taux de marge de l’entreprise.</p>
+<h2 id="comment-calculer-le-roas">Comment calculer le ROAS</h2>
+<p>La formule est la suivante&nbsp;: ROAS = chiffre d’affaires attribué aux annonces ÷ dépenses publicitaires.</p>
+<h3>Un exemple dans l’e-commerce</h3>
+<p>Une boutique de jouets en ligne dépense 2 000 euros HT sur Google Ads en novembre. Les annonces génèrent 9 000 euros HT de ventes. Le ROAS est de 9 000 ÷ 2 000, soit 4,5.</p>
+<h3>Le ROAS en ratio et en pourcentage</h3>
+<p>Le même résultat s’écrit 4,5, 4,5 pour 1 ou 450%. Pour passer du ratio au pourcentage, il suffit de multiplier par 100. Un ROAS de 3 vaut donc 300%, et non 200% comme on le lit parfois&nbsp;: ce dernier chiffre correspond au ROI, qui retire d’abord le coût du gain.</p>
+<p>Un ROAS ne peut pas être négatif. Un ROAS inférieur à 1, par exemple 0,8, signifie que la publicité a rapporté moins de chiffre d’affaires qu’elle n’a coûté.</p>
+<h3>Ce qu’on met dans le calcul</h3>
+<ul><li>Le chiffre d’affaires hors taxe, après annulations et retours si possible, pour éviter de surestimer le résultat.</li><li>Les dépenses facturées par la régie, Google Ads, Meta ou Microsoft Advertising.</li><li>Les frais de gestion, de création ou d’outils peuvent être ajoutés pour obtenir un ROAS complet, plus proche de la réalité économique. Il faut alors toujours comparer des ROAS calculés de la même façon.</li></ul>
+<h2 id="le-simulateur-de-roas">Le simulateur de ROAS</h2>
+
+<div class="roas-sim" id="simulateur">
+  <h3>Calculez votre ROAS et votre seuil de rentabilité</h3>
+  <p>Saisissez des montants hors taxe sur une même période, et la marge brute moyenne des produits vendus par la campagne.</p>
+  <form class="roas-fields" data-roas onsubmit="return false">
+    <label>Dépenses publicitaires<span class="unit"><input type="text" inputmode="decimal" name="depenses" value="2000" autocomplete="off"><span>€</span></span></label>
+    <label>Chiffre d’affaires attribué<span class="unit"><input type="text" inputmode="decimal" name="ca" value="9000" autocomplete="off"><span>€</span></span></label>
+    <label>Taux de marge brute<span class="unit"><input type="text" inputmode="decimal" name="marge" value="35" autocomplete="off"><span>%</span></span></label>
+  </form>
+  <div class="roas-results" aria-live="polite">
+    <div><b data-roas-out="roas">4,5</b><span>ROAS</span></div>
+    <div><b data-roas-out="pct">450%</b><span>ROAS en pourcentage</span></div>
+    <div><b data-roas-out="seuil">2,86</b><span>ROAS minimum</span></div>
+    <div><b data-roas-out="gain">1 150 €</b><span>Marge après publicité</span></div>
+  </div>
+  <p class="roas-verdict ok" data-roas-out="verdict">Campagne rentable : votre ROAS dépasse votre seuil de 1,64 point.</p>
+  <p class="roas-note">La marge après publicité ne tient pas compte des autres frais de l’entreprise. Le seuil est égal à 1 divisé par le taux de marge.</p>
+</div>
+<p>Le simulateur calcule votre ROAS et le compare à votre seuil de rentabilité. Saisissez des montants hors taxe et une marge brute moyenne sur les produits vendus par la campagne.</p>
+<h2 id="le-seuil-de-rentabilite-ou-roas-minimum">Le seuil de rentabilité, ou ROAS minimum</h2>
+<p>Le seuil de rentabilité est le ROAS en dessous duquel une campagne coûte plus qu’elle ne rapporte en marge. Il se calcule ainsi&nbsp;: ROAS minimum = 1 ÷ taux de marge.</p>
+<div class="df-table"><table><thead><tr><th scope="col">Taux de marge brute</th><th scope="col">ROAS minimum</th></tr></thead><tbody><tr><th scope="row">20%</th><td>5</td></tr><tr><th scope="row">30%</th><td>3,33</td></tr><tr><th scope="row">40%</th><td>2,5</td></tr><tr><th scope="row">50%</th><td>2</td></tr><tr><th scope="row">60%</th><td>1,67</td></tr></tbody></table></div>
+<p>Dans l’exemple de la boutique de jouets, avec 35% de marge brute, le seuil est de 1 ÷ 0,35, soit environ 2,86. Avec un ROAS de 4,5, la campagne dégage 3 150 euros de marge pour 2 000 euros de publicité, soit 1 150 euros avant les autres frais de l’entreprise.</p>
+<p>Le taux de marge à utiliser est la marge après coûts variables&nbsp;: prix d’achat ou de fabrication, frais de livraison offerts, commissions de paiement. Plus il est précis, plus le seuil est fiable.</p>
+<h2 id="qu-est-ce-qu-un-bon-roas">Qu’est-ce qu’un bon ROAS</h2>
+<p>Il n’existe pas de chiffre valable pour toutes les entreprises. Le repère de 4 pour 1, souvent cité, peut être largement rentable pour une marque à 60% de marge et insuffisant pour un revendeur à 20%.</p>
+<p>Un bon ROAS est donc d’abord un ROAS supérieur à votre seuil, avec une marge de sécurité. Il dépend aussi de la stratégie du moment&nbsp;:</p>
+<ul><li>En période de lancement ou de conquête, un ROAS proche du seuil peut être accepté si les nouveaux clients rachètent ensuite.</li><li>En haute saison, comme novembre et décembre pour les jouets ou mai et juin pour les produits d’été, le ROAS monte souvent et permet d’augmenter les budgets.</li><li>Les campagnes sur le nom de la marque affichent presque toujours un ROAS élevé, car elles touchent des clients qui vous cherchaient déjà. Il faut les analyser à part pour ne pas embellir le résultat global.</li></ul>
+<p>Les moyennes sectorielles publiées en ligne sont rarement sourcées et mélangent des marges très différentes. Elles servent seulement de point de repère.</p>
+<h2 id="le-roas-dans-l-e-commerce">Le ROAS dans l’e-commerce</h2>
+<h3>Calculer le ROAS par catégorie de produits</h3>
+<p>Un ROAS global mélange des produits à marges très différentes. Une boutique qui vend des accessoires à 60% de marge et des articles de marque à 25% n’a pas le même seuil sur les deux familles. Regrouper les produits par niveau de marge dans les campagnes Shopping ou Performance Max permet de fixer un objectif adapté à chaque groupe, au lieu d’un objectif moyen qui favorise les produits les moins rentables.</p>
+<p>Le panier moyen compte aussi. Un produit d’appel peu rentable qui déclenche des paniers plus larges peut justifier un ROAS plus bas sur sa propre ligne. Les frais de livraison offerts, souvent oubliés, réduisent la marge réelle et relèvent le seuil.</p>
+<h3>Tenir compte de la saisonnalité</h3>
+<p>Les ventes d’une boutique de fournitures pour kermesses se concentrent entre avril et juin. Le même budget produit alors bien plus de chiffre d’affaires qu’en hiver. Fixer un objectif de ROAS identique toute l’année conduit à sous-investir en haute saison et à dépenser pour peu de ventes le reste du temps. Mieux vaut ajuster les budgets et les objectifs mois par mois, à partir des ventes des années précédentes.</p>
+<h3>Distinguer nouveaux clients et clients existants</h3>
+<p>Une partie des ventes attribuées aux annonces vient de clients qui auraient de toute façon commandé. Google Ads propose un objectif d’acquisition de nouveaux clients pour donner plus de poids aux premières commandes. Suivre séparément le ROAS des nouveaux clients aide à savoir si la publicité fait vraiment grandir la clientèle.</p>
+<h2 id="roas-roi-acos-et-poas">ROAS, ROI, ACOS et POAS</h2>
+<div class="df-table"><table><thead><tr><th scope="col">Indicateur</th><th scope="col">Formule</th><th scope="col">Ce qu’il mesure</th></tr></thead><tbody><tr><th scope="row">ROAS</th><td>Chiffre d’affaires ÷ dépenses publicitaires</td><td>Le chiffre d’affaires produit par euro de publicité</td></tr><tr><th scope="row">ROI</th><td>(Gain − coût total) ÷ coût total</td><td>La rentabilité réelle d’un investissement, tous coûts compris</td></tr><tr><th scope="row">ACOS</th><td>Dépenses publicitaires ÷ chiffre d’affaires × 100</td><td>La part du chiffre d’affaires absorbée par la publicité, surtout utilisé sur Amazon</td></tr><tr><th scope="row">POAS</th><td>Marge brute générée ÷ dépenses publicitaires</td><td>La marge produite par euro de publicité, rentable au-dessus de 1</td></tr></tbody></table></div>
+<p>L’ACOS est l’inverse du ROAS exprimé en pourcentage&nbsp;: un ROAS de 4 correspond à un ACOS de 25%. Le POAS intègre directement la marge, ce qui le rend plus parlant pour piloter la rentabilité, mais il demande de transmettre des valeurs de marge aux plateformes publicitaires.</p>
+<h2 id="le-roas-quand-on-vend-sur-devis">Le ROAS quand on vend sur devis</h2>
+<p>Une entreprise industrielle ou de services B2B ne vend pas en ligne. Ses campagnes génèrent des demandes de devis, des appels ou des téléchargements de fiches techniques. Le ROAS reste utilisable, à condition de donner une valeur à ces actions.</p>
+<h3>Donner une valeur à une demande</h3>
+<p>La méthode la plus simple consiste à multiplier le montant moyen d’une commande par le taux de demandes qui aboutissent. Si un devis signé vaut en moyenne 12 000 euros et qu’une demande sur dix est signée, une demande vaut 1 200 euros. Cette valeur se déclare dans Google Ads comme <a href="/glossaire/#valeur-de-conversion">valeur de conversion</a>.</p>
+<h3>Importer les ventes signées</h3>
+<p>Pour aller plus loin, Google Ads permet d’<a href="https://support.google.com/google-ads/answer/2998031?hl=fr" rel="noopener">importer les conversions hors ligne</a>, c’est-à-dire les devis réellement signés, reliés au clic d’origine. Les <a href="https://support.google.com/google-ads/answer/15713840?hl=fr" rel="noopener">conversions avancées pour les prospects</a> facilitent ce rapprochement à partir de l’adresse e-mail saisie dans le formulaire. Le ROAS se calcule alors sur le chiffre d’affaires signé, et plus seulement sur des demandes.</p>
+<p>Avec un cycle de vente de plusieurs mois, la limite tient aux délais&nbsp;: une conversion liée à un clic doit être importée <a href="https://support.google.com/google-ads/answer/10029210?hl=fr" rel="noopener">dans les 90 jours qui suivent ce clic</a>. La méthode complète est détaillée dans notre article sur le <a href="/suivre-leads-cycle-vente-long-ga4-gtm/">suivi des leads d’un cycle de vente long avec GA4 et GTM</a>.</p>
+<h2 id="le-roas-cible-dans-google-ads">Le ROAS cible dans Google Ads</h2>
+<p><a href="https://support.google.com/google-ads/answer/6268637?hl=fr" rel="noopener">Le ROAS cible est une stratégie d’enchères automatique</a> de Google Ads. Vous indiquez le ROAS que vous souhaitez atteindre, et l’algorithme ajuste les enchères pour maximiser la valeur des conversions à ce niveau de retour.</p>
+<p>Elle ne fonctionne bien qu’avec des valeurs de conversion fiables et un volume de conversions suffisant. Un objectif trop élevé réduit fortement la diffusion, un objectif trop bas dépense le budget sur des ventes peu rentables. Le ROAS cible est aussi disponible pour les campagnes <a href="/glossaire/#performance-max">Performance Max</a> et pour les campagnes Search, y compris avec AI Max, présenté dans notre article sur <a href="/google-ads-ia-ai-max/">l’IA dans Google Ads</a>.</p>
+<h2 id="comment-ameliorer-son-roas">Comment améliorer son ROAS</h2>
+<ul><li>Mesurer correctement les conversions et leur valeur avant toute optimisation, car un suivi incomplet fausse tous les calculs.</li><li>Séparer les campagnes sur la marque des autres, et analyser les produits ou les services un par un plutôt qu’en moyenne.</li><li>Couper les mots-clés, audiences et produits qui dépensent sans vendre, et renforcer ceux qui dépassent nettement le seuil.</li><li>Travailler les pages de destination&nbsp;: vitesse, clarté de l’offre, réassurance, simplicité du panier ou du formulaire.</li><li>Améliorer le <a href="/glossaire/#niveau-de-qualite">niveau de qualité</a> des annonces, qui fait baisser le <a href="/glossaire/#cpc">coût par clic</a> à position égale.</li></ul>
+<h2 id="les-limites-du-roas">Les limites du ROAS</h2>
+<h3>Il ignore la marge</h3>
+<p>Deux campagnes au même ROAS peuvent avoir des rentabilités opposées si elles vendent des produits à marges différentes. D’où l’intérêt du seuil de rentabilité ou du POAS.</p>
+<h3>Il ignore la valeur du client dans le temps</h3>
+<p>Un client qui rachète plusieurs fois rapporte plus que sa première commande. Une campagne d’acquisition à ROAS modeste peut être très rentable sur un an.</p>
+<h3>Il dépend de l’attribution</h3>
+<p>Google Ads, Meta et les autres plateformes s’attribuent souvent les mêmes ventes. Additionner leurs ROAS surestime le résultat réel. Comparez toujours avec le chiffre d’affaires constaté dans votre outil de vente et lisez la définition de l’<a href="/glossaire/#attribution">attribution</a>.</p>
+<h2 id="questions-frequentes-sur-le-roas">Questions fréquentes sur le ROAS</h2>
+<h3>Qu’est-ce qu’un bon ROAS&nbsp;?</h3>
+<p>Un ROAS supérieur à votre seuil de rentabilité, égal à 1 divisé par votre taux de marge. Avec 40% de marge, tout ROAS au-dessus de 2,5 dégage de la marge.</p>
+<h3>Comment calculer le ROAS en pourcentage&nbsp;?</h3>
+<p>On multiplie le ratio par 100. Un ROAS de 3,2 correspond à 320%.</p>
+<h3>Quelle différence entre ROAS et ROI&nbsp;?</h3>
+<p>Le ROAS compare le chiffre d’affaires aux seules dépenses publicitaires. Le ROI compare le gain net à l’ensemble des coûts engagés.</p>
+<h3>Un ROAS de 1 est-il rentable&nbsp;?</h3>
+<p>Non. Un ROAS de 1 signifie que la publicité rapporte autant de chiffre d’affaires qu’elle coûte. Une fois le coût des produits déduit, la campagne perd de l’argent.</p>
+<h3>Comment voir son ROAS dans Google Ads&nbsp;?</h3>
+<p>Dans les colonnes de conversions, l’indicateur Valeur de conv. / coût correspond au ROAS. Il suppose que des valeurs de conversion soient bien enregistrées.</p>
+<h2 id="faire-le-point-sur-la-rentabilite-de-vos-campagnes">Faire le point sur la rentabilité de vos campagnes</h2>
+<p>Chez Rubriqua, nous vérifions d’abord que vos conversions et leurs valeurs sont mesurées correctement, puis nous calculons votre seuil de rentabilité produit par produit ou service par service. Les campagnes sont ensuite pilotées sur ce seuil. Pour commencer, demandez un <a href="/sea-googleads/">audit de vos campagnes Google Ads</a>.</p>
+  </article>
+  <aside class="df-aside">
+    <nav aria-label="Dans cette page"><p class="df-aside-title">Dans cette page</p><a href="#la-definition-du-roas">La définition du ROAS</a><a href="#comment-calculer-le-roas">Comment calculer le ROAS</a><a href="#le-simulateur-de-roas">Le simulateur de ROAS</a><a href="#le-seuil-de-rentabilite-ou-roas-minimum">Le seuil de rentabilité, ou ROAS minimum</a><a href="#qu-est-ce-qu-un-bon-roas">Qu’est-ce qu’un bon ROAS</a><a href="#le-roas-dans-l-e-commerce">Le ROAS dans l’e-commerce</a><a href="#roas-roi-acos-et-poas">ROAS, ROI, ACOS et POAS</a><a href="#le-roas-quand-on-vend-sur-devis">Le ROAS quand on vend sur devis</a><a href="#le-roas-cible-dans-google-ads">Le ROAS cible dans Google Ads</a><a href="#comment-ameliorer-son-roas">Comment améliorer son ROAS</a><a href="#les-limites-du-roas">Les limites du ROAS</a><a href="#questions-frequentes-sur-le-roas">Questions fréquentes sur le ROAS</a><a href="#faire-le-point-sur-la-rentabilite-de-vos-campagnes">Faire le point sur la rentabilité de vos campagnes</a></nav>
+    <div><p class="df-aside-title" style="margin-bottom:12px">Termes liés</p><div class="df-related"><a href="/glossaire/#poas">POAS</a><a href="/glossaire/#valeur-de-conversion">Valeur de conversion</a><a href="/glossaire/#performance-max">Performance Max</a><a href="/glossaire/#attribution">Attribution</a><a href="/glossaire/#cpc">Coût par clic</a><a href="/glossaire/#conversion">Conversion</a><a href="/glossaire/#google-ads">Google Ads</a></div></div>
+    <div class="df-card grid-bg"><b>Vos campagnes sont-elles rentables&nbsp;?</b><p>Nous calculons votre seuil de rentabilité et pilotons vos campagnes Google Ads dessus.</p><a class="btn btn-primary" href="/sea-googleads/">Découvrir l’accompagnement Google Ads</a></div>
+  </aside>
+</div>
+
+<nav class="df-near" aria-label="Termes voisins">
+  <div class="container df-near-inner">
+    <a href="/glossaire/#referencement-payant"><span>Terme précédent</span><b>Référencement payant</b></a>
+    <a href="/glossaire/"><b>Retour au glossaire</b></a>
+    <a href="/glossaire/#robots-txt" style="text-align:right"><span>Terme suivant</span><b>Robots.txt</b></a>
+  </div>
+</nav>
+
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <span class="brand-name brand-name-lg">Rubriqua</span>
+        <p>SEO, GEO et growth marketing pour toutes les organisations.</p>
+        <a class="footer-social" href="https://www.linkedin.com/company/rubriqua-seo" target="_blank" rel="noopener" aria-label="Rubriqua sur LinkedIn"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path fill="currentColor" d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13zM7.12 20.45H3.56V9h3.56v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.73V1.73C24 .77 23.2 0 22.22 0z"/></svg><span>LinkedIn</span></a>
+      </div>
+      <nav aria-label="Services"><b>Services</b><a href="/seogeo/">SEO</a><a href="/seogeo/">GEO / IA SEO</a><a href="/sea-googleads/">SEA</a><a href="/social-ads/">Publicité réseaux sociaux</a><a href="/pubs-ia-chatgpt/">IA Ads</a><a href="/web-analytics/">Analytics et GA4</a><a href="/automation/">Automatisation</a></nav>
+      <nav aria-label="Entreprise"><b>Entreprise</b><a href="/a-propos/">À propos</a><a href="/contact/">Contact</a></nav><nav aria-label="Ressources"><b>Ressources</b><a href="/blog/">Blog</a><a href="/glossaire/">Glossaire</a></nav>
+      <nav aria-label="Informations légales"><b>Informations légales</b><a href="/politique-de-confidentialite/">Politique de confidentialité</a><a href="/cookies/">Cookies</a></nav>
+    </div>
+    <div class="footer-bottom"><span>© 2026 Rubriqua</span><span>Pensé pour Google, conçu pour les IA</span></div>
+  </div>
+</footer>
+
+<script src="../../js/main.js"></script>
+<script src="../../js/glossaire.js"></script>
+</body>
+</html>
