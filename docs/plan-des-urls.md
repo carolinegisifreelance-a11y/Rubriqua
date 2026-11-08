@@ -86,6 +86,7 @@ Points ouverts :
 | Social ads | social-ads/index.html | /social-ads/ |
 | Automatisation | automation/index.html | /automation/ |
 | IA Ads | pubs-ia-chatgpt/index.html | /pubs-ia-chatgpt/ |
+| À propos | a-propos/index.html | /a-propos/ |
 
 Chaque page est rangée dans un dossier qui porte son slug, avec un index.html dedans, pour que l'URL reste identique une fois en ligne.
 
