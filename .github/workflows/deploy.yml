@@ -1,18 +1,35 @@
-# Envoie le site sur l'hébergement IONOS par SSH.
-# Lancement manuel depuis l'onglet Actions de GitHub (bouton Run workflow).
-# Réglages à créer dans Settings, Secrets and variables, Actions :
+# Mise en ligne du site sur l'hébergement IONOS, par SSH.
+# Lancement manuel depuis l'onglet Actions de GitHub (bouton Run workflow), en choisissant l'action :
+#   apercu   : envoie le site dans /public/refonte-site et l'affiche sur rubriqua.com
+#              aux seuls navigateurs qui ont le cookie d'aperçu (adresse /refonte-site/apercu.php).
+#              Les visiteurs continuent de voir WordPress.
+#   basculer : garde une copie du .htaccess de WordPress, puis installe le site à la racine (/public).
+#              Tout le monde voit le nouveau site. Les fichiers WordPress restent en place, inactifs.
+#   retour   : remet le .htaccess de WordPress et retire la page d'accueil du nouveau site.
+#              WordPress redevient visible.
+# Réglages (Settings, Secrets and variables, Actions) :
 #   SSH_HOST, SSH_USER, SSH_PASS : compte SFTP et SSH créé dans IONOS
-#   REMOTE_DIR : dossier du site sur l'hébergement, par exemple refonte
-#   DB_HOST, DB_NAME, DB_USER, DB_PASS : facultatifs. Sans eux, le site utilise SQLite dans donnees/
 #   MAIL_TO, SMTP_USER, SMTP_PASS : boîte contact@rubriqua.com
 #   DASHBOARD_PASSWORD : mot de passe du tableau de bord (12 caractères minimum)
+#   DB_HOST, DB_NAME, DB_USER, DB_PASS : facultatifs. Sans eux, le site utilise SQLite dans donnees/
 
 name: Mise en ligne
 
 on:
   workflow_dispatch:
+    inputs:
+      action:
+        description: "Action"
+        type: choice
+        options: [apercu, basculer, retour]
+        default: apercu
 
 concurrency: mise-en-ligne
+
+env:
+  SSHPASS: ${{ secrets.SSH_PASS }}
+  SSH_HOST: ${{ secrets.SSH_HOST }}
+  SSH_USER: ${{ secrets.SSH_USER }}
 
 jobs:
   deploy:
@@ -20,15 +37,11 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Vérifier les réglages
-        env:
-          REMOTE_DIR: ${{ secrets.REMOTE_DIR }}
-        run: |
-          case "$REMOTE_DIR" in
-            ""|"/"|"."|"~"|*..*) echo "REMOTE_DIR invalide : il doit nommer un dossier dédié au nouveau site."; exit 1;;
-          esac
+      - name: Outils
+        run: sudo apt-get install -y -qq sshpass rsync > /dev/null
 
       - name: Préparer le fichier de configuration
+        if: inputs.action != 'retour'
         env:
           DB_HOST: ${{ secrets.DB_HOST }}
           DB_NAME: ${{ secrets.DB_NAME }}
@@ -56,23 +69,62 @@ jobs:
             file_put_contents("api/config.php", $c);
           '
 
-      - name: Envoyer les fichiers
-        env:
-          SSHPASS: ${{ secrets.SSH_PASS }}
-          SSH_HOST: ${{ secrets.SSH_HOST }}
-          SSH_USER: ${{ secrets.SSH_USER }}
-          REMOTE_DIR: ${{ secrets.REMOTE_DIR }}
+      - name: Aperçu privé
+        if: inputs.action == 'apercu'
         run: |
-          sudo apt-get install -y -qq sshpass rsync > /dev/null
-          SSH="sshpass -e ssh -o StrictHostKeyChecking=accept-new"
-          $SSH "$SSH_USER@$SSH_HOST" "mkdir -p '$REMOTE_DIR'"
-          # La suppression des fichiers absents n'est activée que dans un dossier déjà marqué comme celui du site,
-          # pour ne jamais effacer un autre contenu (par exemple WordPress) en cas d'erreur de dossier.
-          if $SSH "$SSH_USER@$SSH_HOST" "test -f '$REMOTE_DIR/.site-rubriqua'"; then DELETE="--delete"; else DELETE=""; fi
-          echo "Mode : ${DELETE:-ajout seulement}"
+          SSH="sshpass -e ssh -o StrictHostKeyChecking=accept-new $SSH_USER@$SSH_HOST"
+          DIR=public/refonte-site
+          $SSH "mkdir -p $DIR"
+          if $SSH "test -f $DIR/.site-rubriqua"; then DELETE="--delete"; else DELETE=""; fi
           touch .site-rubriqua
-          rsync -rlz $DELETE -e "$SSH" \
+          rsync -rlz $DELETE -e "sshpass -e ssh -o StrictHostKeyChecking=accept-new" \
             --exclude '.git/' --exclude '.github/' --exclude 'docs/' --exclude 'maquettes/' \
             --exclude 'README.md' --exclude '.gitignore' --exclude 'donnees/*.sqlite*' \
-            ./ "$SSH_USER@$SSH_HOST:$REMOTE_DIR/"
-          rm -f api/config.php
+            ./ "$SSH_USER@$SSH_HOST:$DIR/"
+          # Copie de sécurité du .htaccess de WordPress, faite une seule fois
+          $SSH "test -f public/.htaccess.avant-refonte || cp public/.htaccess public/.htaccess.avant-refonte"
+          # Ajout des lignes d'aperçu en tête du .htaccess, si elles n'y sont pas déjà
+          $SSH 'cd public && grep -q "BEGIN Rubriqua apercu" .htaccess || { printf "%s\n" \
+            "# BEGIN Rubriqua apercu" \
+            "<IfModule mod_rewrite.c>" \
+            "RewriteEngine On" \
+            "RewriteCond %{HTTP_COOKIE} (^|;\\s*)rb_apercu=1" \
+            "RewriteCond %{REQUEST_URI} !^/refonte-site/" \
+            "RewriteRule ^(.*)\$ /refonte-site/\$1 [L]" \
+            "</IfModule>" \
+            "# END Rubriqua apercu" "" > .htaccess.nouveau && cat .htaccess >> .htaccess.nouveau && mv .htaccess.nouveau .htaccess; }'
+          $SSH "head -9 public/.htaccess"
+
+      - name: Basculer
+        if: inputs.action == 'basculer'
+        run: |
+          SSH="sshpass -e ssh -o StrictHostKeyChecking=accept-new $SSH_USER@$SSH_HOST"
+          $SSH "test -f public/.htaccess.avant-refonte || cp public/.htaccess public/.htaccess.avant-refonte"
+          # Ajout seulement : rien n'est supprimé à la racine, WordPress reste en place et peut revenir
+          rsync -rlz -e "sshpass -e ssh -o StrictHostKeyChecking=accept-new" \
+            --exclude '.git/' --exclude '.github/' --exclude 'docs/' --exclude 'maquettes/' \
+            --exclude 'README.md' --exclude '.gitignore' --exclude 'donnees/*.sqlite*' \
+            ./ "$SSH_USER@$SSH_HOST:public/"
+
+      - name: Retour à WordPress
+        if: inputs.action == 'retour'
+        run: |
+          SSH="sshpass -e ssh -o StrictHostKeyChecking=accept-new $SSH_USER@$SSH_HOST"
+          $SSH "test -f public/.htaccess.avant-refonte && cp public/.htaccess.avant-refonte public/.htaccess && rm -f public/index.html"
+
+      - name: Nettoyage
+        if: always()
+        run: rm -f api/config.php
+
+      - name: Vérifications
+        if: inputs.action != 'retour'
+        run: |
+          COOKIE=""
+          [ "${{ inputs.action }}" = "apercu" ] && COOKIE="rb_apercu=1"
+          check() { printf "%-34s %s\n" "$1" "$(curl -s -o /dev/null -w '%{http_code}' -b "$COOKIE" -A 'Mozilla/5.0 Verification' "https://rubriqua.com$1")"; }
+          for p in / /seogeo/ /blog/ /comment-faire-un-audit-seo/ /contact/ /tableau-de-bord/ /sitemap.xml /robots.txt /api/lib.php /api/config.php /donnees/ /page-qui-n-existe-pas/; do check "$p"; done
+          echo "Titre avec le site : $(curl -s -b "$COOKIE" https://rubriqua.com/ | grep -o '<title>[^<]*' )"
+          echo "Titre sans cookie   : $(curl -s https://rubriqua.com/ | grep -o '<title>[^<]*' )"
+          echo "Mesure d'audience   : $(curl -s -o /dev/null -w '%{http_code}' -b "$COOKIE" -X POST -H 'Origin: https://rubriqua.com' -A 'Mozilla/5.0 Verification' --data '{"p":"/","r":"","w":1400}' https://rubriqua.com/api/hit.php)"
+          echo "État technique      : $(curl -s -b "$COOKIE" https://rubriqua.com/api/etat.php)"
+          echo "Formulaire (champ piège) : $(curl -s -b "$COOKIE" -H 'Accept: application/json' -H 'Origin: https://rubriqua.com' --data 'nom=Robot&email=robot@exemple.fr&societe_web=x' https://rubriqua.com/api/contact.php)"

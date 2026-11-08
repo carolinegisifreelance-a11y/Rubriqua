@@ -2,6 +2,12 @@
 
 ErrorDocument 404 /404.html
 Options -Indexes
+DirectoryIndex index.html index.php
+
+# Les règles de réécriture de WordPress ne s'appliquent pas au nouveau site
+<IfModule mod_rewrite.c>
+  RewriteEngine Off
+</IfModule>
 
 # Anciennes adresses des articles (slugs conservés par WordPress), redirigées en 301
 RedirectMatch 301 ^/how-to-run-a-technical-seo-audit-on-your-site/?$ /comment-faire-un-audit-seo/
