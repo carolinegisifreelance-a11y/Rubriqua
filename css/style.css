@@ -437,13 +437,15 @@ a.tile-main:hover { border-color: var(--red-dark); background: var(--red-dark); 
 .nf-services h2 { margin-bottom: 32px; }
 .nf-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
 .nf-tile:hover { border-color: var(--red); }
-.nf-clients { border-top: 1px solid #ece9e4; }
-.nf-clients-title { font-size: 13px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); margin-bottom: 22px; }
+.nf-clients { border-bottom: 1px solid #ece9e4; }
+.nf-clients-row { display: flex; align-items: center; gap: 40px; padding-top: 30px; padding-bottom: 30px; }
+.nf-clients-title { flex: none; font-size: 18px; font-weight: 800; letter-spacing: -0.01em; color: var(--ink); }
 @media (max-width: 1024px) { .nf-grid { grid-template-columns: 1fr 1fr; } }
 @media (max-width: 760px) {
   .nf-hero-inner { padding-top: 56px; padding-bottom: 56px; }
   .nf-lead { font-size: 16px; }
   .nf-grid { grid-template-columns: 1fr; gap: 10px; }
+  .nf-clients-row { flex-direction: column; align-items: flex-start; gap: 16px; padding-top: 22px; padding-bottom: 22px; }
 }
 
 /* Clients et plateformes en carrousel */
