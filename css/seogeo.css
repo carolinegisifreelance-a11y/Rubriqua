@@ -78,3 +78,36 @@
   .deliv { grid-template-columns: 60px 1fr; }
   .deliv-num { font-size: 34px; }
 }
+
+/* Variantes de la carte du hero */
+.score-axes { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
+.score-axes li { position: relative; padding-left: 18px; font-size: 14px; font-weight: 600; color: var(--grey); }
+.score-axes li::before { content: ""; position: absolute; left: 0; top: 7px; width: 8px; height: 8px; border-radius: 2px; background: var(--red); }
+
+.flow { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 14px; position: relative; }
+.flow::before { content: ""; position: absolute; left: 47px; top: 18px; bottom: 18px; width: 2px; background: var(--line); }
+.flow li { position: relative; display: grid; grid-template-columns: 96px 1fr; align-items: center; gap: 14px; }
+.flow-tool { justify-self: start; position: relative; z-index: 1; font-size: 12px; font-weight: 700; color: var(--white); background: var(--ink); padding: 6px 10px; border-radius: 4px; }
+.flow li:nth-child(3) .flow-tool { background: var(--red); }
+.flow b { font-size: 15px; font-weight: 600; }
+
+.score-card .bubble { align-self: flex-end; }
+.chat-answer { font-size: 15px; color: var(--grey); line-height: 1.55; }
+.chat-note { font-size: 13px; color: var(--muted); }
+
+/* Marchés (IA Ads) */
+.market-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+.market { background: var(--white); border-radius: var(--radius); padding: 28px; display: flex; flex-direction: column; gap: 10px; border-top: 4px solid var(--red); }
+.market h3 { font-size: 24px; margin-bottom: 4px; }
+.market p { color: var(--text); font-size: 16px; }
+.market b { color: var(--ink); }
+
+/* Article sans image */
+.post-img-ph { background: var(--ink); display: flex; align-items: flex-end; padding: 20px; }
+.post-img-ph span { font-size: 40px; font-weight: 800; color: var(--red-light); letter-spacing: -0.03em; }
+
+.other-grid { grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); }
+
+@media (max-width: 1024px) {
+  .market-grid { grid-template-columns: 1fr; }
+}

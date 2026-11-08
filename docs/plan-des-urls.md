@@ -81,6 +81,11 @@ Points ouverts :
 | Accueil | index.html | / |
 | Services | services/index.html | /services/ |
 | SEO et GEO | seogeo/index.html | /seogeo/ |
+| SEA et Google Ads | sea-googleads/index.html | /sea-googleads/ |
+| Analytics et GA4 | web-analytics/index.html | /web-analytics/ |
+| Social ads | social-ads/index.html | /social-ads/ |
+| Automatisation | automation/index.html | /automation/ |
+| IA Ads | pubs-ia-chatgpt/index.html | /pubs-ia-chatgpt/ |
 
 Chaque page est rangée dans un dossier qui porte son slug, avec un index.html dedans, pour que l'URL reste identique une fois en ligne.
 
