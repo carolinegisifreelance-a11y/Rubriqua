@@ -4,7 +4,7 @@ Règle de base : chaque page actuelle garde exactement le même slug, barre obli
 
 ## URL relevées sur le site actuel
 
-Liste tirée des liens de la page d'accueil le 8 novembre 2026. Elle doit être complétée par un crawl complet (Screaming Frog) ou par le sitemap du site avant la mise en ligne, pour ne rien oublier.
+Liste vérifiée le 8 novembre 2026 avec le sitemap Yoast du site (22 URL : 13 pages et 9 articles). Les 22 URL existent dans la refonte, au même slug. Les catégories du blog ne figurent pas dans les sitemaps de pages et d'articles : à vérifier dans le sitemap des catégories et dans Search Console.
 
 ### Pages principales
 
