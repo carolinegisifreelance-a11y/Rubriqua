@@ -90,6 +90,9 @@ Points ouverts :
 | Blog | blog/index.html | /blog/ |
 | Catégories | category/geo, seo, sea, analytics/index.html | /category/.../ |
 | Articles (9) | <slug-de-l-article>/index.html | /<slug-de-l-article>/ |
+| Contact | contact/index.html | /contact/ |
+| Politique de confidentialité | politique-de-confidentialite/index.html | /politique-de-confidentialite/ |
+| Cookies | cookies/index.html | /cookies/ |
 
 Chaque page est rangée dans un dossier qui porte son slug, avec un index.html dedans, pour que l'URL reste identique une fois en ligne.
 
