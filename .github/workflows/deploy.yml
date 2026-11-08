@@ -40,6 +40,13 @@ jobs:
       - name: Outils
         run: sudo apt-get install -y -qq sshpass rsync > /dev/null
 
+      - name: Forcer le rechargement des styles et scripts
+        # Ajoute un numéro de version aux fichiers CSS et JS, pour que les navigateurs ne gardent pas une ancienne version en cache
+        run: |
+          V=${GITHUB_SHA::8}
+          find . -name '*.html' -not -path './maquettes/*' -not -path './.git/*' -exec sed -i -E "s#(href=\"[^\"]*\.css)\"#\1?v=$V\"#g; s#(src=\"[^\"]*js/[^\"]*\.js)\"#\1?v=$V\"#g" {} +
+          grep -o 'style.css?v=[a-z0-9]*' index.html
+
       - name: Préparer le fichier de configuration
         if: inputs.action != 'retour'
         env:
