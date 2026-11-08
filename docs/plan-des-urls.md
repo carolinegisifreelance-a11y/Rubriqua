@@ -80,6 +80,7 @@ Points ouverts :
 |---|---|---|
 | Accueil | index.html | / |
 | Services | services/index.html | /services/ |
+| SEO et GEO | seogeo/index.html | /seogeo/ |
 
 Chaque page est rangée dans un dossier qui porte son slug, avec un index.html dedans, pour que l'URL reste identique une fois en ligne.
 

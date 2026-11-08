@@ -28,6 +28,23 @@
     watched.forEach(function (el) { el.classList.add('is-in'); });
   }
 
+  // Jauge de score : se remplit quand elle arrive à l'écran
+  var rings = document.querySelectorAll('[data-score]');
+  rings.forEach(function (ring) {
+    var fill = function () {
+      var r = ring.r.baseVal.value;
+      var len = 2 * Math.PI * r;
+      ring.style.strokeDasharray = len;
+      ring.style.strokeDashoffset = len * (1 - Number(ring.getAttribute('data-score')) / 100);
+    };
+    if ('IntersectionObserver' in window) {
+      var ro = new IntersectionObserver(function (entries) {
+        if (entries[0].isIntersecting) { fill(); ro.disconnect(); }
+      }, { threshold: 0.4 });
+      ro.observe(ring);
+    } else { fill(); }
+  });
+
   // Page de résultats : lien entre arguments et zones
   var serp = document.querySelector('.serp');
   if (serp) {
