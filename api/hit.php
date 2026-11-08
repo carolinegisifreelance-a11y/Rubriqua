@@ -20,7 +20,7 @@ if (!is_array($in)) { http_response_code(204); exit; }
 $page = (string)($in['p'] ?? '');
 if ($page === '' || $page[0] !== '/' || strlen($page) > 300) { http_response_code(204); exit; }
 $page = preg_replace('/[?#].*$/', '', $page);
-if (str_starts_with($page, '/tableau-de-bord') || str_starts_with($page, '/api')) { http_response_code(204); exit; }
+if (str_starts_with($page, '/pilotage-rb7k2q') || str_starts_with($page, '/api')) { http_response_code(204); exit; }
 
 $refHost = strtolower((string)parse_url((string)($in['r'] ?? ''), PHP_URL_HOST));
 $refHost = preg_replace('/^www\./', '', $refHost);

@@ -105,6 +105,10 @@ jobs:
             --exclude '.git/' --exclude '.github/' --exclude 'docs/' --exclude 'maquettes/' \
             --exclude 'README.md' --exclude '.gitignore' --exclude 'donnees/*.sqlite*' \
             ./ "$SSH_USER@$SSH_HOST:public/"
+          # Reprise des données de l'aperçu (messages, visites), puis suppression du dossier d'aperçu
+          $SSH "mkdir -p public/donnees && if [ -f public/refonte-site/donnees/rubriqua.sqlite ] && [ ! -f public/donnees/rubriqua.sqlite ]; then cp public/refonte-site/donnees/rubriqua.sqlite public/donnees/; fi"
+          $SSH "test -f public/refonte-site/.site-rubriqua && rm -rf public/refonte-site || true"
+          $SSH "head -3 public/.htaccess; ls public/donnees"
 
       - name: Retour à WordPress
         if: inputs.action == 'retour'
@@ -120,9 +124,9 @@ jobs:
         if: inputs.action != 'retour'
         run: |
           COOKIE=""
-          [ "${{ inputs.action }}" = "apercu" ] && COOKIE="rb_apercu=1"
+          if [ "${{ inputs.action }}" = "apercu" ]; then COOKIE="rb_apercu=1"; fi
           check() { printf "%-34s %s\n" "$1" "$(curl -s -o /dev/null -w '%{http_code}' -b "$COOKIE" -A 'Mozilla/5.0 Verification' "https://rubriqua.com$1")"; }
-          for p in / /seogeo/ /blog/ /comment-faire-un-audit-seo/ /contact/ /tableau-de-bord/ /sitemap.xml /robots.txt /api/lib.php /api/config.php /donnees/ /page-qui-n-existe-pas/; do check "$p"; done
+          for p in / /seogeo/ /blog/ /comment-faire-un-audit-seo/ /contact/ /pilotage-rb7k2q/ /sitemap.xml /robots.txt /api/lib.php /api/config.php /donnees/ /page-qui-n-existe-pas/ /refonte-site/ /how-to-run-a-technical-seo-audit-on-your-site/ /xmlrpc.php; do check "$p"; done
           echo "Titre avec le site : $(curl -s -b "$COOKIE" https://rubriqua.com/ | grep -o '<title>[^<]*' )"
           echo "Titre sans cookie   : $(curl -s https://rubriqua.com/ | grep -o '<title>[^<]*' )"
           echo "Mesure d'audience   : $(curl -s -o /dev/null -w '%{http_code}' -b "$COOKIE" -X POST -H 'Origin: https://rubriqua.com' -A 'Mozilla/5.0 Verification' --data '{"p":"/","r":"","w":1400}' https://rubriqua.com/api/hit.php)"

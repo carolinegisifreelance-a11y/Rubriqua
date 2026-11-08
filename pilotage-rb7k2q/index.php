@@ -10,7 +10,7 @@ header('Referrer-Policy: no-referrer');
 
 $https = (($_SERVER['HTTPS'] ?? '') !== '' && $_SERVER['HTTPS'] !== 'off') || (($_SERVER['HTTP_X_FORWARDED_PROTO'] ?? '') === 'https');
 session_name('rb_admin');
-session_set_cookie_params(['lifetime' => 0, 'path' => '/tableau-de-bord/', 'secure' => $https, 'httponly' => true, 'samesite' => 'Strict']);
+session_set_cookie_params(['lifetime' => 0, 'path' => '/pilotage-rb7k2q/', 'secure' => $https, 'httponly' => true, 'samesite' => 'Strict']);
 session_start();
 if (empty($_SESSION['csrf'])) $_SESSION['csrf'] = bin2hex(random_bytes(16));
 $csrf = $_SESSION['csrf'];

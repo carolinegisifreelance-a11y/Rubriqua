@@ -22,6 +22,7 @@ RedirectMatch 301 ^/comments/feed/?$ /blog/
 RedirectMatch 301 ^/blog/page/[0-9]+/?$ /blog/
 RedirectMatch 301 ^/author/.*$ /a-propos/
 RedirectMatch 301 ^/(wp-login\.php|wp-admin/?.*)$ /
+RedirectMatch 404 ^/(xmlrpc\.php|wp-cron\.php|wp-config\.php|readme\.html|license\.txt)$
 
 # Cache des fichiers statiques
 <IfModule mod_expires.c>

@@ -5,7 +5,7 @@
 - Les pages en HTML, aux mêmes URL que le site WordPress.
 - `api/contact.php` : reçoit les formulaires, envoie l'e-mail par la boîte IONOS et garde une copie du message.
 - `api/hit.php` : mesure d'audience sans cookie.
-- `tableau-de-bord/` : statistiques et messages reçus, protégé par mot de passe. Adresse : rubriqua.com/tableau-de-bord/
+- `pilotage-rb7k2q/` : statistiques et messages reçus, protégé par mot de passe. Adresse : rubriqua.com/pilotage-rb7k2q/
 - `api/config.php` : réglages secrets (mot de passe de la boîte e-mail, de la base, du tableau de bord). Ce fichier n'est jamais envoyé sur GitHub.
 
 Le site a besoin de PHP. Il faut donc un hébergement PHP : l'offre PHP de Deploy Now, ou un hébergement web IONOS classique.
