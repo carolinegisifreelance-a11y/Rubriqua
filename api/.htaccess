@@ -1,0 +1,5 @@
+# Seuls les points d'entrée publics sont accessibles
+<FilesMatch "^(lib|mail|config|config\.example)\.php$">
+  Require all denied
+</FilesMatch>
+Options -Indexes

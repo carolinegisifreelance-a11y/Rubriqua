@@ -1,0 +1,4 @@
+api/config.php
+donnees/*.sqlite
+donnees/*.sqlite-*
+.DS_Store

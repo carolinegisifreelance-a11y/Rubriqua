@@ -6,9 +6,8 @@
 <title>À propos, agence SEO, GEO et growth | Rubriqua</title>
 <meta name="description" content="7 ans d'expertise en SEO, data et growth marketing. Des recommandations fondées sur les données, une stratégie qui évolue et un interlocuteur unique.">
 <link rel="canonical" href="https://rubriqua.com/a-propos/">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=UnifrakturCook:wght@700&display=swap" rel="stylesheet">
+<link rel="preload" href="../assets/fonts/manrope-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../css/fonts.css">
 <link rel="stylesheet" href="../css/style.css">
 <link rel="stylesheet" href="../css/services.css">
 <link rel="stylesheet" href="../css/apropos.css">
@@ -132,12 +131,15 @@
         <p>Un projet, une question, une simple envie d'y voir plus clair&nbsp;? Écrivez-nous, nous vous répondons avec des pistes adaptées à votre situation.</p>
         <a class="contact-link" href="/contact/">Réserver un appel de 30 min</a>
       </div>
-      <form class="contact-form" action="#" method="post">
+      <form class="contact-form" action="/api/contact.php" method="post" id="formulaire" data-contact>
+      <div class="hp-field" aria-hidden="true"><label>Ne pas remplir<input type="text" name="societe_web" tabindex="-1" autocomplete="off"></label></div>
+      <input type="hidden" name="t" value=""><input type="hidden" name="page" value="">
         <label>Nom<input type="text" name="nom" autocomplete="name"></label>
         <label>E-mail<input type="email" name="email" autocomplete="email"></label>
-        <label class="full">URL de votre site<input type="url" name="site"></label>
+        <label class="full">URL de votre site<input type="text" inputmode="url" autocomplete="url" name="site"></label>
         <label class="full">Message<textarea name="message" rows="4"></textarea></label>
         <button class="btn btn-primary btn-lg full" type="submit">Envoyer le message</button>
+      <p class="form-status full" role="status" aria-live="polite" hidden></p>
       </form>
     </div>
   </div>

@@ -6,9 +6,8 @@
 <title>Contact, discutons de votre projet | Rubriqua</title>
 <meta name="description" content="Parlez-nous de votre site et de vos objectifs. Nous revenons vers vous avec une première analyse, gratuite et sans engagement.">
 <link rel="canonical" href="https://rubriqua.com/contact/">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=UnifrakturCook:wght@700&display=swap" rel="stylesheet">
+<link rel="preload" href="../assets/fonts/manrope-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../css/fonts.css">
 <link rel="stylesheet" href="../css/style.css">
 <link rel="stylesheet" href="../css/services.css">
 <link rel="stylesheet" href="../css/pages.css">
@@ -49,14 +48,17 @@
       </ul>
       <a class="call-link" href="#">Réserver un appel de 30 min</a>
     </div>
-    <form class="contact-form contact-form-lg" action="#" method="post">
+    <form class="contact-form contact-form-lg" action="/api/contact.php" method="post" id="formulaire" data-contact>
+      <div class="hp-field" aria-hidden="true"><label>Ne pas remplir<input type="text" name="societe_web" tabindex="-1" autocomplete="off"></label></div>
+      <input type="hidden" name="t" value=""><input type="hidden" name="page" value="">
       <h2>Discutons de votre projet</h2>
       <label>Nom<input type="text" name="nom" autocomplete="name" required></label>
       <label>E-mail<input type="email" name="email" autocomplete="email" required></label>
-      <label class="full">URL de votre site<input type="url" name="site" placeholder="https://"></label>
+      <label class="full">URL de votre site<input type="text" inputmode="url" autocomplete="url" name="site" placeholder="https://"></label>
       <label class="full">Message<textarea name="message" rows="6"></textarea></label>
       <button class="btn btn-primary btn-lg full" type="submit">Envoyer le message</button>
       <p class="form-note full">Vos données servent uniquement à répondre à votre demande. <a href="/politique-de-confidentialite/">Politique de confidentialité</a></p>
+      <p class="form-status full" role="status" aria-live="polite" hidden></p>
     </form>
   </div>
 </section>

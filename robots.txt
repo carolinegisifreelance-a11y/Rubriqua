@@ -1,5 +1,7 @@
 User-agent: *
 Disallow: /wp-admin/
 Allow: /wp-admin/admin-ajax.php
+Disallow: /api/
+Disallow: /tableau-de-bord/
 
 Sitemap: https://rubriqua.com/sitemap.xml

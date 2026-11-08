@@ -349,3 +349,11 @@ a.tile-main:hover { border-color: var(--red-dark); background: var(--red-dark); 
   *, *::before, *::after { animation: none !important; transition: none !important; }
   .reveal { opacity: 1; transform: none; }
 }
+
+/* Formulaires : champ piège caché et message de confirmation */
+.hp-field { position: absolute; left: -10000px; width: 1px; height: 1px; overflow: hidden; }
+.contact-form { position: relative; }
+.form-status { font-size: 14px; font-weight: 700; line-height: 1.5; padding: 12px 14px; border-radius: var(--radius-sm); }
+.form-status.is-ok { background: #eaf3ec; color: #24552d; }
+.form-status.is-error { background: #fbeceb; color: var(--red); }
+.contact-form button[disabled] { opacity: .7; cursor: progress; }

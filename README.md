@@ -33,3 +33,7 @@ Les liens internes pointent déjà vers les vrais slugs du site (/seogeo/, /cont
 
 - Rouge #991915, gris #333333, noir #161616, beige #F4F2EE
 - Titres et texte en Manrope, nom de marque en UnifrakturCook
+
+## Formulaires et statistiques
+
+En ouvrant les fichiers directement sur ton ordinateur, les formulaires et le tableau de bord ne fonctionnent pas : ils ont besoin de PHP, donc d'un hébergement. Voir docs/mise-en-ligne.md.

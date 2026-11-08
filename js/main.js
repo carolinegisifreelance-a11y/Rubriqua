@@ -117,3 +117,56 @@
     });
   }
 })();
+
+// Formulaires de contact : envoi sans recharger la page
+(function () {
+  'use strict';
+  var forms = document.querySelectorAll('form[data-contact]');
+  forms.forEach(function (form) {
+    var t = form.querySelector('input[name="t"]');
+    var page = form.querySelector('input[name="page"]');
+    if (t) t.value = Date.now();
+    if (page) page.value = location.pathname;
+    var status = form.querySelector('.form-status');
+    var btn = form.querySelector('button[type="submit"]');
+    var show = function (ok, msg) {
+      status.hidden = false;
+      status.textContent = msg;
+      status.className = 'form-status full ' + (ok ? 'is-ok' : 'is-error');
+    };
+    if (/[?&]envoi=ok/.test(location.search) && status) show(true, 'Merci, votre message a bien été envoyé. Nous vous répondons sous 48 h.');
+    if (/[?&]envoi=erreur/.test(location.search) && status) show(false, 'L’envoi a échoué. Merci de réessayer dans quelques minutes.');
+    if (!window.fetch || !window.FormData) return;
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      btn.disabled = true;
+      var label = btn.textContent;
+      btn.textContent = 'Envoi en cours';
+      fetch(form.action, { method: 'POST', body: new FormData(form), headers: { 'Accept': 'application/json' } })
+        .then(function (r) { return r.json().catch(function () { return { ok: false, message: 'L’envoi a échoué. Merci de réessayer dans quelques minutes.' }; }); })
+        .then(function (d) {
+          show(d.ok, d.message);
+          if (d.ok) { form.reset(); if (t) t.value = Date.now(); if (page) page.value = location.pathname; }
+        })
+        .catch(function () { show(false, 'Connexion impossible. Vérifiez votre connexion et réessayez.'); })
+        .then(function () { btn.disabled = false; btn.textContent = label; });
+    });
+  });
+})();
+
+// Mesure d'audience sans cookie (voir /politique-de-confidentialite/)
+(function () {
+  'use strict';
+  if (location.protocol === 'file:') return;
+  try { if (localStorage.getItem('rb_ignore') === '1') return; } catch (e) {}
+  var utm = (location.search.match(/[?&]utm_source=([^&]+)/) || [])[1] || '';
+  var data = JSON.stringify({
+    p: location.pathname,
+    r: document.referrer,
+    u: decodeURIComponent(utm),
+    w: window.innerWidth || 0
+  });
+  var url = '/api/hit.php';
+  if (navigator.sendBeacon) navigator.sendBeacon(url, new Blob([data], { type: 'text/plain' }));
+  else if (window.fetch) fetch(url, { method: 'POST', body: data, keepalive: true, headers: { 'Content-Type': 'text/plain' } });
+})();
