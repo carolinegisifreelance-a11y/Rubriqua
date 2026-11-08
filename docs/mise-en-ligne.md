@@ -59,3 +59,7 @@ Le contrat WordPress actuel comprend un espace web de 49 Go, une base MariaDB, l
 6. Garder WordPress jusqu'aux vérifications finales, puis le désinstaller.
 
 Le premier envoi ne supprime rien sur le serveur. Les suivants suppriment seulement, dans le dossier du site, les fichiers retirés du dépôt.
+
+## Adresse du tableau de bord
+
+https://rubriqua.com/pilotage-rb7k2q/ (absente du sitemap et du robots.txt, protégée par mot de passe).
