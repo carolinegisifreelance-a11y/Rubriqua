@@ -28,10 +28,10 @@ Liste vérifiée le 8 novembre 2026 avec le sitemap Yoast du site (22 URL : 13 p
 
 | Catégorie | URL |
 |---|---|
-| GEO | /category/geo/ |
-| SEO | /category/seo/ |
-| Analytics | /category/analytics/ |
-| SEA | /category/sea/ |
+| GEO | /categorie/geo/ |
+| SEO | /categorie/seo/ |
+| Analytics | /categorie/analytics/ |
+| SEA | /categorie/sea/ |
 
 ### Articles
 
@@ -88,7 +88,7 @@ Points ouverts :
 | IA Ads | pubs-ia-chatgpt/index.html | /pubs-ia-chatgpt/ |
 | À propos | a-propos/index.html | /a-propos/ |
 | Blog | blog/index.html | /blog/ |
-| Catégories | category/geo, seo, sea, analytics/index.html | /category/.../ |
+| Catégories | categorie/geo, seo, sea, analytics/index.html | /categorie/.../ |
 | Articles (9) | <slug-de-l-article>/index.html | /<slug-de-l-article>/ |
 | Contact | contact/index.html | /contact/ |
 | Politique de confidentialité | politique-de-confidentialite/index.html | /politique-de-confidentialite/ |

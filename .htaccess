@@ -14,6 +14,8 @@ RedirectMatch 301 ^/how-to-run-a-technical-seo-audit-on-your-site/?$ /comment-fa
 RedirectMatch 301 ^/seo-and-google-ads-making-both-channels-work-together/?$ /google-ads-ia-ai-max/
 RedirectMatch 301 ^/which-web-analytics-metrics-should-you-track/?$ /suivre-leads-cycle-vente-long-ga4-gtm/
 RedirectMatch 301 ^/microsoft-decision-1-ce-que-le-nouveau-modele-de-microsoft-change-pour-bing-et-copilot/?$ /microsoft-decision-1-change-pour-bing-et-copilot/
+# Catégories du blog en français
+RedirectMatch 301 ^/category/(.*)$ /categorie/$1
 # Mauvaise URL canonique déclarée sur le site WordPress
 RedirectMatch 301 ^/blog/google-ads-ia-ai-max/?$ /google-ads-ia-ai-max/
 # Pages WordPress qui n'existent plus

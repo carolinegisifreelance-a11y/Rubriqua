@@ -384,12 +384,16 @@ a.tile-main:hover { border-color: var(--red-dark); background: var(--red-dark); 
 .zone-arg { display: none; }
 @media (max-width: 760px) {
   .why h2 { margin-bottom: 24px; }
-  .why .args, .why .switch { display: none; }
+  .why .switch { display: none; }
+  .why-grid { gap: 20px; }
+  .why .args { order: -1; gap: 0; }
+  .why .arg { padding: 12px 0; gap: 14px; }
+  .why .arg-num { font-size: 28px; }
+  .why .arg p { font-size: 16px; font-weight: 700; color: var(--ink); }
   .serp { padding: 12px; gap: 8px; }
   .serp-top { margin-bottom: 0; }
   .serp .search-bar { font-size: 13px; padding: 10px 12px; }
   .zone { padding: 12px 14px; gap: 6px; }
-  .zone .zone-arg { display: block; font-size: 16px; font-weight: 700; line-height: 1.35; color: var(--ink); }
   .zone-ia > p:not(.zone-arg), .zone .result.muted { display: none; }
   .zone .result { padding: 4px 0 4px 10px; }
   .zone .result b { font-size: 14px; }
