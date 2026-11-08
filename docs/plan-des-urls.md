@@ -115,3 +115,24 @@ Chaque page est rangée dans un dossier qui porte son slug, avec un index.html d
 Les textes des articles ont été récupérés sans leurs liens. Les liens internes vers des pages existantes ont été remis automatiquement. Restent à reprendre depuis WordPress :
 - tous les liens externes vers les sources (Google Search Central, Search Engine Journal, PPC Land, Abondance, W3Techs, CERT-FR...) ;
 - les liens vers les guides pas encore publiés, à activer à leur sortie : mots-clés industriels, fiches techniques en PDF, catalogues de pièces techniques, salons professionnels et référencement.
+
+## Reprise depuis l'export WordPress du 8 novembre 2026
+
+- Titres et méta descriptions repris de The SEO Framework (l'extension SEO du site actuel, pas Yoast), avec la même forme de titre : titre de la page, puis « | Rubriqua ». Accueil : « Rubriqua - Agence SEO & Growth ». Les deux pages légales n'avaient pas de description propre : celles de la refonte sont conservées.
+- Liens des articles : tous les liens d'origine sont remis (75 liens, internes et externes), plus 8 liens internes ajoutés dans les articles qui en manquaient.
+- Balises og (partage LinkedIn et Facebook) ajoutées sur les 22 pages.
+
+## Redirections 301 (fichier .htaccess)
+
+| Ancienne URL | Nouvelle URL |
+|---|---|
+| /how-to-run-a-technical-seo-audit-on-your-site/ | /comment-faire-un-audit-seo/ |
+| /seo-and-google-ads-making-both-channels-work-together/ | /google-ads-ia-ai-max/ |
+| /which-web-analytics-metrics-should-you-track/ | /suivre-leads-cycle-vente-long-ga4-gtm/ |
+| /microsoft-decision-1-ce-que-le-nouveau-modele-de-microsoft-change-pour-bing-et-copilot/ | /microsoft-decision-1-change-pour-bing-et-copilot/ |
+| /blog/google-ads-ia-ai-max/ (canonique erronée du site actuel) | /google-ads-ia-ai-max/ |
+| /feed/, /blog/page/2/, /author/... | /blog/ ou /a-propos/ |
+
+Les anciens slugs viennent de l'export : WordPress les redirigeait tout seul, le site statique doit le faire par le fichier .htaccess. L'ancien slug which-web-analytics-metrics-should-you-track était attaché à quatre articles (modèle dupliqué) : il est envoyé vers l'article analytics.
+
+Une page 404 dédiée remplace la page d'erreur de WordPress.

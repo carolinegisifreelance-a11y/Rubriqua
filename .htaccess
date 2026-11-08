@@ -1,0 +1,41 @@
+# Rubriqua, réglages du serveur (Apache)
+
+ErrorDocument 404 /404.html
+Options -Indexes
+
+# Anciennes adresses des articles (slugs conservés par WordPress), redirigées en 301
+RedirectMatch 301 ^/how-to-run-a-technical-seo-audit-on-your-site/?$ /comment-faire-un-audit-seo/
+RedirectMatch 301 ^/seo-and-google-ads-making-both-channels-work-together/?$ /google-ads-ia-ai-max/
+RedirectMatch 301 ^/which-web-analytics-metrics-should-you-track/?$ /suivre-leads-cycle-vente-long-ga4-gtm/
+RedirectMatch 301 ^/microsoft-decision-1-ce-que-le-nouveau-modele-de-microsoft-change-pour-bing-et-copilot/?$ /microsoft-decision-1-change-pour-bing-et-copilot/
+# Mauvaise URL canonique déclarée sur le site WordPress
+RedirectMatch 301 ^/blog/google-ads-ia-ai-max/?$ /google-ads-ia-ai-max/
+# Pages WordPress qui n'existent plus
+RedirectMatch 301 ^/feed/?$ /blog/
+RedirectMatch 301 ^/comments/feed/?$ /blog/
+RedirectMatch 301 ^/blog/page/[0-9]+/?$ /blog/
+RedirectMatch 301 ^/author/.*$ /a-propos/
+RedirectMatch 301 ^/(wp-login\.php|wp-admin/?.*)$ /
+
+# Cache des fichiers statiques
+<IfModule mod_expires.c>
+  ExpiresActive On
+  ExpiresByType image/webp "access plus 1 year"
+  ExpiresByType image/png "access plus 1 year"
+  ExpiresByType image/svg+xml "access plus 1 year"
+  ExpiresByType font/woff2 "access plus 1 year"
+  ExpiresByType text/css "access plus 1 week"
+  ExpiresByType application/javascript "access plus 1 week"
+</IfModule>
+
+# Sécurité de base
+<IfModule mod_headers.c>
+  Header always set X-Content-Type-Options "nosniff"
+  Header always set Referrer-Policy "strict-origin-when-cross-origin"
+  Header always set Permissions-Policy "camera=(), microphone=(), geolocation=()"
+</IfModule>
+
+# Le dossier des maquettes de travail n'est pas public
+RedirectMatch 404 ^/maquettes/.*$
+RedirectMatch 404 ^/docs/.*$
+RedirectMatch 404 ^/README\.md$
