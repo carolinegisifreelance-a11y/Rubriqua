@@ -217,7 +217,7 @@ a.tile-main:hover { border-color: var(--red-dark); background: var(--red-dark); 
 
 /* Pourquoi choisir */
 .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: center; }
-.about-photo img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; border-radius: var(--radius); }
+.about-photo img { width: 100%; height: auto; aspect-ratio: 4 / 3; object-fit: cover; border-radius: var(--radius); }
 .about-text { display: flex; flex-direction: column; gap: 18px; }
 .about-text h2 { font-size: clamp(32px, 3.4vw, 46px); margin-bottom: 4px; }
 .about-text > p { color: var(--text); font-size: 16px; line-height: 1.65; }
@@ -416,4 +416,30 @@ a.tile-main:hover { border-color: var(--red-dark); background: var(--red-dark); 
   .fact { padding: 14px 16px; flex-direction: row; align-items: baseline; gap: 12px; }
   .fact b { font-size: 24px; flex: none; }
   .fact span { font-size: 13px; }
+}
+
+/* Pourquoi choisir Rubriqua sur mobile : photo réduite, après le texte */
+@media (max-width: 760px) {
+  .about-grid { gap: 28px; }
+  .about-photo { order: 2; }
+  .about-photo img { aspect-ratio: 16 / 9; }
+}
+
+/* Page 404 */
+.nf-hero { color: var(--white); }
+.nf-hero-inner { padding-top: 96px; padding-bottom: 96px; display: flex; flex-direction: column; gap: 22px; align-items: flex-start; max-width: 860px; margin-left: auto; margin-right: auto; }
+.nf-code { font-size: 13px; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; color: var(--red-light); }
+.nf-hero h1 { font-size: clamp(38px, 5vw, 64px); font-weight: 800; letter-spacing: -0.04em; line-height: 1.04; }
+.nf-lead { font-size: 18px; line-height: 1.6; color: #cfcbc4; max-width: 620px; }
+.nf-actions { display: flex; flex-wrap: wrap; gap: 12px; }
+.nf-services h2 { margin-bottom: 32px; }
+.nf-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+.nf-tile:hover { border-color: var(--red); }
+.nf-clients { border-top: 1px solid #ece9e4; }
+.nf-clients-title { font-size: 13px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); margin-bottom: 22px; }
+@media (max-width: 1024px) { .nf-grid { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 760px) {
+  .nf-hero-inner { padding-top: 56px; padding-bottom: 56px; }
+  .nf-lead { font-size: 16px; }
+  .nf-grid { grid-template-columns: 1fr; gap: 10px; }
 }

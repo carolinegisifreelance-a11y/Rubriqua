@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Page introuvable - Rubriqua</title>
-<meta name="description" content="Cette page n’existe pas ou a été déplacée.">
+<meta name="description" content="Cette page n’existe pas ou a été déplacée. Découvrez les services de Rubriqua.">
 <meta name="robots" content="noindex">
 <link rel="preload" href="/assets/fonts/manrope-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="/css/fonts.css">
@@ -36,11 +36,59 @@
   </div>
 </header>
 <main id="contenu">
-  <section class="container" style="padding-block:120px;display:flex;flex-direction:column;gap:20px;align-items:flex-start;max-width:760px">
-    <p class="toc-title" style="color:var(--red)">Erreur 404</p>
-    <h1 style="font-size:clamp(36px,5vw,60px);letter-spacing:-0.04em;line-height:1.05">Cette page n’existe pas ou a été déplacée</h1>
-    <p style="font-size:18px;line-height:1.6">Le lien est peut-être ancien. Vous pouvez repartir de l’accueil, consulter nos services ou lire nos derniers articles.</p>
-    <div style="display:flex;flex-wrap:wrap;gap:12px"><a class="btn btn-primary" href="/">Retour à l’accueil</a><a class="btn btn-outline" href="/services/">Nos services</a><a class="btn btn-outline" href="/blog/">Le blog</a></div>
+  <section class="nf-hero grid-bg">
+    <div class="container nf-hero-inner">
+      <p class="nf-code">Erreur 404</p>
+      <h1>Cette page est introuvable</h1>
+      <p class="nf-lead">L’adresse demandée n’existe pas ou a été déplacée. Découvrez nos services ou revenez à l’accueil.</p>
+      <div class="nf-actions"><a class="btn btn-primary btn-lg" href="/services/">Découvrir nos services</a><a class="btn btn-ghost-dark btn-lg" href="/">Retour à l’accueil</a></div>
+    </div>
+  </section>
+
+  <section class="section nf-services">
+    <div class="container">
+      <h2>Nos expertises</h2>
+      <div class="nf-grid">
+      <a class="tile nf-tile" href="/seogeo/">
+        <span class="icon"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg></span>
+        <div class="tile-body"><h3>SEO et GEO</h3><p>Être trouvé sur Google et cité dans les réponses des IA.</p></div>
+      </a>
+      <a class="tile nf-tile" href="/sea-googleads/">
+        <span class="icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1"/></svg></span>
+        <div class="tile-body"><h3>SEA et Google Ads</h3><p>Des campagnes rentables, pensées avec votre référencement.</p></div>
+      </a>
+      <a class="tile nf-tile" href="/web-analytics/">
+        <span class="icon"><svg viewBox="0 0 24 24"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg></span>
+        <div class="tile-body"><h3>Analytics et GA4</h3><p>Des données fiables pour mesurer ce qui rapporte.</p></div>
+      </a>
+      <a class="tile nf-tile" href="/social-ads/">
+        <span class="icon"><svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3"/><path d="M3 20a6 6 0 0 1 12 0"/><path d="M16 4a3 3 0 0 1 0 6M21 20a6 6 0 0 0-4-5.6"/></svg></span>
+        <div class="tile-body"><h3>Publicité réseaux sociaux</h3><p>LinkedIn, Facebook et Instagram, au bon public et au bon coût.</p></div>
+      </a>
+      <a class="tile nf-tile" href="/automation/">
+        <span class="icon"><svg viewBox="0 0 24 24"><path d="M13 2 4 14h7l-1 8 9-12h-7z"/></svg></span>
+        <div class="tile-body"><h3>Automatisation IA</h3><p>Des tâches répétitives confiées à Make, n8n et des agents IA.</p></div>
+      </a>
+      <a class="tile nf-tile" href="/pubs-ia-chatgpt/">
+        <span class="icon"><svg viewBox="0 0 24 24"><path d="M3 11v2a1 1 0 0 0 1 1h3l5 4V6L7 10H4a1 1 0 0 0-1 1z"/><path d="M16 9a3 3 0 0 1 0 6"/></svg></span>
+        <div class="tile-body"><h3>IA Ads</h3><p>Vos annonces dans ChatGPT, Copilot et les réponses des IA.</p></div>
+      </a>
+      </div>
+    </div>
+  </section>
+
+  <section class="logo-band nf-clients" aria-label="Ils nous font confiance">
+    <p class="container nf-clients-title">Ils nous font confiance</p>
+    <div class="marquee">
+      <div class="marquee-track logos-track" data-marquee>
+      <img src="/assets/images/clients/ventouses-soufflets.png" alt="Ventouses-Soufflets" height="36">
+      <img src="/assets/images/clients/jouets-menus-enfants.png" alt="Jouets Menus Enfants" height="30">
+      <img src="/assets/images/clients/storkeo.png" alt="Storkeo" height="30">
+      <img src="/assets/images/clients/ombralis.png" alt="Ombralis" height="40">
+      <img src="/assets/images/clients/kermesse-fetes.png" alt="Kermesse Fêtes" height="28">
+      <img src="/assets/images/clients/babily.png" alt="Babily" height="34">
+      </div>
+    </div>
   </section>
 </main>
 <footer class="site-footer">

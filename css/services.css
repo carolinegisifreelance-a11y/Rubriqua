@@ -80,3 +80,16 @@
   .platform-grid li:last-child { grid-column: 1 / -1; }
   .logos-track { gap: 48px; padding-right: 48px; }
 }
+
+/* Page Services sur mobile : numéro et titre alignés, illustration visible */
+@media (max-width: 760px) {
+  .svc { grid-template-columns: auto minmax(0, 1fr); column-gap: 12px; row-gap: 12px; align-items: baseline; padding: 24px 0; }
+  .svc .icon { display: none; }
+  .svc-body { display: contents; }
+  .svc-num { grid-column: 1; grid-row: 1; font-size: 26px; }
+  .svc-body h3 { grid-column: 2; grid-row: 1; font-size: 22px; }
+  .svc-img { display: block; grid-column: 1 / -1; grid-row: 2; width: 100%; height: auto; aspect-ratio: 16 / 9; opacity: 1; transform: none; }
+  .svc-body p { grid-column: 1 / -1; grid-row: 3; font-size: 15px; }
+  .svc-tags { grid-column: 1 / -1; grid-row: 4; margin: 0; }
+  .svc-go { grid-column: 1 / -1; grid-row: 5; justify-self: start; }
+}
