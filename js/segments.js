@@ -17,8 +17,7 @@
       t.addEventListener('click', function () {
         show(k);
         if (window.matchMedia('(max-width: 760px)').matches) {
-          var panel = document.getElementById(t.getAttribute('aria-controls'));
-          if (panel) panel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          t.scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
       });
     });
