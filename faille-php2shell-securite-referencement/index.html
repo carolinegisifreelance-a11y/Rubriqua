@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Faille PHP2Shell, protéger la sécurité et le référencement de votre site | Rubriqua</title>
+<meta name="description" content="Avant, une faille dans PHP restait l’affaire des équipes techniques et des hébergeurs.">
+<link rel="canonical" href="https://rubriqua.com/faille-php2shell-securite-referencement/">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=UnifrakturCook:wght@700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/style.css">
+<link rel="stylesheet" href="../css/services.css">
+<link rel="stylesheet" href="../css/seogeo.css">
+<link rel="stylesheet" href="../css/blog.css">
+</head>
+<body>
+
+<a class="skip" href="#contenu">Aller au contenu</a>
+
+<div class="read-progress" aria-hidden="true"><span data-progress></span></div>
+
+<header class="site-header">
+  <div class="container header-inner">
+    <a class="brand" href="/" aria-label="Rubriqua, accueil">
+      <img src="../assets/images/logo/rubriqua-logo.png" alt="" width="46" height="34">
+      <span class="brand-name">Rubriqua</span>
+    </a>
+    <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="menu">Menu</button>
+    <nav id="menu" class="main-nav" aria-label="Navigation principale">
+      <a href="/services/">Services</a>
+      <a href="/seogeo/">SEO et GEO</a>
+      <a href="/a-propos/">À propos</a>
+      <a href="/blog/" aria-current="page">Blog</a>
+      <a class="btn btn-primary" href="/contact/">Contactez-nous</a>
+    </nav>
+  </div>
+</header>
+
+<main id="contenu">
+
+<article>
+  <header class="article-head">
+    <div class="container article-head-inner">
+      <nav class="breadcrumb breadcrumb-light" aria-label="Fil d'Ariane">
+        <a href="/">Accueil</a><span aria-hidden="true">/</span><a href="/blog/">Blog</a><span aria-hidden="true">/</span><a href="/category/seo/">SEO</a>
+      </nav>
+      <a class="tag tag-grey tag-lg" href="/category/seo/">SEO</a>
+      <h1>Faille PHP2Shell, protéger la sécurité et le référencement de votre site</h1>
+      <div class="article-meta"><span class="author-dot" aria-hidden="true">R</span><span>L'équipe Rubriqua</span><span>23 octobre 2026</span><span>10 min de lecture</span></div>
+    </div>
+    <div class="container"><img class="article-cover" src="../assets/images/web/blog-faille-php2shell-securite-referencement-grand.webp" alt="" width="1400" height="934"></div>
+  </header>
+
+  <div class="container article-layout">
+    <aside class="article-toc">
+      <nav aria-label="Dans cet article">
+        <p class="toc-title">Dans cet article</p>
+        <ol data-toc><li><a href="#php2shell-ce-que-l-on-sait-des-deux-failles">PHP2Shell, ce que l’on sait des deux failles</a></li><li><a href="#pourquoi-cette-faille-concerne-aussi-votre-referencement">Pourquoi cette faille concerne aussi votre référencement</a></li><li><a href="#les-gestes-a-faire-des-maintenant">Les gestes à faire dès maintenant</a></li><li><a href="#reperer-les-signes-d-un-piratage">Repérer les signes d’un piratage</a></li><li><a href="#restaurer-son-referencement-apres-un-piratage">Restaurer son référencement après un piratage</a></li><li><a href="#faire-le-point-sur-la-securite-et-la-visibilite-de-votre-sit">Faire le point sur la sécurité et la visibilité de votre site</a></li></ol>
+      </nav>
+    </aside>
+    <div class="prose">
+<p>Avant, une faille dans PHP restait l’affaire des équipes techniques et des hébergeurs. Avec PHP2Shell, deux vulnérabilités critiques corrigées le 21 octobre 2026, elle touche aussi votre visibilité sur Google. PHP fait tourner environ 69% des sites dont le langage serveur est connu, selon W3Techs, et WordPress en fait partie. Un site piraté par cette faille peut voir apparaître des pages de spam, des redirections ou un avertissement dans les résultats de recherche. Un site coupé en urgence pendant sa mise à jour peut aussi perdre des pages de l’index si l’interruption est mal signalée aux robots. La sécurité du serveur et le référencement naturel (SEO) se retrouvent donc liés pendant plusieurs semaines. Voici ce que l’on sait des deux failles, les risques concrets pour votre visibilité, les signes qui doivent alerter et la conduite à tenir.</p>
+<aside class="takeaways"><p class="takeaways-title">À retenir</p><ul><li>Deux failles critiques, CVE-2026-109618 et CVE-2026-109619, notées 9,2 sur 10, peuvent permettre d’exécuter du code à distance sur un serveur PHP sans authentification.</li><li>Les correctifs sont disponibles depuis le 21 octobre 2026 pour PHP 8.2 à 8.5. Les versions 8.1 et antérieures ne reçoivent plus de correctif officiel.</li><li>Mettre à jour WordPress ou ses extensions ne corrige pas la faille. La mise à jour se fait au niveau du serveur, par vous ou par votre hébergeur.</li><li>Pendant une coupure de maintenance, renvoyez un code 503 plutôt qu’une erreur 404 ou une page vide, pour préserver vos pages indexées.</li><li>Surveillez le rapport Problèmes de sécurité de la Search Console et les pages inconnues dans vos résultats, signes possibles d’un piratage.</li></ul></aside>
+<h2 id="php2shell-ce-que-l-on-sait-des-deux-failles">PHP2Shell, ce que l’on sait des deux failles</h2>
+<p>PHP2Shell désigne deux vulnérabilités du cœur de PHP, le langage qui fait fonctionner WordPress, Drupal, Joomla, PrestaShop, Magento et une grande partie des sites d’entreprise. La première, CVE-2026-109618, concerne la gestion de la mémoire lorsqu’une requête épuise la mémoire disponible. La seconde, CVE-2026-109619, laisse des données d’une requête accessibles à la requête suivante traitée par le même processus. Selon le bulletin de sécurité de PHP, les deux peuvent être exploitées par un attaquant distant non authentifié. Chacune est notée 9,2 sur 10 selon le système de notation CVSS.</p>
+<p>Le risque varie selon la configuration du serveur. Les modes PHP-FPM, php-cgi, LiteSpeed et FrankenPHP sont concernés, mais l’équipe de PHP considère Apache avec mod_php comme la configuration la plus exposée, car une requête anonyme peut y déclencher l’attaque avant même que le code du site ne s’exécute. Les chercheurs à l’origine de la découverte, chez Calif et Wiz, indiquent avoir utilisé des modèles d’IA dans leurs travaux.</p>
+<h3>Une chronologie très resserrée</h3>
+<p>Le 20 octobre 2026, PHP a publié un préavis de sécurité, et les identifiants des failles ont circulé en ligne le même jour. Les correctifs, d’abord prévus le 22, ont été avancés au 21 octobre à 16 h, heure de Paris. Amazon a toutefois signalé une première tentative d’exploitation dès le 17 octobre, quatre jours avant la publication, et Cloudflare a observé des attaques le 21. En France, le CERT-FR a publié son alerte CERTFR-2026-ALE-014 le 21 octobre, puis indiqué le 22 avoir connaissance de preuves de concept. Cybermalveillance.gouv.fr a relayé l’alerte le même jour en insistant sur les sites transactionnels et ceux reliés à des systèmes internes.</p>
+<h3>Les versions concernées</h3>
+<p>Toutes les versions de PHP depuis la 5.4 sont touchées jusqu’aux correctifs. Les versions corrigées sont PHP 8.5.12, 8.4.27, 8.3.36 et 8.2.35. Pour les branches 8.1 et antérieures, qui ne sont plus maintenues, PHP ne publie pas de version corrigée. L’équipe de sécurité a diffusé des correctifs minimaux pour les versions 7.4 à 8.1, que certaines distributions et certains hébergeurs appliquent. La recommandation des autorités reste la même dans tous les cas, migrer vers une version maintenue.</p>
+<h2 id="pourquoi-cette-faille-concerne-aussi-votre-referencement">Pourquoi cette faille concerne aussi votre référencement</h2>
+<h3>Un site piraté peut être sanctionné dans les résultats</h3>
+<p>Une faille d’exécution de code à distance donne à l’attaquant la main sur le serveur. Les usages malveillants les plus courants touchent directement le référencement&nbsp;: création de pages de spam, insertion de liens cachés, redirection d’une partie des visiteurs vers des sites douteux, parfois uniquement pour les internautes venant de Google ou utilisant un mobile. Ces pratiques entrent dans la catégorie du contenu piraté définie par les règles de Google relatives au spam. Google précise que les sites concernés peuvent être moins bien classés, voire ne plus apparaître du tout.</p>
+<p>Google peut aussi afficher la mention « Ce site a peut-être été piraté » sous votre résultat lorsqu’il détecte des pages modifiées ou ajoutées par un tiers. Cette mention reste en place tant que le propriétaire n’a pas corrigé le problème et demandé un réexamen. Pendant ce temps, le taux de clic chute logiquement, même si le site reste bien positionné.</p>
+<h3>Une coupure mal signalée peut faire sortir des pages de l’index</h3>
+<p>Beaucoup de sites ont été mis hors ligne quelques heures, voire quelques jours, le temps d’appliquer le correctif. La manière de couper compte. Une page en maintenance renvoyée avec un code 404 indique à Google que le contenu n’existe plus, et la documentation de Google sur les codes HTTP précise que les URL indexées qui renvoient ce code sont retirées de l’index. Une page d’erreur renvoyée avec un code 200 peut quant à elle être traitée comme une page vide. Le code 503, qui signifie service temporairement indisponible, ralentit l’exploration sans retirer immédiatement les pages. Google ne donne pas de délai précis, mais indique que des erreurs serveur persistantes finissent par entraîner un retrait.</p>
+<p>Google Search Central a rappelé ce point sur LinkedIn le 21 octobre, jour de la publication des correctifs, selon PPC Land&nbsp;: un code 503 permet de conserver les URL déjà indexées pendant les travaux.</p>
+<h3>Moins de pages indexées, moins de citations dans les Aperçus IA</h3>
+<p>Les conséquences ne s’arrêtent pas aux résultats classiques. Pour servir de source dans les Aperçus IA et le Mode IA, une page doit être indexée et pouvoir s’afficher avec un extrait. Une page retirée de l’index après un piratage ou une coupure mal gérée perd donc aussi ses chances d’être citée dans les réponses générées par l’IA, parfois au moment où un concurrent prend la place.</p>
+<h2 id="les-gestes-a-faire-des-maintenant">Les gestes à faire dès maintenant</h2>
+<h3>Vérifier la version de PHP de son site</h3>
+<p>Sur WordPress, la version de PHP apparaît dans Outils, Santé du site, onglet Infos, rubrique Serveur. L’espace client de votre hébergeur l’indique également, et c’est souvent là qu’on la modifie sur un hébergement mutualisé. Si votre site est hébergé sur un serveur dédié ou dans le cloud, la personne qui administre le serveur doit vérifier la version exacte, le mode d’exécution de PHP et la date de la dernière mise à jour.</p>
+<h3>Mettre à jour PHP sans casser le site</h3>
+<p>Sur un hébergement mutualisé, la mise à jour des versions 8.2 à 8.5 est en principe prise en charge par l’hébergeur. Vérifiez qu’elle a bien été appliquée plutôt que de le supposer. Si votre site tourne encore en PHP 8.1 ou en version 7, la migration vers une version maintenue demande plus de précautions, car certains thèmes et extensions anciens peuvent produire des erreurs. Testez le passage sur une copie du site, contrôlez les pages qui génèrent des contacts ou des ventes, puis basculez le site en production.</p>
+<p>En attendant la mise à jour, le CERT-FR évoque des contournements provisoires, comme la désactivation de l’option session.upload_progress.enabled dans la configuration de PHP. Ils réduisent seulement une partie de la surface d’attaque et ne remplacent pas le correctif. Pour un serveur qui ne peut pas être mis à jour rapidement, l’isolement reste la recommandation des autorités.</p>
+<h3>Signaler correctement la maintenance aux moteurs</h3>
+<p>Si vous devez couper le site, configurez la page de maintenance pour qu’elle renvoie un code 503, et non une page normale ou une erreur 404. De nombreuses extensions de maintenance pour WordPress le font, mais pas toutes, et le réglage mérite d’être contrôlé avec l’outil d’inspection d’URL de la Search Console ou un vérificateur de code HTTP. Gardez la coupure aussi courte que possible et vérifiez ensuite que les pages renvoient de nouveau un code 200.</p>
+<h2 id="reperer-les-signes-d-un-piratage">Repérer les signes d’un piratage</h2>
+<p>Le premier réflexe consiste à ouvrir le rapport Problèmes de sécurité de la Search Console. Google y signale les contenus piratés, les logiciels malveillants et l’ingénierie sociale qu’il a détectés, avec des exemples d’URL. Un rapport vide est un bon signe, mais il ne garantit pas que le site soit sain, car la détection peut prendre du temps.</p>
+<p>Complétez par quelques vérifications simples, décrites par Google dans son guide sur les signes d’un piratage. Une recherche site:votredomaine.fr dans Google fait apparaître les pages indexées, y compris celles qu’un pirate aurait ajoutées. Dans le rapport Performances de la Search Console, des requêtes sans rapport avec votre activité, souvent liées aux médicaments, aux jeux d’argent ou rédigées en japonais, doivent alerter. L’outil d’inspection d’URL montre la page telle que Google la voit, ce qui permet de détecter un contenu caché aux visiteurs. Enfin, un pic soudain de pages découvertes dans le rapport d’indexation ou un nouveau compte administrateur inconnu dans WordPress justifient une analyse approfondie. Amazon recommande de faire remonter les investigations au 17 octobre 2026, date de la première tentative d’exploitation connue.</p>
+<h2 id="restaurer-son-referencement-apres-un-piratage">Restaurer son référencement après un piratage</h2>
+<p>Si le site a été compromis, l’ordre des opérations compte. Il faut d’abord corriger la faille, c’est-à-dire mettre à jour PHP, faute de quoi le site risque d’être réinfecté dans les jours qui suivent. Viennent ensuite le nettoyage des fichiers et de la base de données, idéalement avec l’aide de votre hébergeur ou d’un spécialiste en sécurité, puis le changement de tous les mots de passe.</p>
+<p>Côté référencement, les pages de spam créées par le pirate doivent renvoyer un code 404 ou 410 pour sortir de l’index. Le plan du site doit être vérifié, car certains piratages y ajoutent leurs propres URL. Une fois le site entièrement nettoyé, il reste à demander un réexamen depuis le rapport Problèmes de sécurité. La mention d’avertissement disparaît une fois le réexamen validé, mais le retour du trafic peut prendre plusieurs semaines, le temps que Google explore de nouveau le site. Le suivi du rapport Performances pendant cette période permet de vérifier que les pages stratégiques retrouvent leurs positions.</p>
+<h2 id="faire-le-point-sur-la-securite-et-la-visibilite-de-votre-sit">Faire le point sur la sécurité et la visibilité de votre site</h2>
+<p>Chez Rubriqua, nous ne remplaçons pas votre hébergeur ou un spécialiste en sécurité, mais nous vous aidons à protéger ce que la faille met en jeu pour votre visibilité. Nous commençons toujours par une première analyse&nbsp;: vérification de l’indexation et du rapport Problèmes de sécurité, contrôle des codes renvoyés pendant les maintenances, repérage des pages de spam éventuelles et suivi de votre présence dans Google comme dans les Aperçus IA. Si votre site a été touché, nous accompagnons le nettoyage côté référencement et la demande de réexamen, jusqu’au retour de vos pages dans les résultats.</p>
+      <div class="article-cta grid-bg">
+        <p class="article-cta-title">Savez-vous si l'IA cite votre entreprise&nbsp;?</p>
+        <p>Nous analysons votre présence dans les Aperçus IA de Google et les autres assistants IA, puis nous identifions les pages à retravailler en priorité pour être retenu dans leurs réponses.</p>
+        <a class="btn btn-primary" href="/contact/">Échanger</a>
+      </div>
+    </div>
+  </div>
+</article>
+
+<section class="section beige">
+  <div class="container">
+    <div class="blog-head">
+      <h2>Autres articles</h2>
+      <a class="btn btn-outline" href="/blog/">Tous les articles</a>
+    </div>
+    <div class="post-cards">
+      <a class="post post-card" href="/referencement-fabricant-industriel/" data-cat="seo" data-title="référencement d’un fabricant industriel, la méthode pour générer des demandes de devis">
+        <div class="post-img"><img src="../assets/images/web/blog-referencement-fabricant-industriel.webp" alt="" loading="lazy"></div>
+        <div class="post-meta"><span class="tag tag-grey">SEO</span><span>26 octobre 2026</span><span>10 min</span></div>
+        <h3>Référencement d’un fabricant industriel, la méthode pour générer des demandes de devis</h3>
+      </a>
+      <a class="post post-card" href="/comment-faire-un-audit-seo/" data-cat="seo" data-title="comment faire un audit seo technique en 12 étapes">
+        <div class="post-img"><img src="../assets/images/web/blog-comment-faire-un-audit-seo.webp" alt="" loading="lazy"></div>
+        <div class="post-meta"><span class="tag tag-grey">SEO</span><span>26 septembre 2026</span><span>13 min</span></div>
+        <h3>Comment faire un audit SEO technique en 12 étapes</h3>
+      </a>
+      <a class="post post-card" href="/actualite-seo-ia-fin-octobre-2026/" data-cat="geo" data-title="actualité seo et ia de fin octobre 2026, ce que les entreprises doivent retenir">
+        <div class="post-img"><img src="../assets/images/web/blog-actualite-seo-ia-fin-octobre-2026-carte.webp" alt="" loading="lazy"></div>
+        <div class="post-meta"><span class="tag">GEO</span><span>31 octobre 2026</span><span>8 min</span></div>
+        <h3>Actualité SEO et IA de fin octobre 2026, ce que les entreprises doivent retenir</h3>
+      </a>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <span class="brand-name brand-name-lg">Rubriqua</span>
+        <p>SEO, GEO et growth marketing pour toutes les organisations.</p>
+      </div>
+      <nav aria-label="Services"><b>Services</b><a href="/seogeo/">SEO</a><a href="/seogeo/">GEO / IA SEO</a><a href="/sea-googleads/">SEA</a><a href="/social-ads/">Publicité réseaux sociaux</a><a href="/pubs-ia-chatgpt/">IA Ads</a><a href="/web-analytics/">Analytics et GA4</a><a href="/automation/">Automatisation</a></nav>
+      <nav aria-label="Entreprise"><b>Entreprise</b><a href="/a-propos/">À propos</a><a href="/blog/">Blog</a><a href="/contact/">Contact</a></nav>
+      <nav aria-label="Informations légales"><b>Informations légales</b><a href="/politique-de-confidentialite/">Politique de confidentialité</a><a href="/cookies/">Cookies</a></nav>
+    </div>
+    <div class="footer-bottom"><span>© 2026 Rubriqua</span><span>Pensé pour Google, conçu pour les IA</span></div>
+  </div>
+</footer>
+
+<script src="../js/main.js"></script>
+<script src="../js/blog.js"></script>
+</body>
+</html>

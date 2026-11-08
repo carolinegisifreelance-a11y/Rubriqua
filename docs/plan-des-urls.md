@@ -87,6 +87,9 @@ Points ouverts :
 | Automatisation | automation/index.html | /automation/ |
 | IA Ads | pubs-ia-chatgpt/index.html | /pubs-ia-chatgpt/ |
 | À propos | a-propos/index.html | /a-propos/ |
+| Blog | blog/index.html | /blog/ |
+| Catégories | category/geo, seo, sea, analytics/index.html | /category/.../ |
+| Articles (9) | <slug-de-l-article>/index.html | /<slug-de-l-article>/ |
 
 Chaque page est rangée dans un dossier qui porte son slug, avec un index.html dedans, pour que l'URL reste identique une fois en ligne.
 
@@ -102,3 +105,9 @@ Chaque page est rangée dans un dossier qui porte son slug, avec un index.html d
 4. Vérifier les balises canoniques, le sitemap et le fichier robots.txt.
 5. Garder les mêmes titres SEO et méta descriptions, sauf choix volontaire.
 6. Après la mise en ligne, suivre les erreurs 404 dans Search Console pendant plusieurs semaines.
+
+## Maillage des articles à reprendre
+
+Les textes des articles ont été récupérés sans leurs liens. Les liens internes vers des pages existantes ont été remis automatiquement. Restent à reprendre depuis WordPress :
+- tous les liens externes vers les sources (Google Search Central, Search Engine Journal, PPC Land, Abondance, W3Techs, CERT-FR...) ;
+- les liens vers les guides pas encore publiés, à activer à leur sortie : mots-clés industriels, fiches techniques en PDF, catalogues de pièces techniques, salons professionnels et référencement.
