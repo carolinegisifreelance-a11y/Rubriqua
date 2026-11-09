@@ -64,6 +64,7 @@ function schema(PDO $pdo): void {
         envoye TINYINT NOT NULL DEFAULT 0)");
     $pdo->exec("CREATE TABLE IF NOT EXISTS sels (jour CHAR(10) PRIMARY KEY, sel CHAR(64) NOT NULL)");
     $pdo->exec("CREATE TABLE IF NOT EXISTS limites (cle VARCHAR(80) NOT NULL, quand INT NOT NULL)");
+    $pdo->exec("CREATE TABLE IF NOT EXISTS reglages (cle VARCHAR(40) PRIMARY KEY, valeur TEXT NOT NULL)");
     if (is_sqlite($pdo)) {
         $pdo->exec("CREATE INDEX IF NOT EXISTS i_visites_jour ON visites(jour)");
     }
@@ -134,4 +135,56 @@ function purge(PDO $pdo): void {
     if (random_int(1, 50) !== 1) return;
     $pdo->prepare('DELETE FROM visites WHERE jour < ?')->execute([now_paris()->modify('-25 months')->format('Y-m-d')]);
     $pdo->prepare('DELETE FROM messages WHERE cree_le < ?')->execute([now_paris()->modify('-3 years')->format('Y-m-d H:i:s')]);
+}
+
+// Réglages enregistrés en base (clé, valeur)
+function setting_get(PDO $pdo, string $key): ?string {
+    $st = $pdo->prepare('SELECT valeur FROM reglages WHERE cle = ?');
+    $st->execute([$key]);
+    $v = $st->fetchColumn();
+    return $v === false ? null : (string)$v;
+}
+function setting_set(PDO $pdo, string $key, string $value): void {
+    $pdo->prepare('DELETE FROM reglages WHERE cle = ?')->execute([$key]);
+    $pdo->prepare('INSERT INTO reglages (cle, valeur) VALUES (?, ?)')->execute([$key, $value]);
+}
+function setting_delete(PDO $pdo, string $key): void {
+    $pdo->prepare('DELETE FROM reglages WHERE cle = ?')->execute([$key]);
+}
+
+// Double authentification par application (TOTP, RFC 6238) : codes à 6 chiffres renouvelés toutes les 30 secondes.
+// Compatible Google Authenticator, Microsoft Authenticator, 1Password, Bitwarden, etc.
+function base32_encode(string $bin): string {
+    $alpha = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ234567';
+    $bits = '';
+    foreach (str_split($bin) as $c) $bits .= str_pad(decbin(ord($c)), 8, '0', STR_PAD_LEFT);
+    $out = '';
+    foreach (str_split($bits, 5) as $chunk) $out .= $alpha[bindec(str_pad($chunk, 5, '0'))];
+    return $out;
+}
+function base32_decode(string $b32): string {
+    $alpha = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ234567';
+    $bits = '';
+    foreach (str_split(strtoupper(preg_replace('/[^A-Za-z2-7]/', '', $b32))) as $c) $bits .= str_pad(decbin(strpos($alpha, $c)), 5, '0', STR_PAD_LEFT);
+    $out = '';
+    foreach (str_split($bits, 8) as $byte) if (strlen($byte) === 8) $out .= chr(bindec($byte));
+    return $out;
+}
+function totp_new_secret(): string { return base32_encode(random_bytes(20)); }
+function totp_at(string $secret, int $step): string {
+    $hmac = hash_hmac('sha1', pack('N2', 0, $step), base32_decode($secret), true);
+    $o = ord($hmac[19]) & 0x0f;
+    $n = ((ord($hmac[$o]) & 0x7f) << 24) | (ord($hmac[$o + 1]) << 16) | (ord($hmac[$o + 2]) << 8) | ord($hmac[$o + 3]);
+    return str_pad((string)($n % 1000000), 6, '0', STR_PAD_LEFT);
+}
+// Vérifie le code avec une tolérance de 30 secondes, et refuse un code déjà utilisé.
+function totp_verify(string $secret, string $code, int $lastStep = 0): int {
+    $code = preg_replace('/\D/', '', $code);
+    if (strlen($code) !== 6) return 0;
+    $now = intdiv(time(), 30);
+    for ($d = -1; $d <= 1; $d++) {
+        $step = $now + $d;
+        if ($step > $lastStep && hash_equals(totp_at($secret, $step), $code)) return $step;
+    }
+    return 0;
 }

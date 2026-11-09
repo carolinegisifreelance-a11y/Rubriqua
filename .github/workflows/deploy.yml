@@ -7,6 +7,8 @@
 #              Tout le monde voit le nouveau site. Les fichiers WordPress restent en place, inactifs.
 #   retour   : remet le .htaccess de WordPress et retire la page d'accueil du nouveau site.
 #              WordPress redevient visible.
+#   reinitialiser-2fa : désactive la double authentification du tableau de bord (téléphone perdu ou changé).
+#              À la connexion suivante, un nouveau QR code s'affiche pour l'associer à la nouvelle application.
 # Réglages (Settings, Secrets and variables, Actions) :
 #   SSH_HOST, SSH_USER, SSH_PASS : compte SFTP et SSH créé dans IONOS
 #   MAIL_TO, SMTP_USER, SMTP_PASS : boîte contact@rubriqua.com
@@ -21,7 +23,7 @@ on:
       action:
         description: "Action"
         type: choice
-        options: [apercu, basculer, retour]
+        options: [apercu, basculer, retour, reinitialiser-2fa]
         default: apercu
 
 concurrency: mise-en-ligne
@@ -48,7 +50,7 @@ jobs:
           grep -o 'style.css?v=[a-z0-9]*' index.html
 
       - name: Préparer le fichier de configuration
-        if: inputs.action != 'retour'
+        if: inputs.action == 'apercu' || inputs.action == 'basculer'
         env:
           DB_HOST: ${{ secrets.DB_HOST }}
           DB_NAME: ${{ secrets.DB_NAME }}
@@ -119,6 +121,12 @@ jobs:
           $SSH "rm -rf public/category"
           $SSH "head -3 public/.htaccess; ls public/donnees"
 
+      - name: Réinitialiser la double authentification
+        if: inputs.action == 'reinitialiser-2fa'
+        run: |
+          SSH="sshpass -e ssh -o StrictHostKeyChecking=accept-new $SSH_USER@$SSH_HOST"
+          $SSH "mkdir -p public/donnees && touch public/donnees/.reinitialiser-2fa && ls -a public/donnees"
+
       - name: Retour à WordPress
         if: inputs.action == 'retour'
         run: |
@@ -130,7 +138,7 @@ jobs:
         run: rm -f api/config.php
 
       - name: Vérifications
-        if: inputs.action != 'retour'
+        if: inputs.action == 'apercu' || inputs.action == 'basculer'
         run: |
           COOKIE=""
           if [ "${{ inputs.action }}" = "apercu" ]; then COOKIE="rb_apercu=1"; fi

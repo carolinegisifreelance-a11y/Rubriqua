@@ -63,3 +63,13 @@ Le premier envoi ne supprime rien sur le serveur. Les suivants suppriment seulem
 ## Adresse du tableau de bord
 
 https://rubriqua.com/pilotage-rb7k2q/ (absente du sitemap et du robots.txt, protégée par mot de passe).
+
+## Double authentification du tableau de bord
+
+La connexion demande le mot de passe, puis un code à 6 chiffres affiché par une application d'authentification sur le téléphone (Google Authenticator, Microsoft Authenticator, 1Password, Bitwarden...).
+
+- Première connexion : après le mot de passe, un QR code s'affiche. Le scanner avec l'application, puis saisir le code pour activer la protection.
+- Connexions suivantes : mot de passe, puis code de l'application. Un code ne sert qu'une fois.
+- La session se ferme après 2 heures d'inactivité, et au plus tard après 12 heures.
+- 5 essais de mot de passe et 5 essais de code par quart d'heure, au-delà l'accès est bloqué 15 minutes.
+- Téléphone perdu ou changé : dans GitHub, onglet Actions, lancer Mise en ligne avec l'action reinitialiser-2fa. À la connexion suivante, un nouveau QR code s'affiche.

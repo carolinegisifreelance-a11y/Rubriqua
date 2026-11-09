@@ -24,20 +24,49 @@ function check_password(string $given, string $hash, string $plain): bool {
     if ($hash !== '') return password_verify($given, $hash);
     return $plain !== '' && strlen($plain) >= 12 && hash_equals($plain, $given);
 }
+function logout(): void { $_SESSION = []; session_destroy(); header('Location: ./', true, 303); exit; }
 $error = '';
+$pdo = db();
+
+// Réinitialisation de la double authentification, demandée depuis GitHub (action reinitialiser-2fa)
+$resetFlag = dirname(config()['sqlite_path']) . '/.reinitialiser-2fa';
+if (is_file($resetFlag)) { setting_delete($pdo, 'totp_secret'); setting_delete($pdo, 'totp_last'); @unlink($resetFlag); }
+$secret = setting_get($pdo, 'totp_secret');
+
+// Session : 2 heures d'inactivité ou 12 heures au total, puis nouvelle connexion
+if (!empty($_SESSION['ok']) && (time() - ($_SESSION['t'] ?? 0) > 7200 || time() - ($_SESSION['since'] ?? 0) > 43200)) logout();
+if (!empty($_SESSION['ok'])) $_SESSION['t'] = time();
+// Étape 2 : 5 minutes pour saisir le code après le mot de passe
+$step2 = !empty($_SESSION['pw']) && time() - $_SESSION['pw'] < 300;
+if (!$step2) unset($_SESSION['pw'], $_SESSION['totp_pending']);
 
 if (($_SERVER['REQUEST_METHOD'] ?? '') === 'POST') {
     if (!hash_equals($csrf, (string)($_POST['csrf'] ?? ''))) { $error = 'Session expirée, merci de réessayer.'; }
-    elseif (isset($_POST['logout'])) { $_SESSION = []; session_destroy(); header('Location: ./', true, 303); exit; }
-    elseif (isset($_POST['password'])) {
-        try { $limited = rate_limited(db(), 'login', 5, 900); } catch (Throwable $e) { $limited = false; }
+    elseif (isset($_POST['logout'])) { logout(); }
+    elseif (isset($_POST['password']) && !$step2) {
+        try { $limited = rate_limited($pdo, 'login', 5, 900); } catch (Throwable $e) { $limited = false; }
         if ($limited) { $error = 'Trop de tentatives. Réessayez dans 15 minutes.'; }
         elseif (check_password((string)$_POST['password'], $hash, $plain)) {
             session_regenerate_id(true);
-            $_SESSION['ok'] = true;
+            $_SESSION['pw'] = time();
             $_SESSION['csrf'] = bin2hex(random_bytes(16));
             header('Location: ./', true, 303); exit;
         } else { usleep(600000); $error = 'Mot de passe incorrect.'; }
+    }
+    elseif (isset($_POST['code']) && $step2) {
+        try { $limited = rate_limited($pdo, 'totp', 5, 900); } catch (Throwable $e) { $limited = true; }
+        $key = $secret ?? ($_SESSION['totp_pending'] ?? '');
+        $step = ($limited || $key === '') ? 0 : totp_verify($key, (string)$_POST['code'], (int)(setting_get($pdo, 'totp_last') ?? 0));
+        if ($limited) { $error = 'Trop de tentatives. Réessayez dans 15 minutes.'; }
+        elseif ($step) {
+            if ($secret === null) setting_set($pdo, 'totp_secret', $key);
+            setting_set($pdo, 'totp_last', (string)$step);
+            session_regenerate_id(true);
+            unset($_SESSION['pw'], $_SESSION['totp_pending']);
+            $_SESSION['ok'] = true; $_SESSION['since'] = time(); $_SESSION['t'] = time();
+            $_SESSION['csrf'] = bin2hex(random_bytes(16));
+            header('Location: ./', true, 303); exit;
+        } else { usleep(600000); $error = 'Code incorrect ou expiré.'; }
     }
 }
 
@@ -92,6 +121,10 @@ td.p{word-break:break-all}
 .login form{width:100%;max-width:360px;display:flex;flex-direction:column;gap:14px}
 .login input{font:inherit;padding:12px 14px;border:1px solid var(--line);border-radius:6px;width:100%}
 .login button{background:var(--red);color:var(--white);border-color:var(--red);padding:12px}
+.login button.link{background:none;border:0;color:var(--muted);padding:4px;text-decoration:underline}
+.qr{width:200px;max-width:100%;align-self:center;background:#fff}
+.qr svg{display:block;width:100%;height:auto}
+.key{font-family:ui-monospace,monospace;font-size:14px;color:var(--ink);word-break:break-all}
 .err{color:var(--red);font-weight:700;margin:0}
 .note{font-size:13px;color:var(--muted)}
 CSS;
@@ -103,11 +136,31 @@ function page_start(string $title, string $css): void {
 
 if (!$logged) {
     page_start('Tableau de bord Rubriqua', $css);
+    $field = function (string $label, string $name, string $attrs) use ($csrf) {
+        return '<input type="hidden" name="csrf" value="' . h($csrf) . '"><label class="note">' . $label . '<input name="' . $name . '" ' . $attrs . ' required autofocus></label>';
+    };
     echo '<main class="login"><form method="post" class="card"><div class="brand"><b>Tableau de bord</b><span>Accès réservé à Rubriqua</span></div>';
-    if (!$hash && strlen($plain) < 12) echo '<p class="err">Mot de passe non configuré. Voir docs/mise-en-ligne.md.</p>';
     if ($error) echo '<p class="err">' . h($error) . '</p>';
-    echo '<input type="hidden" name="csrf" value="' . h($csrf) . '"><label class="note">Mot de passe<input type="password" name="password" autocomplete="current-password" required autofocus></label>'
-       . '<button type="submit">Se connecter</button></form></main></body></html>';
+    if (!$step2) {
+        if (!$hash && strlen($plain) < 12) echo '<p class="err">Mot de passe non configuré. Voir docs/mise-en-ligne.md.</p>';
+        echo $field('Mot de passe', 'password', 'type="password" autocomplete="current-password"') . '<button type="submit">Continuer</button>';
+    } elseif ($secret !== null) {
+        echo '<p class="note">Saisissez le code à 6 chiffres affiché dans votre application d\'authentification.</p>'
+           . $field('Code de vérification', 'code', 'type="text" inputmode="numeric" autocomplete="one-time-code" pattern="[0-9 ]{6,7}" maxlength="7"')
+           . '<button type="submit">Se connecter</button>';
+    } else {
+        if (empty($_SESSION['totp_pending'])) $_SESSION['totp_pending'] = totp_new_secret();
+        $pending = $_SESSION['totp_pending'];
+        $uri = 'otpauth://totp/Rubriqua:Tableau%20de%20bord?secret=' . $pending . '&issuer=Rubriqua&digits=6&period=30';
+        echo '<p class="note"><b>Activer la double authentification.</b> Scannez ce QR code avec une application d\'authentification sur votre téléphone (Google Authenticator, Microsoft Authenticator, 1Password...), puis saisissez le code affiché.</p>'
+           . '<div id="qr" class="qr" data-uri="' . h($uri) . '"></div>'
+           . '<p class="note">Sans appareil photo, saisissez cette clé dans l\'application&nbsp;: <code class="key">' . h(trim(chunk_split($pending, 4, ' '))) . '</code></p>'
+           . $field('Code de vérification', 'code', 'type="text" inputmode="numeric" autocomplete="one-time-code" pattern="[0-9 ]{6,7}" maxlength="7"')
+           . '<button type="submit">Activer et se connecter</button>'
+           . '<script src="qrcode.js"></script><script>(function(){var el=document.getElementById("qr");var q=qrcode(0,"M");q.addData(el.getAttribute("data-uri"));q.make();el.innerHTML=q.createSvgTag({cellSize:5,margin:2,scalable:true});})();</script>';
+    }
+    if ($step2) echo '<button type="submit" name="logout" value="1" formnovalidate class="link">Annuler</button>';
+    echo '</form></main></body></html>';
     exit;
 }
 
@@ -120,7 +173,6 @@ $start = (clone $end)->modify('-' . ($days - 1) . ' days')->format('Y-m-d');
 $prevStart = (clone $end)->modify('-' . (2 * $days - 1) . ' days')->format('Y-m-d');
 $prevEnd = (clone $end)->modify('-' . $days . ' days')->format('Y-m-d');
 
-$pdo = db();
 $one = function (string $sql, array $args) use ($pdo) { $st = $pdo->prepare($sql); $st->execute($args); return (int)$st->fetchColumn(); };
 $all = function (string $sql, array $args) use ($pdo) { $st = $pdo->prepare($sql); $st->execute($args); return $st->fetchAll(); };
 
