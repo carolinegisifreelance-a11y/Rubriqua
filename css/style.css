@@ -489,8 +489,8 @@ a.tile-main:hover { border-color: var(--red-dark); background: var(--red-dark); 
 .au-link-form input:focus { outline: 2px solid var(--red-light); outline-offset: 2px; }
 .au-link-form .btn { flex: 1 1 150px; white-space: nowrap; }
 .au-link-note { font-size: 13px; color: #a9a49d; }
-.au-band { background: var(--beige); padding: 72px 0 0; }
-.sg-section + .au-band { padding-top: 0; padding-bottom: 88px; }
+.au-band { background: var(--white); padding: 72px 0 0; }
+.sg-section + .au-band { background: var(--beige); padding-top: 0; padding-bottom: 88px; }
 .au-band-box { color: var(--white); border-radius: 12px; padding: 48px; display: flex; flex-wrap: wrap; align-items: center; gap: 28px 56px; }
 .au-band-box > div { flex: 1 1 380px; min-width: 0; display: flex; flex-direction: column; gap: 12px; }
 .au-band-box h2 { font-size: clamp(28px, 3vw, 36px); line-height: 1.15; }
