@@ -193,6 +193,12 @@ $h2 = $q('//h2')->length;
 $headings = [];
 foreach ($q('//h2|//h3') as $h) $headings[] = trim($h->textContent);
 
+// Page vide ou domaine non utilisé (parking, page d'attente de l'hébergeur, site en construction)
+$parking = '/(domain (is )?(parked|for sale|reserved)|this domain|ce domaine|nom de domaine (est )?(réservé|à vendre)|domaine réservé|parked free|parkingcrew|sedo|bodis|godaddy|ionos|hostinger|o2switch|ovhcloud|site en construction|en cours de construction|under construction|coming soon|bientôt disponible|page par défaut|default (web )?page|it works!|welcome to nginx|index of \/)/iu';
+if ($words < 40 || ($words < 250 && preg_match($parking, $title . ' ' . $text))) {
+    fail('Cette adresse ne présente presque aucun contenu : page en construction, page d’attente de l’hébergeur ou domaine non utilisé. Il n’y a rien à analyser. Vérifiez l’adresse de votre site.');
+}
+
 // Liens
 $links = [];
 foreach ($q('//a[@href]') as $a) $links[] = ['href' => trim($a->getAttribute('href')), 'text' => mb_strtolower(trim($a->textContent))];

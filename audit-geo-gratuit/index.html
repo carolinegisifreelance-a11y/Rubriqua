@@ -139,6 +139,14 @@
     },
     {
      "@type": "Question",
+     "name": "L’audit analyse-t-il tout le site ?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Non. Il analyse la page dont vous donnez l’adresse, ainsi que deux fichiers communs à tout le domaine : le robots.txt et le plan du site. Testez votre page d’accueil, puis vos pages de services les plus importantes. L’audit complet couvre l’ensemble du site."
+     }
+    },
+    {
+     "@type": "Question",
      "name": "Que deviennent les adresses testées ?",
      "acceptedAnswer": {
       "@type": "Answer",
@@ -191,7 +199,7 @@
         <input id="au-url" name="url" type="text" inputmode="url" autocomplete="url" placeholder="www.votre-site.fr" required>
         <button class="btn btn-primary btn-lg" type="submit">Lancer l’audit</button>
       </form>
-      <p class="au-note">Score sur 100, 17 critères, sans inscription. Les adresses testées ne sont pas conservées.</p>
+      <p class="au-note">Une page analysée, avec le robots.txt et le plan du site du domaine. Score sur 100, 17 critères, sans inscription. Les adresses testées ne sont pas conservées.</p>
       <p class="au-error" data-audit-error role="alert" hidden></p>
     </div>
     <div class="ai-card au-ill reveal" aria-hidden="true">
@@ -238,6 +246,8 @@
         <h3>Nos conclusions</h3>
         <p class="au-concl-main" data-audit-conclusion></p>
         <p>Ce test vérifie que votre page est prête à être citée. Il ne dit pas si les IA vous citent vraiment. Pour le savoir, il faut poser les questions de vos clients à chaque IA et comparer avec vos concurrents.</p>
+        <p>Pour un diagnostic de tout le site, avec vos citations réelles et un plan d’action, parlons-en.</p>
+        <a class="btn btn-outline" href="/contact/">Demander un audit SEO et GEO complet</a>
       </div>
       <form class="contact-form au-cta grid-bg" action="/api/contact.php" method="post" data-contact>
         <div class="hp-field" aria-hidden="true"><label>Ne pas remplir<input type="text" name="societe_web" tabindex="-1" autocomplete="off"></label></div>
@@ -336,6 +346,10 @@
       <div class="faq-item">
         <button type="button" class="faq-q" aria-expanded="false">Pourquoi ne pas vérifier le fichier llms.txt&nbsp;?<span class="faq-icon" aria-hidden="true"></span></button>
         <div class="faq-a"><div><p>Aucun grand moteur ne déclare l’utiliser. Les efforts portent plus utilement sur le robots.txt, le contenu lisible et les signaux de confiance.</p></div></div>
+      </div>
+      <div class="faq-item">
+        <button type="button" class="faq-q" aria-expanded="false">L’audit analyse-t-il tout le site&nbsp;?<span class="faq-icon" aria-hidden="true"></span></button>
+        <div class="faq-a"><div><p>Non. Il analyse la page dont vous donnez l’adresse, ainsi que deux fichiers communs à tout le domaine&nbsp;: le robots.txt et le plan du site. Testez votre page d’accueil, puis vos pages de services les plus importantes. L’audit complet couvre l’ensemble du site.</p></div></div>
       </div>
       <div class="faq-item">
         <button type="button" class="faq-q" aria-expanded="false">Que deviennent les adresses testées&nbsp;?<span class="faq-icon" aria-hidden="true"></span></button>

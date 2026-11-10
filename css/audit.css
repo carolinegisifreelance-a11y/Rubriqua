@@ -67,8 +67,13 @@
 .au-concl { flex: 999 1 460px; min-width: 0; background: var(--white); border-radius: 12px; padding: 32px; display: flex; flex-direction: column; gap: 16px; }
 .au-concl h3 { font-size: 22px; }
 .au-concl p { font-size: 15px; line-height: 1.65; color: var(--text); }
+.au-concl .btn { align-self: flex-start; margin-top: 4px; }
+.au-next { align-items: flex-start; }
 .au-concl .au-concl-main { font-size: 17px; line-height: 1.7; color: var(--ink); }
-.au-cta { flex: 1 1 360px; min-width: 0; color: var(--white); padding: 32px; }
+.au-next .au-cta { flex: 1 1 380px; min-width: 0; color: var(--white); padding: 32px; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); align-content: start;
+  background-color: var(--black); background-image: linear-gradient(#232323 1px, transparent 1px), linear-gradient(90deg, #232323 1px, transparent 1px); background-size: 44px 44px; }
+.au-cta label { min-width: 0; }
+.au-cta input { width: 100%; box-sizing: border-box; background: var(--white); color: var(--ink); }
 .au-cta h3 { font-size: 24px; line-height: 1.25; }
 .au-cta .au-cta-text { font-size: 15px; line-height: 1.6; color: #cfcbc4; }
 .au-cta label { color: #cfcbc4; }
@@ -124,6 +129,7 @@
   .au-groups, .au-fams { grid-template-columns: 1fr; }
 }
 @media (max-width: 760px) {
+  .au-next .au-cta { grid-template-columns: 1fr; }
   .au-form input { font-size: 17px; }
   .au-summary, .au-concl, .au-cta { padding: 24px; }
   .au-row { grid-template-columns: 24px minmax(0, 1fr); }
