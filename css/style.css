@@ -503,3 +503,4 @@ a.tile-main:hover { border-color: var(--red-dark); background: var(--red-dark); 
 .gl-tool p { font-size: 16px !important; line-height: 1.6 !important; color: #cfcbc4 !important; }
 @media (max-width: 760px) { .au-band { padding-top: 48px; } .au-band-box { padding: 28px; } .gl-tool { padding: 22px; } }
 .visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.nowrap { white-space: nowrap; }

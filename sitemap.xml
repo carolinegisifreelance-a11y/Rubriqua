@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url><loc>https://rubriqua.com/</loc><lastmod>2026-10-23</lastmod></url>
-  <url><loc>https://rubriqua.com/glossaire/</loc><lastmod>2026-11-08</lastmod></url>
+  <url><loc>https://rubriqua.com/glossaire/</loc><lastmod>2026-11-10</lastmod></url>
   <url><loc>https://rubriqua.com/agence-seo-startup/</loc><lastmod>2026-11-08</lastmod></url>
   <url><loc>https://rubriqua.com/audit-geo-gratuit/</loc><lastmod>2026-11-10</lastmod></url>
   <url><loc>https://rubriqua.com/blog/</loc><lastmod>2026-10-31</lastmod></url>
@@ -27,4 +27,5 @@
   <url><loc>https://rubriqua.com/faille-php2shell-securite-referencement/</loc><lastmod>2026-10-23</lastmod></url>
   <url><loc>https://rubriqua.com/glossaire/geo/</loc><lastmod>2026-11-08</lastmod></url>
   <url><loc>https://rubriqua.com/glossaire/roas/</loc><lastmod>2026-11-08</lastmod></url>
+  <url><loc>https://rubriqua.com/glossaire/eeat/</loc><lastmod>2026-11-10</lastmod></url>
 </urlset>
