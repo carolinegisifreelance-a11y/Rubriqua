@@ -131,16 +131,18 @@ function report_mail(array $audit, array $contact, bool $releve, string $echeanc
 
 // ---------- Confirmation d'une demande d'audit complet ----------
 
-function complet_mail(array $audit, array $contact, string $day): array {
+function complet_mail(array $audit, array $contact, string $day, string $rdvUrl = ''): array {
     $host = host_of($audit['url']);
     $hello = $contact['nom'] !== '' ? 'Bonjour ' . $contact['nom'] . ',' : 'Bonjour,';
     $in = para(e($hello))
         . para('Merci pour votre demande d’audit SEO et GEO complet de <b style="color:' . C_INK . '">' . e($host) . '</b>. Nous l’avons bien reçue, avec le résultat de votre audit GEO gratuit (' . (int)$audit['score'] . '/100).')
         . para('Nous revenons vers vous sous 48 heures avec nos premières remarques sur votre site, et une proposition d’échange de 30 minutes pour cerner votre besoin.')
-        . box(h_title('Pour gagner du temps') . '<p style="margin:0">Répondez simplement à ce mail avec deux ou trois créneaux qui vous conviennent, et ce que vous aimeriez améliorer en priorité.</p>');
+        . ($rdvUrl !== ''
+            ? box(h_title('Pour gagner du temps') . '<p style="margin:0 0 14px">Choisissez dès maintenant un créneau de 30 minutes en visio. Vous pouvez y noter ce que vous aimeriez améliorer en priorité.</p>' . button('Choisir un créneau', $rdvUrl))
+            : box(h_title('Pour gagner du temps') . '<p style="margin:0">Répondez simplement à ce mail avec deux ou trois créneaux qui vous conviennent, et ce que vous aimeriez améliorer en priorité.</p>'));
     $text = "$hello\n\nMerci pour votre demande d’audit SEO et GEO complet de $host. Nous l’avons bien reçue, avec le résultat de votre audit GEO gratuit ({$audit['score']}/100).\n\n"
         . "Nous revenons vers vous sous 48 heures avec nos premières remarques sur votre site, et une proposition d’échange de 30 minutes pour cerner votre besoin.\n\n"
-        . "Pour gagner du temps, répondez simplement à ce mail avec deux ou trois créneaux qui vous conviennent.\n\nL’équipe Rubriqua\nrubriqua.com\n";
+        . ($rdvUrl !== '' ? "Pour gagner du temps, choisissez un créneau de 30 minutes en visio : $rdvUrl" : "Pour gagner du temps, répondez simplement à ce mail avec deux ou trois créneaux qui vous conviennent.") . "\n\nL’équipe Rubriqua\nrubriqua.com\n";
     $why = 'Vous recevez ce mail parce que vous avez demandé un audit complet sur rubriqua.com le ' . date_fr($day) . '.';
     return ['subject' => 'Votre demande d’audit SEO et GEO complet', 'text' => $text, 'html' => layout($in, footer_note($why, $contact))];
 }
@@ -182,7 +184,7 @@ const OPP = [
     'tierce' => ['Source tierce', '#efede9', '#5c5853'],
 ];
 
-function releve_mail(array $r, array $contact, array $demande, string $day): array {
+function releve_mail(array $r, array $contact, array $demande, string $day, string $rdvUrl = ''): array {
     $host = host_of($demande['site']);
     $ias = ['ChatGPT', 'Perplexity', 'Aperçus IA'];
     $cmp = $r['comparaison'] ?? [];
@@ -249,7 +251,7 @@ function releve_mail(array $r, array $contact, array $demande, string $day): arr
 
     $n = count($r['questions']);
     $in .= box(h_title('Envie d’en parler ?') . '<p style="margin:0 0 14px">' . ($opps ? 'Ces opportunités viennent de ' . $n . ' questions. ' : '') . 'En 30 minutes de visio, un spécialiste SEO et GEO peut regarder avec vous les autres questions de votre secteur, vos mots-clés et vos concurrents, et repérer celles où votre site a le plus de chances d’être cité. L’échange est offert et sans engagement.</p>'
-        . '<p style="margin:0">Répondez simplement à ce mail avec deux ou trois créneaux qui vous conviennent.</p>');
+        . ($rdvUrl !== '' ? button('Choisir un créneau', $rdvUrl) : '<p style="margin:0">Répondez simplement à ce mail avec deux ou trois créneaux qui vous conviennent.</p>'));
 
     // Version texte
     $t = 'Bonjour' . ($contact['nom'] !== '' ? ' ' . $contact['nom'] : '') . ",\n\n" . html_entity_decode(strip_tags($intro), ENT_QUOTES, 'UTF-8') . "\n\n";
@@ -261,9 +263,47 @@ function releve_mail(array $r, array $contact, array $demande, string $day): arr
         foreach ($ias as $ai => $ia) { $cell = $r['cellules'][$qi][$ai] ?? ['etat' => 'absent']; $t .= '  ' . $ia . ' : ' . ($cell['etat'] === 'cite' ? 'cité, source ' . ($cell['pos'] ?? '') : CELL[$cell['etat']][0] ?? 'Absent') . "\n"; }
     }
     if (trim($r['commentaire'] ?? '') !== '') $t .= "\n" . trim($r['commentaire']) . "\n";
-    $t .= "\nCe relevé montre la situation au " . date_fr($day) . ".\n\nEnvie d’en parler ? Répondez à ce mail avec deux ou trois créneaux pour un échange offert de 30 minutes avec un spécialiste SEO et GEO.\n\nL’équipe Rubriqua\nrubriqua.com\n";
+    $t .= "\nCe relevé montre la situation au " . date_fr($day) . ".\n\nEnvie d’en parler ? " . ($rdvUrl !== '' ? "Choisissez un créneau pour un échange offert de 30 minutes avec un spécialiste SEO et GEO : $rdvUrl" : "Répondez à ce mail avec deux ou trois créneaux pour un échange offert de 30 minutes avec un spécialiste SEO et GEO.") . "\n\nL’équipe Rubriqua\nrubriqua.com\n";
 
     $why = 'Vous recevez ce mail parce que vous avez demandé un relevé sur rubriqua.com le ' . date_fr(substr($demande['cree_le'], 0, 10)) . '.';
     $subject = $opps ? count($opps) . ' opportunité' . (count($opps) > 1 ? 's' : '') . ' pour ' . $host . ' dans les IA' : 'Votre relevé de citations dans les IA, ' . $host;
     return ['subject' => $subject, 'text' => $t, 'html' => layout($in, footer_note($why, $contact))];
+}
+
+// ---------- Rendez-vous ----------
+
+function rdv_minutes(array $r): int { return (int)round((DateTime::createFromFormat('Y-m-d H:i', $r['fin'])->getTimestamp() - DateTime::createFromFormat('Y-m-d H:i', $r['debut'])->getTimestamp()) / 60); }
+
+function rdv_client_mail(array $r, string $visio, string $manageUrl, string $icsUrl): array {
+    $quand = date_longue($r['debut']); $min = rdv_minutes($r);
+    $hello = $r['nom'] !== '' ? 'Bonjour ' . $r['nom'] . ',' : 'Bonjour,';
+    $in = para(e($hello)) . para('Votre rendez-vous avec un spécialiste SEO et GEO de Rubriqua est confirmé.')
+        . box('<p style="margin:0 0 4px;font-size:18px;font-weight:bold;color:' . C_INK . '">' . e(ucfirst($quand)) . '</p><p style="margin:0">' . $min . ' minutes en visio, heure de Paris'
+            . ($visio !== '' ? '<br>Lien de la visio : <a href="' . e($visio) . '" style="color:' . C_RED . ';font-weight:bold">' . e(preg_replace('#^https?://#', '', $visio)) . '</a>' : '<br>Le lien de la visio vous sera envoyé avant le rendez-vous.') . '</p>')
+        . '<p style="margin:0 0 20px">' . button('Ajouter à Google Agenda', google_add_url($r, $visio)) . ' &nbsp; ' . button('Autre agenda (.ics)', $icsUrl, false) . '</p>'
+        . para('Un empêchement ? <a href="' . e($manageUrl) . '" style="color:' . C_RED . ';font-weight:bold">Déplacer ou annuler le rendez-vous</a>.', 'font-size:14px');
+    $t = "$hello\n\nVotre rendez-vous avec un spécialiste SEO et GEO de Rubriqua est confirmé.\n\n" . ucfirst($quand) . "\n$min minutes en visio, heure de Paris\n"
+        . ($visio !== '' ? "Lien de la visio : $visio\n" : "Le lien de la visio vous sera envoyé avant le rendez-vous.\n")
+        . "\nAjouter à votre agenda : $icsUrl\nDéplacer ou annuler : $manageUrl\n\nL’équipe Rubriqua\nrubriqua.com\n";
+    return ['subject' => 'Rendez-vous confirmé, ' . $quand, 'text' => $t, 'html' => layout($in, e('Vous recevez ce mail parce que vous avez réservé un créneau sur rubriqua.com.'))];
+}
+
+function rdv_annule_mail(array $r, string $relink): array {
+    $quand = date_longue($r['debut']);
+    $hello = $r['nom'] !== '' ? 'Bonjour ' . $r['nom'] . ',' : 'Bonjour,';
+    $in = para(e($hello)) . para('Votre rendez-vous du ' . e($quand) . ' est bien annulé.')
+        . ($relink !== '' ? para('Vous pouvez choisir un autre créneau quand vous le souhaitez.') . '<p style="margin:0 0 8px">' . button('Choisir un autre créneau', $relink) . '</p>' : '');
+    $t = "$hello\n\nVotre rendez-vous du $quand est bien annulé.\n" . ($relink !== '' ? "\nChoisir un autre créneau : $relink\n" : '') . "\nL’équipe Rubriqua\nrubriqua.com\n";
+    return ['subject' => 'Rendez-vous annulé, ' . $quand, 'text' => $t, 'html' => layout($in, e('Vous recevez ce mail parce que vous avez annulé un rendez-vous sur rubriqua.com.'))];
+}
+
+function rdv_owner_mail(array $r, bool $annule): array {
+    $quand = date_longue($r['debut']);
+    $t = ($annule ? 'Rendez-vous annulé' : 'Nouveau rendez-vous') . ', ' . $quand . "\n\n"
+       . 'Contact : ' . ($r['nom'] !== '' ? $r['nom'] . ', ' : '') . $r['email'] . ($r['tel'] !== '' ? ', ' . $r['tel'] : '') . "\n"
+       . ($r['site'] !== '' ? 'Site : ' . $r['site'] . "\n" : '')
+       . 'Origine : ' . (['releve' => 'mail du relevé', 'complet' => 'demande d’audit complet', 'manuel' => 'lien créé à la main', 'public' => 'lien public'][$r['origine']] ?? $r['origine']) . "\n"
+       . ($r['sujet'] !== '' ? "\nÀ aborder :\n" . $r['sujet'] . "\n" : '')
+       . "\nTableau de bord : " . SITE_URL . "/pilotage-rb7k2q/?v=agenda\n";
+    return ['subject' => ($annule ? 'Annulé, ' : 'Rendez-vous, ') . $quand . ($r['site'] !== '' ? ', ' . host_of(str_contains($r['site'], '://') ? $r['site'] : 'https://' . $r['site']) : ''), 'text' => $t];
 }

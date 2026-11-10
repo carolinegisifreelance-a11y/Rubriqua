@@ -100,10 +100,8 @@ page_start('Contacts, tableau de bord Rubriqua', $css . '
 ?>
 <main class="wrap">
   <header class="top">
-    <div class="brand"><b>Tableau de bord</b><span>Contacts venus de l’audit GEO</span></div>
+    <div class="brand"><b>Contacts</b><span>Contacts venus de l’audit GEO</span></div>
     <div class="tools">
-      <?= tabs($view, $todo) ?>
-      <form method="post"><input type="hidden" name="csrf" value="<?= h($csrf) ?>"><button name="logout" value="1">Se déconnecter</button></form>
     </div>
   </header>
   <?php if ($flash): ?><p class="flash"><?= h($flash) ?></p><?php endif; ?>

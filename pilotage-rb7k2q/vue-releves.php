@@ -81,10 +81,14 @@ if (($_SERVER['REQUEST_METHOD'] ?? '') === 'POST' && str_contains($_SERVER['CONT
     $r = is_array($in['r'] ?? null) ? $in['r'] : [];
     $r['questions'] = array_values(array_map(fn($q) => clean_line((string)$q, 300), (array)($r['questions'] ?? [])));
     $contact = ['nom' => $d['nom'], 'conseils' => (int)$d['conseils'], 'jeton' => $d['jeton']];
-    $m = releve_mail($r, $contact, $d, today());
+    // Lien de réservation personnel, si l'agenda est ouvert aux relevés
+    $ag = agenda_get($pdo);
+    $withRdv = agenda_ouvert($ag, 'releve');
+    $m = releve_mail($r, $contact, $d, today(), $withRdv ? lien_url(str_repeat('0', 32)) : '');
     if ($action === 'apercu') json_out(['ok' => true, 'subject' => $m['subject'], 'html' => $m['html']]);
     if ($action === 'envoyer') {
         if ($d['statut'] === 'envoye') json_out(['ok' => false, 'message' => 'Ce relevé a déjà été envoyé.']);
+        if ($withRdv) $m = releve_mail($r, $contact, $d, today(), lien_url(lien_creer($pdo, 'releve', ['id' => $d['cid'], 'email' => $d['email'], 'nom' => $d['nom'], 'site' => $d['site']], 'Votre relevé du ' . date_fr_court(today()) . ' · ' . host_of($d['site']))));
         if (!send_mail_to($d['email'], $m['subject'], $m['text'], $m['html'])) json_out(['ok' => false, 'message' => 'L’e-mail n’est pas parti. Réessayez dans quelques minutes.']);
         if (config()['mail_to']) send_mail_to(config()['mail_to'], 'Copie, ' . $m['subject'], $m['text'], $m['html']);
         $pdo->prepare("UPDATE demandes SET statut = 'envoye', envoye_le = ? WHERE id = ?")->execute([$now, $d['id']]);
@@ -171,10 +175,8 @@ page_start('Relevés, tableau de bord Rubriqua', $css . '
 ?>
 <main class="wrap">
   <header class="top">
-    <div class="brand"><b>Tableau de bord</b><span>Relevés de citations offerts, à envoyer sous 5 jours ouvrés</span></div>
+    <div class="brand"><b>Relevés</b><span>Relevés de citations offerts, à envoyer sous 5 jours ouvrés</span></div>
     <div class="tools">
-      <?= tabs($view, $todo) ?>
-      <form method="post"><input type="hidden" name="csrf" value="<?= h($csrf) ?>"><button name="logout" value="1">Se déconnecter</button></form>
     </div>
   </header>
 

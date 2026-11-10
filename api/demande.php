@@ -76,7 +76,13 @@ try {
 }
 
 // E-mail au visiteur
-$m = $type === 'complet' ? complet_mail($audit, $contact, $day) : report_mail($audit, $contact, $releve, $echeance, $day);
+$rdvUrl = '';
+if ($type === 'complet') {
+    require_once __DIR__ . '/agenda_lib.php';
+    try { $ag = agenda_get($pdo); if (agenda_ouvert($ag, 'complet')) $rdvUrl = lien_url(lien_creer($pdo, 'complet', $contact + ['site' => $audit['url']], 'Votre demande d’audit complet · ' . host_of($audit['url']))); }
+    catch (Throwable $e) { error_log('Rubriqua demande, lien de réservation : ' . $e->getMessage()); }
+}
+$m = $type === 'complet' ? complet_mail($audit, $contact, $day, $rdvUrl) : report_mail($audit, $contact, $releve, $echeance, $day);
 $sent = send_mail_to($email, $m['subject'], $m['text'], $m['html']);
 if ($sent) $pdo->prepare('UPDATE demandes SET mail_ok = 1' . ($kind === 'rapport' ? ', statut = \'envoye\', envoye_le = ?' : '') . ' WHERE id = ?')->execute($kind === 'rapport' ? [$now, $demande['id']] : [$demande['id']]);
 

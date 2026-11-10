@@ -138,7 +138,19 @@ td.p{word-break:break-all}
 .key{font-family:ui-monospace,monospace;font-size:14px;color:var(--ink);word-break:break-all}
 .err{color:var(--red);font-weight:700;margin:0}
 .note{font-size:13px;color:var(--muted)}
-.tabs a .count{display:inline-block;background:var(--red);color:#fff;border-radius:9px;padding:0 6px;font-size:11px;margin-left:4px}
+.menu{position:sticky;top:0;z-index:20;background:#161616;border-bottom:1px solid #2e2e2e}
+.menu-in{max-width:1200px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));display:flex;align-items:center;gap:8px 24px;min-height:60px;flex-wrap:wrap}
+.menu-brand{display:flex;align-items:center;gap:12px;text-decoration:none;padding-block:10px}
+.menu-brand img{display:block;height:24px;width:auto}
+.menu-brand span{color:#a9a49d;font-size:13px;font-weight:700;border-left:1px solid #3a3a3a;padding-left:12px}
+.menu-tabs{display:flex;gap:4px;flex:1;min-width:0;overflow-x:auto;scrollbar-width:none}
+.menu-tabs::-webkit-scrollbar{display:none}
+.menu-tabs a{color:#cfcbc4;text-decoration:none;font-weight:700;font-size:14px;padding:19px 12px 17px;border-bottom:3px solid transparent;white-space:nowrap}
+.menu-tabs a:hover{color:#fff}
+.menu-tabs a[aria-current]{color:#fff;border-bottom-color:var(--red-light)}
+.menu-tabs .count{display:inline-block;background:var(--red);color:#fff;border-radius:9px;padding:0 6px;font-size:11px;margin-left:4px;vertical-align:1px}
+.menu-out button{background:transparent;color:#cfcbc4;border-color:#3a3a3a}
+@media (max-width:760px){.menu-in{gap:0 12px}.menu-tabs{order:3;flex-basis:100%;margin:0 -12px}.menu-tabs a{padding:12px 12px 11px}.menu-out{margin-left:auto}.menu-brand span{display:none}}
 .st{display:inline-block;font-size:12px;font-weight:800;padding:2px 8px;border-radius:4px;white-space:nowrap}
 .st-ok{background:#e8f1ea;color:#2f6b3a}.st-warn{background:#fbefe0;color:#8a4b08}.st-ko{background:#f6e8e7;color:#991915}.st-grey{background:#efede9;color:#5c5853}.st-dark{background:var(--ink);color:#fff}
 .lbl{font-size:12px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
@@ -152,7 +164,7 @@ CSS;
 
 function page_start(string $title, string $css): void {
     echo '<!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">'
-       . '<meta name="robots" content="noindex, nofollow"><link rel="icon" href="/favicon.ico?v=202611101641" sizes="32x32"><link rel="icon" href="/favicon.svg?v=202611101641" type="image/svg+xml"><link rel="apple-touch-icon" href="/assets/images/logo/icone-rubriqua-agence-seo-geo-growth-180.png?v=202611101641"><title>' . h($title) . '</title><style>' . $css . '</style></head><body>';
+       . '<meta name="robots" content="noindex, nofollow"><link rel="icon" href="/favicon.ico?v=202611101641" sizes="32x32"><link rel="icon" href="/favicon.svg?v=202611101641" type="image/svg+xml"><link rel="apple-touch-icon" href="/assets/images/logo/icone-rubriqua-agence-seo-geo-growth-180.png?v=202611101641"><title>' . h($title) . '</title><style>' . $css . '</style></head><body>' . ($GLOBALS['topbar'] ?? '');
 }
 
 if (!$logged) {
@@ -186,14 +198,27 @@ if (!$logged) {
 }
 
 // Onglets
-$view = in_array($_GET['v'] ?? '', ['contacts', 'releves'], true) ? $_GET['v'] : 'stats';
-function tabs(string $view, int $todo): string {
-    $t = ['stats' => 'Statistiques', 'contacts' => 'Contacts', 'releves' => 'Relevés'];
-    $o = '<nav class="seg tabs" aria-label="Rubriques">';
-    foreach ($t as $k => $l) $o .= '<a href="./' . ($k === 'stats' ? '' : '?v=' . $k) . '"' . ($k === $view ? ' aria-current="page"' : '') . '>' . h($l) . ($k === 'releves' && $todo ? ' <span class="count">' . $todo . '</span>' : '') . '</a>';
+$view = in_array($_GET['v'] ?? '', ['contacts', 'releves', 'agenda'], true) ? $_GET['v'] : 'stats';
+// Menu du haut, commun à tous les onglets
+function tabs(string $view, int $todo, int $rdv = 0): string {
+    $t = ['stats' => 'Statistiques', 'contacts' => 'Contacts', 'releves' => 'Relevés', 'agenda' => 'Agenda'];
+    $o = '<nav class="menu-tabs" aria-label="Rubriques">';
+    foreach ($t as $k => $l) {
+        $n = $k === 'releves' ? $todo : ($k === 'agenda' ? $rdv : 0);
+        $o .= '<a href="./' . ($k === 'stats' ? '' : '?v=' . $k) . '"' . ($k === $view ? ' aria-current="page"' : '') . '>' . h($l) . ($n ? ' <span class="count">' . $n . '</span>' : '') . '</a>';
+    }
     return $o . '</nav>';
 }
+function topbar(string $view, int $todo, int $rdv, string $csrf): string {
+    return '<header class="menu"><div class="menu-in"><a class="menu-brand" href="./"><img src="/assets/images/logo/logo-rubriqua-agence-seo-geo-growth-fond-sombre.svg" alt="Rubriqua" width="112" height="24"><span>Tableau de bord</span></a>'
+        . tabs($view, $todo, $rdv)
+        . '<form method="post" class="menu-out"><input type="hidden" name="csrf" value="' . h($csrf) . '"><button name="logout" value="1">Se déconnecter</button></form></div></header>';
+}
 $todo = (int)$pdo->query("SELECT COUNT(*) FROM demandes WHERE type = 'releve' AND statut <> 'envoye'")->fetchColumn();
+require __DIR__ . '/../api/agenda_lib.php';
+agenda_schema($pdo);
+$rdvCount = (int)$pdo->query("SELECT COUNT(*) FROM rdv WHERE statut = 'confirme' AND debut >= '" . now_paris()->format('Y-m-d H:i') . "'")->fetchColumn();
+$GLOBALS['topbar'] = topbar($view, $todo, $rdvCount, $csrf);
 if ($view !== 'stats') {
     define('RB_ADMIN', true);
     require __DIR__ . '/vue-' . $view . '.php';
@@ -334,12 +359,10 @@ page_start('Tableau de bord Rubriqua', $css);
 ?>
 <main class="wrap">
   <header class="top">
-    <div class="brand"><b>Tableau de bord</b><span>rubriqua.com, du <?= h((new DateTime($start))->format('d/m/Y')) ?> au <?= h($end->format('d/m/Y')) ?></span></div>
+    <div class="brand"><b>Statistiques</b><span>rubriqua.com, du <?= h((new DateTime($start))->format('d/m/Y')) ?> au <?= h($end->format('d/m/Y')) ?></span></div>
     <div class="tools">
-      <?= tabs($view, $todo) ?>
       <nav class="seg" aria-label="Période"><?php foreach ($periods as $d => $l): ?><a href="?p=<?= $d ?>"<?= $d === $days ? ' aria-current="page"' : '' ?>><?= h($l) ?></a><?php endforeach; ?></nav>
       <button type="button" id="ignore">Ne pas compter mes visites</button>
-      <form method="post"><input type="hidden" name="csrf" value="<?= h($csrf) ?>"><button name="logout" value="1">Se déconnecter</button></form>
     </div>
   </header>
 
