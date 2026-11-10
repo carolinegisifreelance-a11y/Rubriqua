@@ -175,6 +175,11 @@ function purge(PDO $pdo): void {
 function ip_exclues(PDO $pdo): array {
     $v = setting_get($pdo, 'ip_exclues');
     if ($v === null) { $v = '86.202.84.222'; setting_set($pdo, 'ip_exclues', $v); }
+    // Ajouts demandés après la première mise en place, appliqués une seule fois
+    if (setting_get($pdo, 'ip_exclues_v') !== '2') {
+        foreach (['86.202.84.222', '46.6.126.89'] as $ip) if (!preg_match('/(^|[\s,;])' . preg_quote($ip, '/') . '($|[\s,;])/', $v)) $v .= ($v !== '' ? ', ' : '') . $ip;
+        setting_set($pdo, 'ip_exclues', $v); setting_set($pdo, 'ip_exclues_v', '2');
+    }
     return array_values(array_filter(array_map('trim', preg_split('/[\s,;]+/', $v))));
 }
 function ip_exclue(PDO $pdo): bool { return in_array(client_ip(), ip_exclues($pdo), true); }
