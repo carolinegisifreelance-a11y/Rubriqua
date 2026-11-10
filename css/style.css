@@ -73,7 +73,9 @@ p { margin: 0; }
 .site-header { position: sticky; top: 0; z-index: 50; background: rgba(22, 22, 22, .94); backdrop-filter: blur(8px); border-bottom: 1px solid #2e2e2e; }
 .header-inner { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding-top: 14px; padding-bottom: 14px; }
 .brand { display: flex; align-items: center; gap: 10px; color: var(--white); text-decoration: none; }
-.brand img { border-radius: 4px; object-fit: cover; }
+.brand-logo { display: block; height: 32px; width: auto; }
+.footer-logo { display: block; height: 36px; width: auto; }
+@media (max-width: 560px) { .brand-logo { height: 26px; } }
 .brand-name { font-family: UnifrakturCook, serif; font-weight: 700; font-size: 28px; line-height: 1; letter-spacing: 0; }
 .brand-name-lg { font-size: 34px; }
 .main-nav { display: flex; align-items: center; gap: 28px; }
