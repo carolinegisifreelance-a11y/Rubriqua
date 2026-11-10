@@ -65,6 +65,14 @@ function schema(PDO $pdo): void {
     $pdo->exec("CREATE TABLE IF NOT EXISTS sels (jour CHAR(10) PRIMARY KEY, sel CHAR(64) NOT NULL)");
     $pdo->exec("CREATE TABLE IF NOT EXISTS limites (cle VARCHAR(80) NOT NULL, quand INT NOT NULL)");
     $pdo->exec("CREATE TABLE IF NOT EXISTS reglages (cle VARCHAR(40) PRIMARY KEY, valeur TEXT NOT NULL)");
+    $pdo->exec("CREATE TABLE IF NOT EXISTS clics (
+        id $id, jour CHAR(10) NOT NULL, heure CHAR(5) NOT NULL, page VARCHAR(300) NOT NULL,
+        cible VARCHAR(300) NOT NULL, libelle VARCHAR(80) NOT NULL DEFAULT '', visiteur CHAR(16) NOT NULL)");
+    // Nouveau visiteur (1) ou appareil déjà venu (0), ajouté en novembre 2026
+    $cols = is_sqlite($pdo)
+        ? array_column($pdo->query("PRAGMA table_info(visites)")->fetchAll(PDO::FETCH_ASSOC), 'name')
+        : array_column($pdo->query("SHOW COLUMNS FROM visites")->fetchAll(PDO::FETCH_ASSOC), 'Field');
+    if (!in_array('nouveau', $cols, true)) $pdo->exec("ALTER TABLE visites ADD COLUMN nouveau TINYINT NULL");
     if (is_sqlite($pdo)) {
         $pdo->exec("CREATE INDEX IF NOT EXISTS i_visites_jour ON visites(jour)");
     }
@@ -134,6 +142,7 @@ function clean_line(string $s, int $max): string {
 function purge(PDO $pdo): void {
     if (random_int(1, 50) !== 1) return;
     $pdo->prepare('DELETE FROM visites WHERE jour < ?')->execute([now_paris()->modify('-25 months')->format('Y-m-d')]);
+    $pdo->prepare('DELETE FROM clics WHERE jour < ?')->execute([now_paris()->modify('-25 months')->format('Y-m-d')]);
     $pdo->prepare('DELETE FROM messages WHERE cree_le < ?')->execute([now_paris()->modify('-3 years')->format('Y-m-d H:i:s')]);
 }
 

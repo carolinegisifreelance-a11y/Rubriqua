@@ -32,6 +32,9 @@ $pdo = db();
 $resetFlag = dirname(config()['sqlite_path']) . '/.reinitialiser-2fa';
 if (is_file($resetFlag)) { setting_delete($pdo, 'totp_secret'); setting_delete($pdo, 'totp_last'); @unlink($resetFlag); }
 $secret = setting_get($pdo, 'totp_secret');
+// Remise à zéro des statistiques de visite, demandée depuis GitHub (action vider-statistiques). Les demandes de contact sont conservées.
+$wipeFlag = dirname(config()['sqlite_path']) . '/.vider-statistiques';
+if (is_file($wipeFlag)) { $pdo->exec('DELETE FROM visites'); $pdo->exec('DELETE FROM clics'); @unlink($wipeFlag); }
 
 // Session : 2 heures d'inactivité ou 12 heures au total, puis nouvelle connexion
 if (!empty($_SESSION['ok']) && (time() - ($_SESSION['t'] ?? 0) > 7200 || time() - ($_SESSION['since'] ?? 0) > 43200)) logout();
@@ -251,6 +254,37 @@ $leadPages = $all("SELECT page, COUNT(*) AS n FROM messages WHERE cree_le BETWEE
 $messages = $all('SELECT * FROM messages ORDER BY cree_le DESC LIMIT 30', []);
 $aiNames = ['ChatGPT','Perplexity','Copilot','Gemini','Claude','Mistral'];
 
+// Visites : une visite regroupe les pages vues par un même visiteur sans pause de plus de 30 minutes
+$hits = $all('SELECT jour, visiteur, heure, page, nouveau FROM visites WHERE jour BETWEEN ? AND ? ORDER BY jour, visiteur, id LIMIT 300000', [$start, $endDay]);
+$entries = []; $paths = []; $sessions = 0; $oneShot = 0; $isNew = []; $key = null; $path = []; $last = -1;
+$close = function () use (&$path, &$entries, &$paths, &$sessions, &$oneShot) {
+    if (!$path) return;
+    $sessions++;
+    $entries[$path[0]] = ($entries[$path[0]] ?? 0) + 1;
+    if (count($path) === 1) $oneShot++;
+    else { $k = implode(' → ', array_slice($path, 0, 4)) . (count($path) > 4 ? ' → …' : ''); $paths[$k] = ($paths[$k] ?? 0) + 1; }
+    $path = [];
+};
+foreach ($hits as $r) {
+    $vk = $r['jour'] . $r['visiteur'];
+    [$hh, $mm] = array_map('intval', explode(':', $r['heure']));
+    $t = $hh * 60 + $mm;
+    if ($vk !== $key || $t - $last > 30) { $close(); $key = $vk; }
+    if (!$path || end($path) !== $r['page']) $path[] = $r['page'];
+    $last = $t;
+    if ($r['nouveau'] !== null) $isNew[$vk] = max($isNew[$vk] ?? 0, (int)$r['nouveau']);
+}
+$close();
+arsort($entries); arsort($paths);
+$entryRows = array_map(fn($p, $n) => ['page' => $p, 'n' => $n], array_keys(array_slice($entries, 0, 15, true)), array_slice($entries, 0, 15, true));
+$pathRows = array_map(fn($p, $n) => ['parcours' => $p, 'n' => $n], array_keys(array_slice($paths, 0, 12, true)), array_slice($paths, 0, 12, true));
+$known = count($isNew); $returning = count(array_filter($isNew, fn($v) => $v === 0));
+$bounce = $sessions ? $oneShot / $sessions * 100 : 0;
+$clicks = $all('SELECT libelle, cible, COUNT(*) AS n FROM clics WHERE jour BETWEEN ? AND ? GROUP BY libelle, cible ORDER BY n DESC LIMIT 15', [$start, $endDay]);
+foreach ($clicks as &$c) $c['label'] = ($c['libelle'] !== '' ? $c['libelle'] . '  ·  ' : '') . $c['cible'];
+unset($c);
+$clickTotal = $one('SELECT COUNT(*) FROM clics WHERE jour BETWEEN ? AND ?', [$start, $endDay]);
+
 function table(array $rows, string $labelKey, string $labelHead, string $valKey, string $valHead, array $ia = [], bool $path = false): string {
     if (!$rows) return '<p class="empty">Pas encore de données sur cette période.</p>';
     $max = max(array_map(fn($r) => (int)$r[$valKey], $rows)) ?: 1;
@@ -278,6 +312,7 @@ page_start('Tableau de bord Rubriqua', $css);
   <section class="kpis">
     <div class="card kpi"><span>Visiteurs</span><b><?= nf($cur['visitors']) ?></b><?= delta($cur['visitors'], $prev['visitors']) ?></div>
     <div class="card kpi"><span>Pages vues</span><b><?= nf($cur['views']) ?></b><?= delta($cur['views'], $prev['views']) ?></div>
+    <div class="card kpi"><span>Visiteurs déjà venus</span><b><?= nf($returning) ?></b><small class="flat"><?= $known ? number_format($returning / $known * 100, 0, ',', '') . '% des visiteurs' : 'mesure en cours' ?></small></div>
     <div class="card kpi"><span>Visiteurs venus des IA</span><b><?= nf($cur['ai']) ?></b><?= delta($cur['ai'], $prev['ai']) ?></div>
     <div class="card kpi"><span>Demandes de contact</span><b><?= nf($cur['leads']) ?></b><?= delta($cur['leads'], $prev['leads']) ?></div>
     <div class="card kpi"><span>Taux de contact</span><b><?= number_format($cur['rate'], 1, ',', '') ?>%</b><?= delta($cur['rate'], $prev['rate'], true) ?></div>
@@ -290,12 +325,20 @@ page_start('Tableau de bord Rubriqua', $css);
   </section>
 
   <div class="grid2">
+    <section class="card"><h2>Pages d’entrée</h2><p class="note">Première page vue à chaque visite. <?= nf($sessions) ?> visites, dont <?= number_format($bounce, 0, ',', '') ?>% sur une seule page.</p><?= table($entryRows, 'page', 'Page', 'n', 'Entrées', [], true) ?></section>
     <section class="card"><h2>Pages les plus vues</h2><?= table($pages, 'page', 'Page', 'vues', 'Vues', [], true) ?></section>
     <section class="card"><h2>Sources de trafic</h2><?= table($sources, 'source', 'Source', 'visiteurs', 'Visiteurs', $aiNames) ?></section>
     <section class="card"><h2>Appareils</h2><?= table($devices, 'appareil', 'Appareil', 'visiteurs', 'Visiteurs') ?></section>
     <section class="card"><h2>Autres sites qui vous envoient du trafic</h2><?= table($refs, 'referent', 'Site', 'visiteurs', 'Visiteurs', [], true) ?></section>
+    <section class="card"><h2>Clics</h2><p class="note"><?= nf($clickTotal) ?> clics sur des liens et des boutons.</p><?= table($clicks, 'label', 'Lien ou bouton', 'n', 'Clics', [], true) ?></section>
     <section class="card"><h2>Pages d’où partent les demandes</h2><?= table($leadPages, 'page', 'Page', 'n', 'Demandes', [], true) ?></section>
   </div>
+
+  <section class="card">
+    <h2>Parcours des visiteurs</h2>
+    <p class="note">Enchaînement des pages pendant une visite, quatre pages au maximum. Les visites d’une seule page ne figurent pas ici.</p>
+    <?= table($pathRows, 'parcours', 'Parcours', 'n', 'Visites', [], true) ?>
+  </section>
 
   <section class="card">
     <h2>Dernières demandes de contact</h2>
@@ -308,7 +351,7 @@ page_start('Tableau de bord Rubriqua', $css);
     <?php endforeach; ?>
   </section>
 
-  <p class="note">Mesure sans cookie. Un visiteur correspond à un appareil sur une journée : la même personne revenue trois jours compte pour trois. Les robots et vos propres visites, une fois exclues avec le bouton du haut, ne sont pas comptés. Données conservées 25 mois.</p>
+  <p class="note">Mesure sans cookie. Un visiteur correspond à un appareil sur une journée : la même personne revenue trois jours compte pour trois. Un visiteur déjà venu est un appareil passé sur le site dans les 13 derniers mois, d’après une date gardée dans son navigateur, sans identifiant. Les robots et vos propres visites, une fois exclues avec le bouton du haut, ne sont pas comptés. Données conservées 25 mois.</p>
 </main>
 <script>
 (function () {

@@ -73,3 +73,10 @@ La connexion demande le mot de passe, puis un code à 6 chiffres affiché par un
 - La session se ferme après 2 heures d'inactivité, et au plus tard après 12 heures.
 - 5 essais de mot de passe et 5 essais de code par quart d'heure, au-delà l'accès est bloqué 15 minutes.
 - Téléphone perdu ou changé : dans GitHub, onglet Actions, lancer Mise en ligne avec l'action reinitialiser-2fa. À la connexion suivante, un nouveau QR code s'affiche.
+
+## Statistiques du tableau de bord
+
+- Visiteurs déjà venus : appareils passés sur le site dans les 13 derniers mois, d'après une date de première visite gardée dans le navigateur (sans identifiant, mesure exemptée de consentement par la CNIL et décrite sur la page Cookies, avec un bouton pour la refuser).
+- Pages d'entrée et parcours : une visite regroupe les pages vues par un même visiteur sans pause de plus de 30 minutes.
+- Clics : liens et boutons cliqués, avec leur texte et leur destination.
+- Remise à zéro : dans GitHub, onglet Actions, lancer Mise en ligne avec l'action vider-statistiques. Les visites et les clics sont effacés à la prochaine ouverture du tableau de bord. Les demandes de contact sont gardées.

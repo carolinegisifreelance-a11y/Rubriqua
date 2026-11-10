@@ -9,6 +9,8 @@
 #              WordPress redevient visible.
 #   reinitialiser-2fa : désactive la double authentification du tableau de bord (téléphone perdu ou changé).
 #              À la connexion suivante, un nouveau QR code s'affiche pour l'associer à la nouvelle application.
+#   vider-statistiques : efface les visites et les clics enregistrés (les demandes de contact sont gardées).
+#              L'effacement a lieu à la prochaine ouverture du tableau de bord.
 # Réglages (Settings, Secrets and variables, Actions) :
 #   SSH_HOST, SSH_USER, SSH_PASS : compte SFTP et SSH créé dans IONOS
 #   MAIL_TO, SMTP_USER, SMTP_PASS : boîte contact@rubriqua.com
@@ -23,7 +25,7 @@ on:
       action:
         description: "Action"
         type: choice
-        options: [apercu, basculer, retour, reinitialiser-2fa]
+        options: [apercu, basculer, retour, reinitialiser-2fa, vider-statistiques]
         default: apercu
 
 concurrency: mise-en-ligne
@@ -126,6 +128,12 @@ jobs:
         run: |
           SSH="sshpass -e ssh -o StrictHostKeyChecking=accept-new $SSH_USER@$SSH_HOST"
           $SSH "mkdir -p public/donnees && touch public/donnees/.reinitialiser-2fa && ls -a public/donnees"
+
+      - name: Vider les statistiques de visite
+        if: inputs.action == 'vider-statistiques'
+        run: |
+          SSH="sshpass -e ssh -o StrictHostKeyChecking=accept-new $SSH_USER@$SSH_HOST"
+          $SSH "mkdir -p public/donnees && touch public/donnees/.vider-statistiques && ls -a public/donnees"
 
       - name: Retour à WordPress
         if: inputs.action == 'retour'

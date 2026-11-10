@@ -154,19 +154,53 @@
   });
 })();
 
-// Mesure d'audience sans cookie (voir /politique-de-confidentialite/)
+// Mesure d'audience sans cookie (voir /cookies/)
 (function () {
   'use strict';
   if (location.protocol === 'file:') return;
-  try { if (localStorage.getItem('rb_ignore') === '1') return; } catch (e) {}
-  var utm = (location.search.match(/[?&]utm_source=([^&]+)/) || [])[1] || '';
-  var data = JSON.stringify({
-    p: location.pathname,
-    r: document.referrer,
-    u: decodeURIComponent(utm),
-    w: window.innerWidth || 0
+  // Bouton de la page Cookies pour ne plus être compté
+  document.querySelectorAll('[data-optout]').forEach(function (b) {
+    var on = function () { try { return localStorage.getItem('rb_ignore') === '1'; } catch (e) { return false; } };
+    var paint = function () { b.textContent = on() ? 'Vos visites ne sont plus comptées. Les compter à nouveau' : 'Ne plus compter mes visites'; };
+    b.addEventListener('click', function () {
+      try { if (on()) localStorage.removeItem('rb_ignore'); else { localStorage.setItem('rb_ignore', '1'); localStorage.removeItem('rb_vu'); } } catch (e) {}
+      paint();
+    });
+    paint();
   });
+  try { if (localStorage.getItem('rb_ignore') === '1') return; } catch (e) {}
   var url = '/api/hit.php';
-  if (navigator.sendBeacon) navigator.sendBeacon(url, new Blob([data], { type: 'text/plain' }));
-  else if (window.fetch) fetch(url, { method: 'POST', body: data, keepalive: true, headers: { 'Content-Type': 'text/plain' } });
+  var send = function (obj) {
+    var data = JSON.stringify(obj);
+    if (navigator.sendBeacon) navigator.sendBeacon(url, new Blob([data], { type: 'text/plain' }));
+    else if (window.fetch) fetch(url, { method: 'POST', body: data, keepalive: true, headers: { 'Content-Type': 'text/plain' } });
+  };
+  // Date de première visite gardée dans le navigateur, sans identifiant, effacée après 13 mois
+  var nouveau = 1;
+  try {
+    var vu = parseInt(localStorage.getItem('rb_vu') || '0', 10);
+    var limite = Date.now() - 395 * 864e5;
+    if (vu && vu > limite) nouveau = 0;
+    else localStorage.setItem('rb_vu', String(Date.now()));
+  } catch (e) { nouveau = undefined; }
+  var utm = (location.search.match(/[?&]utm_source=([^&]+)/) || [])[1] || '';
+  send({ p: location.pathname, r: document.referrer, u: decodeURIComponent(utm), w: window.innerWidth || 0, n: nouveau });
+  // Clics sur les liens et les boutons
+  document.addEventListener('click', function (ev) {
+    var el = ev.target.closest ? ev.target.closest('a[href], button') : null;
+    if (!el || el.hasAttribute('data-optout')) return;
+    var cible = '';
+    if (el.tagName === 'A') {
+      var href = el.getAttribute('href');
+      if (href.charAt(0) === '#') cible = location.pathname + href;
+      else if (/^(mailto|tel):/i.test(href)) cible = href.split(':')[0].toLowerCase();
+      else { try { var u = new URL(href, location.href); cible = u.host === location.host ? u.pathname + u.hash : u.host; } catch (e) { return; } }
+    } else {
+      cible = el.type === 'submit' ? 'Envoi de formulaire' : 'Bouton';
+    }
+    // Libellé court : titre de la carte s'il y en a un, sinon texte du lien ou du bouton
+    var titre = el.querySelector('h1, h2, h3, b, strong, .gl-row-name, .sg-tab-txt');
+    var libelle = (el.getAttribute('aria-label') || (titre && titre.textContent) || el.innerText || el.textContent || '').replace(/\s+/g, ' ').trim().slice(0, 80);
+    send({ t: 'clic', p: location.pathname, c: cible, l: libelle });
+  }, true);
 })();
