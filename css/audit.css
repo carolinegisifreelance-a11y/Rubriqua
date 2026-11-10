@@ -158,7 +158,9 @@
   .au-row .au-st { grid-column: 2; justify-self: start; }
   .au-steps { grid-template-columns: 1fr; }
   .au-steps .step { align-items: flex-start; text-align: left; }
-  .au-steps::before, .au-steps::after { left: 31px; }
+  /* Sur mobile, un trait entre chaque numéro, qui s'arrête sur le dernier */
+  .au-steps::before, .au-steps::after { display: none; }
+  .au-steps .step:not(:last-child)::after { content: ""; position: absolute; left: 31px; top: 64px; bottom: -32px; width: 2px; background: var(--grey); }
   .au-fam { padding: 24px; grid-template-columns: 1fr; }
   .au-fam-num { grid-row: auto; font-size: 34px; }
   .au-cmp { grid-template-columns: 1fr; }
