@@ -87,6 +87,11 @@ function schema(PDO $pdo): void {
         ? array_column($pdo->query("PRAGMA table_info(visites)")->fetchAll(PDO::FETCH_ASSOC), 'name')
         : array_column($pdo->query("SHOW COLUMNS FROM visites")->fetchAll(PDO::FETCH_ASSOC), 'Field');
     if (!in_array('nouveau', $cols, true)) $pdo->exec("ALTER TABLE visites ADD COLUMN nouveau TINYINT NULL");
+    // Étiquettes des fiches contact (séparées par des virgules), ajoutées en novembre 2026
+    $ccols = is_sqlite($pdo)
+        ? array_column($pdo->query("PRAGMA table_info(contacts)")->fetchAll(PDO::FETCH_ASSOC), 'name')
+        : array_column($pdo->query("SHOW COLUMNS FROM contacts")->fetchAll(PDO::FETCH_ASSOC), 'Field');
+    if (!in_array('etiquettes', $ccols, true)) $pdo->exec("ALTER TABLE contacts ADD COLUMN etiquettes VARCHAR(300) NOT NULL DEFAULT ''");
     if (is_sqlite($pdo)) {
         $pdo->exec("CREATE INDEX IF NOT EXISTS i_visites_jour ON visites(jour)");
     }

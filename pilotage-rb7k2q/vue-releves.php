@@ -95,7 +95,7 @@ if (($_SERVER['REQUEST_METHOD'] ?? '') === 'POST' && str_contains($_SERVER['CONT
 }
 
 // ---------- Liste et demande ouverte ----------
-$list = $pdo->query("SELECT d.id, d.cree_le, d.site, d.score, d.statut, d.echeance, d.envoye_le, d.concurrents, c.email FROM demandes d JOIN contacts c ON c.id = d.contact_id WHERE d.type = 'releve' ORDER BY CASE WHEN d.statut = 'envoye' THEN 1 ELSE 0 END, d.echeance, d.cree_le DESC LIMIT 60")->fetchAll();
+$list = $pdo->query("SELECT d.id, d.cree_le, d.site, d.score, d.statut, d.echeance, d.envoye_le, d.concurrents, c.email, c.etiquettes, c.id AS cid FROM demandes d JOIN contacts c ON c.id = d.contact_id WHERE d.type = 'releve' ORDER BY CASE WHEN d.statut = 'envoye' THEN 1 ELSE 0 END, d.echeance, d.cree_le DESC LIMIT 60")->fetchAll();
 $openId = (int)($_GET['d'] ?? 0);
 if (!$openId && $list && $list[0]['statut'] !== 'envoye') $openId = (int)$list[0]['id'];
 $cur = $openId ? load_demande($pdo, $openId) : null;
@@ -186,6 +186,7 @@ page_start('Relevés, tableau de bord Rubriqua', $css . '
         <a class="req<?= $l['statut'] === 'envoye' ? ' done' : '' ?>" href="./?v=releves&amp;d=<?= (int)$l['id'] ?>"<?= (int)$l['id'] === $openId ? ' aria-current="page"' : '' ?>>
           <span class="rq"><b><?= h(host_of($l['site'])) ?></b><span class="st <?= $cls ?>"><?= h($lab) ?></span></span>
           <span class="note"><?= $l['statut'] === 'envoye' ? 'Envoyé le ' . h((new DateTime($l['envoye_le']))->format('d/m')) : 'Demandé le ' . h((new DateTime($l['cree_le']))->format('d/m')) . ' · avant le ' . h((new DateTime($l['echeance']))->format('d/m')) ?><br>Audit <?= (int)$l['score'] ?> · <?= $l['concurrents'] !== '' ? count(split_list($l['concurrents'])) . ' concurrent(s) donné(s)' : 'sans concurrent' ?></span>
+          <?php if ($l['etiquettes'] !== ''): ?><span class="rq" style="justify-content:flex-start;flex-wrap:wrap"><?php foreach (split_list($l['etiquettes']) as $t): ?><span class="st st-grey"><?= h($t) ?></span><?php endforeach; ?></span><?php endif; ?>
         </a>
       <?php endforeach; ?>
     </aside>
@@ -204,6 +205,7 @@ page_start('Relevés, tableau de bord Rubriqua', $css . '
             <dt>Produits ou services</dt><dd><?= h($cur['produits']) ?></dd>
             <dt>Concurrents</dt><dd><?= $cur['concurrents'] !== '' ? h($cur['concurrents']) : '<span class="note">Non renseignés, à repérer dans les réponses</span>' ?></dd>
             <dt>Conseils par e-mail</dt><dd><?= $cur['conseils'] ? 'Oui' : 'Non' ?></dd>
+            <dt>Fiche contact</dt><dd><a href="./?v=contacts&amp;c=<?= (int)$cur['cid'] ?>">Ouvrir la fiche et ses étiquettes</a></dd>
           </dl>
         </div>
         <div style="display:flex;flex-direction:column;gap:10px;min-width:0">
