@@ -37,7 +37,19 @@
   var render = function (d) {
     result.querySelectorAll('[data-audit-host]').forEach(function (el) { el.textContent = d.host; });
     $('[data-audit-verdict]').textContent = d.verdict;
-    $('[data-audit-conclusion]').textContent = d.conclusion;
+    // Priorités : d'abord les points bloquants, puis ceux à améliorer
+    var todo = [];
+    d.groups.forEach(function (g) { g.items.forEach(function (i) { if (i.status !== 'ok') todo.push(i); }); });
+    todo.sort(function (a, b) { return (a.status === 'ko' ? 0 : 1) - (b.status === 'ko' ? 0 : 1); });
+    todo = todo.slice(0, 5);
+    var prio = $('[data-audit-prio]');
+    prio.innerHTML = todo.map(function (i, n) {
+      return '<li><span class="au-prio-n">' + (n + 1) + '</span><b>' + esc(i.name) + '</b><span class="au-st au-st-' + i.status + '">' + LABELS[i.status] + '</span></li>';
+    }).join('');
+    prio.hidden = !todo.length;
+    var concl = $('[data-audit-conclusion]');
+    concl.textContent = d.conclusion;
+    concl.hidden = todo.length > 0;
     $('[data-audit-counts]').innerHTML =
       '<span class="au-st au-st-ok">' + d.counts.ok + ' validés sur ' + d.total + '</span>' +
       '<span class="au-st au-st-warn">' + d.counts.warn + ' à améliorer</span>' +
@@ -53,6 +65,7 @@
     }).join('');
     var site = $('[data-audit-site]'); if (site) site.value = d.url;
     var ring = $('[data-audit-score]');
+    ring.style.setProperty('--au-c', d.score >= 80 ? '#5fae73' : (d.score >= 50 ? '#e0973a' : '#EF8D86'));
     ring.style.setProperty('--au-p', 0);
     result.hidden = false;
     requestAnimationFrame(function () { requestAnimationFrame(function () { ring.style.setProperty('--au-p', d.score); }); });

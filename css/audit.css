@@ -37,19 +37,20 @@
 
 /* Résultat */
 @property --au-p { syntax: '<number>'; inherits: false; initial-value: 0; }
-.au-result { background: var(--beige); outline: none; }
+.au-result { background: var(--beige); outline: none; scroll-margin-top: 80px; }
 .au-result-inner { padding-top: 64px; padding-bottom: 88px; display: flex; flex-direction: column; gap: 24px; }
-.au-summary { background: var(--white); border-radius: 12px; padding: 32px; display: flex; flex-wrap: wrap; gap: 28px 40px; align-items: center; animation: au-monte .5s var(--ease) both; }
-.au-score { flex: none; width: 150px; height: 150px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: conic-gradient(var(--red) calc(var(--au-p) * 1%), #ece9e4 0); transition: --au-p 1.6s var(--ease); }
-.au-score > div { width: 118px; height: 118px; border-radius: 50%; background: var(--white); display: flex; flex-direction: column; align-items: center; justify-content: center; }
-.au-score b { font-size: 40px; letter-spacing: -0.03em; }
-.au-score span { font-size: 12px; font-weight: 700; color: var(--muted); }
+.au-summary { color: var(--white); border-radius: 14px; padding: 40px; display: flex; flex-wrap: wrap; gap: 28px 48px; align-items: center; animation: au-monte .5s var(--ease) both;
+  background-color: var(--black); background-image: linear-gradient(#232323 1px, transparent 1px), linear-gradient(90deg, #232323 1px, transparent 1px); background-size: 44px 44px; }
+.au-score { --au-c: var(--red-light); flex: none; width: 184px; height: 184px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: conic-gradient(var(--au-c) calc(var(--au-p) * 1%), #333 0); transition: --au-p 1.6s var(--ease); }
+.au-score > div { width: 148px; height: 148px; border-radius: 50%; background: var(--ink); display: flex; flex-direction: column; align-items: center; justify-content: center; }
+.au-score b { font-size: 56px; letter-spacing: -0.04em; line-height: 1; }
+.au-score span { font-size: 13px; font-weight: 700; color: #a9a49d; }
 .au-summary-text { flex: 999 1 420px; min-width: 0; display: flex; flex-direction: column; gap: 12px; }
-.au-for { font-size: 14px; color: var(--muted); }
-.au-for b { color: var(--ink); }
-.au-summary-text h2 { font-size: clamp(24px, 2.6vw, 30px); letter-spacing: -0.02em; line-height: 1.2; }
+.au-for { font-size: 15px; color: #a9a49d; }
+.au-for b { color: var(--white); }
+.au-summary-text h2 { font-size: clamp(26px, 3.2vw, 40px); letter-spacing: -0.03em; line-height: 1.12; text-wrap: balance; }
 .au-counts { display: flex; flex-wrap: wrap; gap: 8px; }
-.au-calc { font-size: 13px; color: var(--muted); }
+.au-calc { font-size: 13px; color: #a9a49d; }
 .au-st { font-size: 12px; font-weight: 800; padding: 4px 8px; border-radius: 4px; white-space: nowrap; }
 .au-st-ok { background: #e8f1ea; color: #2f6b3a; }
 .au-st-warn { background: #fbefe0; color: #8a4b08; }
@@ -63,14 +64,18 @@
 .au-row svg { width: 24px; height: 24px; fill: none; stroke-width: 2.6; stroke-linecap: round; stroke-linejoin: round; }
 .au-row b { display: block; font-size: 16px; line-height: 1.35; }
 .au-row p { font-size: 14px; line-height: 1.55; color: var(--text); margin-top: 4px; }
-.au-next { display: flex; flex-wrap: wrap; gap: 24px; align-items: stretch; }
-.au-concl { flex: 999 1 460px; min-width: 0; background: var(--white); border-radius: 12px; padding: 32px; display: flex; flex-direction: column; gap: 16px; }
+.au-next { display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr); gap: 24px; align-items: stretch; }
+.au-concl { min-width: 0; background: var(--white); border-radius: 12px; padding: 32px; display: flex; flex-direction: column; gap: 16px; }
 .au-concl h3 { font-size: 22px; }
 .au-concl p { font-size: 15px; line-height: 1.65; color: var(--text); }
-.au-concl .btn { align-self: flex-start; margin-top: 4px; }
-.au-next { align-items: flex-start; }
+.au-concl .btn { align-self: flex-start; margin-top: auto; }
+.au-prio { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; }
+.au-prio li { display: grid; grid-template-columns: 32px minmax(0, 1fr) auto; gap: 14px; align-items: center; padding: 12px 0; border-top: 1px solid #ece9e4; }
+.au-prio li:first-child { border-top: 0; }
+.au-prio-n { width: 32px; height: 32px; border-radius: 50%; background: var(--ink); color: var(--white); font-weight: 800; font-size: 14px; display: flex; align-items: center; justify-content: center; }
+.au-prio b { font-size: 16px; line-height: 1.35; }
 .au-concl .au-concl-main { font-size: 17px; line-height: 1.7; color: var(--ink); }
-.au-next .au-cta { flex: 1 1 380px; min-width: 0; color: var(--white); padding: 32px; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); align-content: start;
+.au-next .au-cta { min-width: 0; margin: 0; color: var(--white); padding: 32px; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); align-content: start;
   background-color: var(--black); background-image: linear-gradient(#232323 1px, transparent 1px), linear-gradient(90deg, #232323 1px, transparent 1px); background-size: 44px 44px; }
 .au-cta label { min-width: 0; }
 .au-cta input { width: 100%; box-sizing: border-box; background: var(--white); color: var(--ink); }
@@ -127,9 +132,26 @@
 
 @media (max-width: 1024px) {
   .au-groups, .au-fams { grid-template-columns: 1fr; }
+  .au-next { grid-template-columns: 1fr; }
 }
 @media (max-width: 760px) {
+  .au-next { grid-template-columns: 1fr; }
   .au-next .au-cta { grid-template-columns: 1fr; }
+  /* Sur mobile : score, priorités et formulaire d'abord, détail des critères ensuite */
+  .au-summary { order: 1; }
+  .au-next { order: 2; }
+  .au-groups { order: 3; }
+  .au-again { order: 4; }
+  .au-summary { padding: 28px 22px; justify-content: center; text-align: center; }
+  .au-summary-text { align-items: center; }
+  .au-counts { justify-content: center; }
+  .au-score { width: 160px; height: 160px; }
+  .au-score > div { width: 128px; height: 128px; }
+  .au-score b { font-size: 48px; }
+  .au-prio li { grid-template-columns: 28px minmax(0, 1fr) auto; gap: 10px; }
+  .au-prio-n { width: 28px; height: 28px; font-size: 13px; }
+  .au-prio b { font-size: 15px; }
+  .au-prio .au-st { font-size: 11px; padding: 3px 6px; }
   .au-form input { font-size: 17px; }
   .au-summary, .au-concl, .au-cta { padding: 24px; }
   .au-row { grid-template-columns: 24px minmax(0, 1fr); }
