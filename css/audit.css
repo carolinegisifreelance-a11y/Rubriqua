@@ -51,6 +51,22 @@
 .au-summary-text h2 { font-size: clamp(26px, 3.2vw, 40px); letter-spacing: -0.03em; line-height: 1.12; text-wrap: balance; }
 .au-counts { display: flex; flex-wrap: wrap; gap: 8px; }
 .au-calc { font-size: 13px; color: #a9a49d; }
+.au-measure { font-size: 15px; line-height: 1.55; color: #cfcbc4; margin: 0; max-width: 640px; }
+.au-measure b { color: var(--white); }
+.au-two { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+.au-two > div { border-radius: 10px; padding: 20px; display: flex; flex-direction: column; gap: 8px; min-width: 0; }
+.au-two .au-st, .au-two-tag { align-self: flex-start; }
+.au-two b { font-size: 17px; line-height: 1.3; color: var(--ink); }
+.au-two p { font-size: 15px; line-height: 1.55; margin: 0; }
+.au-two-read { background: var(--beige); }
+.au-two-cite { background: var(--ink); color: #cfcbc4; }
+.au-two-cite b { color: var(--white); }
+.au-concl .au-two-cite p { color: #cfcbc4; }
+.au-two-tag { font-size: 12px; font-weight: 800; padding: 4px 8px; border-radius: 4px; background: #3a3a3a; color: var(--red-light); }
+.au-two-cite a { color: var(--red-light); font-weight: 800; font-size: 15px; text-decoration: none; margin-top: auto; }
+.au-two-cite a:hover { text-decoration: underline; }
+#au-releve-cta { scroll-margin-top: 90px; }
+@media (max-width: 760px) { .au-two { grid-template-columns: 1fr; } }
 .au-st { font-size: 12px; font-weight: 800; padding: 4px 8px; border-radius: 4px; white-space: nowrap; }
 .au-st-ok { background: #e8f1ea; color: #2f6b3a; }
 .au-st-warn { background: #fbefe0; color: #8a4b08; }

@@ -47,6 +47,13 @@
       return '<li><span class="au-prio-n">' + (n + 1) + '</span><b>' + esc(i.name) + '</b><span class="au-st au-st-' + i.status + '">' + LABELS[i.status] + '</span></li>';
     }).join('');
     prio.hidden = !todo.length;
+    // Lisible par les IA : la phrase suit le score
+    var READ = d.score >= 80 && !d.counts.ko ? ['ok', 'Votre score, ', 'Oui. Les robots y accèdent, comprennent son sujet et trouvent les signaux qui inspirent confiance.']
+      : d.score >= 50 ? ['warn', 'Votre score, ', 'En partie. Les IA lisent la page, mais certains points les empêchent de bien la comprendre.']
+      : ['ko', 'Votre score, ', 'Difficilement. Des points bloquent la lecture : à corriger avant de penser aux citations.'];
+    var rt = $('[data-read-tag]'); rt.className = 'au-st au-st-' + READ[0]; rt.textContent = READ[1] + d.score + '/100';
+    $('[data-read-text]').textContent = READ[2];
+    $('[data-cite-text]').textContent = d.score >= 50 ? 'Une page lisible peut rester absente des réponses. Tout dépend des questions de vos clients et des sites que les IA citent à votre place.' : 'Le relevé sera plus utile une fois les blocages levés. Il montre dès maintenant qui les IA citent sur vos sujets.';
     var concl = $('[data-audit-conclusion]');
     concl.textContent = d.conclusion;
     concl.hidden = todo.length > 0;
@@ -122,6 +129,15 @@
   // Relevé de citations : deux champs apparaissent quand la case est cochée
   var tog = result.querySelector('[data-releve-toggle]'), fields = result.querySelector('[data-releve-fields]');
   tog.addEventListener('change', function () { fields.hidden = !tog.checked; fields.querySelector('input[name="produits"]').required = tog.checked; if (tog.checked) fields.querySelector('input').focus(); });
+  // Lien de la carte « Les IA vous citent-elles ? » : coche le relevé et amène au formulaire
+  var go = result.querySelector('[data-releve-go]');
+  if (go) go.addEventListener('click', function (e) {
+    e.preventDefault();
+    if (!tog.checked) { tog.checked = true; fields.hidden = false; fields.querySelector('input[name="produits"]').required = true; }
+    var cta = document.getElementById('au-releve-cta');
+    cta.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    setTimeout(function () { cta.querySelector('input[name="email"]').focus({ preventScroll: true }); }, 450);
+  });
 
   // Envoi du rapport par e-mail ou de la demande d'audit complet
   result.querySelectorAll('form[data-demande]').forEach(function (f) {

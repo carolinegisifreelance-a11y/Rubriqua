@@ -67,6 +67,13 @@ function footer_note(string $why, array $contact): string {
     return $f;
 }
 
+// Lisibilité de la page par les IA, selon le score de l'audit GEO
+function lisibilite(int $score, int $ko = 0): string {
+    if ($score >= 80 && $ko === 0) return 'votre page est lisible par les IA';
+    if ($score >= 50) return 'les IA lisent votre page, mais certains points les empêchent de bien la comprendre';
+    return 'des points gênent la lecture de votre page par les IA';
+}
+
 function priorities(array $audit): array {
     $todo = [];
     foreach ($audit['groups'] as $g) foreach ($g['items'] as $i) if ($i['status'] !== 'ok') $todo[] = $i;
@@ -109,10 +116,11 @@ function report_mail(array $audit, array $contact, bool $releve, string $echeanc
         $in .= '</table>';
     }
     $in .= '<div style="height:18px"></div>';
-    $in .= para('Ce test vérifie que votre page est prête à être citée. Il ne dit pas si les IA vous citent vraiment.', 'font-size:14px;color:' . C_MUTED);
+    $in .= para('Ce score mesure la lisibilité de votre page pour les IA : accès des robots, structure du contenu, données structurées, signaux de confiance. Il ne dit pas si elles vous citent quand vos clients posent leurs questions.', 'font-size:14px;color:' . C_MUTED);
 
     if ($releve) {
-        $in .= box(h_title('Votre relevé de citations arrive') . '<p style="margin:0">Nous posons vos questions à ChatGPT, à Perplexity et aux Aperçus IA de Google, et nous comparons les réponses avec vos concurrents. Vous recevez le relevé d’ici le ' . e(date_fr($echeance)) . '.</p>');
+        $read = $audit['score'] >= 50 ? 'Votre score montre que ' . lisibilite((int)$audit['score'], (int)($audit['counts']['ko'] ?? 0)) . '.' : 'Votre score signale des points qui gênent la lecture de votre page par les IA.';
+        $in .= box(h_title('Votre relevé de citations arrive') . '<p style="margin:0">' . e($read) . ' Le relevé regarde l’étape suivante : quand vos clients posent leurs questions à ChatGPT, à Perplexity et aux Aperçus IA de Google, qui citent-elles ? Vous le recevez d’ici le ' . e(date_fr($echeance)) . '.</p>');
     } else {
         $in .= box(h_title('Aller au-delà de cette page') . '<p style="margin:0 0 14px">Un audit SEO et GEO complet couvre tout le site, vos citations réelles dans les IA et un plan d’action.</p>'
             . button('Demander un audit SEO et GEO complet', SITE_URL . '/audit-geo-gratuit/?url=' . rawurlencode($audit['url']) . '&complet=1'));
@@ -122,7 +130,7 @@ function report_mail(array $audit, array $contact, bool $releve, string $echeanc
         . "Score : {$audit['score']}/100\n{$audit['verdict']}\n\n";
     if ($prio) { $text .= "Vos priorités\n"; foreach ($prio as $n => $i) $text .= ($n + 1) . '. ' . $i['name'] . ' (' . STATUS[$i['status']][0] . ') : ' . $i['note'] . "\n"; $text .= "\n"; }
     foreach ($audit['groups'] as $g) { $text .= $g['name'] . "\n"; foreach ($g['items'] as $i) $text .= '- ' . $i['name'] . ' : ' . STATUS[$i['status']][0] . "\n"; $text .= "\n"; }
-    $text .= $releve ? "Votre relevé de citations arrive d’ici le " . date_fr($echeance) . ".\n\n" : "Demander un audit SEO et GEO complet : " . SITE_URL . "/audit-geo-gratuit/?url=" . rawurlencode($audit['url']) . "&complet=1\n\n";
+    $text .= $releve ? "Votre relevé de citations arrive d’ici le " . date_fr($echeance) . ". Il regarde l’étape suivante : quand vos clients posent leurs questions aux IA, qui citent-elles ?\n\n" : "Demander un audit SEO et GEO complet : " . SITE_URL . "/audit-geo-gratuit/?url=" . rawurlencode($audit['url']) . "&complet=1\n\n";
     $text .= "L’équipe Rubriqua\nrubriqua.com\n";
 
     $why = 'Vous recevez ce mail parce que vous avez demandé ce rapport sur rubriqua.com le ' . date_fr($day) . '.';
@@ -193,10 +201,13 @@ function releve_mail(array $r, array $contact, array $demande, string $day, stri
     if ($produits !== '') $produits = mb_strtolower(mb_substr($produits, 0, 1)) . mb_substr($produits, 1);
     $conc = array_values(array_filter(array_map(fn($c) => $c['nom'], array_filter($cmp, fn($c) => empty($c['client'])))));
 
+    $score = isset($demande['score']) && $demande['score'] !== null && $demande['score'] !== '' ? (int)$demande['score'] : null;
+    $ko = (int)((json_decode((string)($demande['audit'] ?? ''), true) ?: [])['counts']['ko'] ?? 0);
+    $lead = $score !== null ? 'Votre audit GEO donnait ' . $score . ' sur 100 : ' . lisibilite($score, $ko) . '. Ce relevé vérifie si elles vous citent quand vos clients posent leurs questions, et repère les questions où une place est à prendre.' : '';
     $intro = 'Voici votre relevé offert, réalisé le ' . e(date_fr($day)) . '. Nous avons posé ' . count($r['questions']) . ' questions'
         . ($produits !== '' ? ' sur ' . e($produits) : ' de vos clients') . ' à ChatGPT, à Perplexity et aux Aperçus IA de Google.';
     if ($conc) $intro .= ' Nous avons comparé les réponses avec ' . e(implode(' et ', count($conc) > 1 ? [implode(', ', array_slice($conc, 0, -1)), end($conc)] : $conc)) . '.';
-    $in = para('Bonjour' . ($contact['nom'] !== '' ? ' ' . e($contact['nom']) : '') . ',') . para($intro);
+    $in = para('Bonjour' . ($contact['nom'] !== '' ? ' ' . e($contact['nom']) : '') . ',') . ($lead !== '' ? para(e($lead)) : '') . para($intro);
 
     // Comparaison
     if ($cmp) {
@@ -254,7 +265,7 @@ function releve_mail(array $r, array $contact, array $demande, string $day, stri
         . ($rdvUrl !== '' ? button('Choisir un créneau', $rdvUrl) : '<p style="margin:0">Répondez simplement à ce mail avec deux ou trois créneaux qui vous conviennent.</p>'));
 
     // Version texte
-    $t = 'Bonjour' . ($contact['nom'] !== '' ? ' ' . $contact['nom'] : '') . ",\n\n" . html_entity_decode(strip_tags($intro), ENT_QUOTES, 'UTF-8') . "\n\n";
+    $t = 'Bonjour' . ($contact['nom'] !== '' ? ' ' . $contact['nom'] : '') . ",\n\n" . ($lead !== '' ? $lead . "\n\n" : '') . html_entity_decode(strip_tags($intro), ENT_QUOTES, 'UTF-8') . "\n\n";
     if ($cmp) { $t .= "Qui les IA citent sur vos sujets\n"; foreach ($cmp as $c) $t .= (!empty($c['client']) ? 'Votre site' : $c['nom']) . ' : ' . $c['n'] . '/' . $r['total'] . "\n"; $t .= "\n"; }
     if ($opps) { $t .= "Vos opportunités\n"; foreach ($opps as $o) $t .= '- ' . $o['titre'] . ' (' . (OPP[$o['type']][0] ?? '') . ') : ' . $o['texte'] . "\n"; $t .= "\n"; }
     $t .= "Le détail question par question\n";
