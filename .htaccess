@@ -10,14 +10,14 @@ DirectoryIndex index.html index.php
 </IfModule>
 
 # Anciennes adresses des articles (slugs conservés par WordPress), redirigées en 301
-RedirectMatch 301 ^/how-to-run-a-technical-seo-audit-on-your-site/?$ /comment-faire-un-audit-seo/
-RedirectMatch 301 ^/seo-and-google-ads-making-both-channels-work-together/?$ /google-ads-ia-ai-max/
-RedirectMatch 301 ^/which-web-analytics-metrics-should-you-track/?$ /suivre-leads-cycle-vente-long-ga4-gtm/
-RedirectMatch 301 ^/microsoft-decision-1-ce-que-le-nouveau-modele-de-microsoft-change-pour-bing-et-copilot/?$ /microsoft-decision-1-change-pour-bing-et-copilot/
+RedirectMatch 301 ^/how-to-run-a-technical-seo-audit-on-your-site/?$ /blog/comment-faire-un-audit-seo/
+RedirectMatch 301 ^/seo-and-google-ads-making-both-channels-work-together/?$ /blog/google-ads-ia-ai-max/
+RedirectMatch 301 ^/which-web-analytics-metrics-should-you-track/?$ /blog/suivre-leads-cycle-vente-long-ga4-gtm/
+RedirectMatch 301 ^/microsoft-decision-1-ce-que-le-nouveau-modele-de-microsoft-change-pour-bing-et-copilot/?$ /blog/microsoft-decision-1-change-pour-bing-et-copilot/
+# Articles déplacés sous /blog/ le 10 novembre 2026
+RedirectMatch 301 ^/(actualite-seo-ia-fin-octobre-2026|etre-recommande-chatgpt-industrie|referencement-fabricant-industriel|faille-php2shell-securite-referencement|comment-suivre-sa-visibilite-apercus-ia-google|microsoft-decision-1-change-pour-bing-et-copilot|suivre-leads-cycle-vente-long-ga4-gtm|google-ads-ia-ai-max|comment-faire-un-audit-seo)/?$ /blog/$1/
 # Catégories du blog en français
 RedirectMatch 301 ^/category/(.*)$ /categorie/$1
-# Mauvaise URL canonique déclarée sur le site WordPress
-RedirectMatch 301 ^/blog/google-ads-ia-ai-max/?$ /google-ads-ia-ai-max/
 # Pages WordPress qui n'existent plus
 RedirectMatch 301 ^/feed/?$ /blog/
 RedirectMatch 301 ^/comments/feed/?$ /blog/
