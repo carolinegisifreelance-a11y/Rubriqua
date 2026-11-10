@@ -37,6 +37,13 @@ RedirectMatch 404 ^/(xmlrpc\.php|wp-cron\.php|wp-config\.php|readme\.html|licens
   ExpiresByType application/javascript "access plus 1 week"
 </IfModule>
 
+# Les pages HTML sont toujours revérifiées, pour que chaque mise à jour s'affiche tout de suite
+<IfModule mod_headers.c>
+  <FilesMatch "\.(html|php)$">
+    Header set Cache-Control "no-cache"
+  </FilesMatch>
+</IfModule>
+
 # Sécurité de base
 <IfModule mod_headers.c>
   Header always set X-Content-Type-Options "nosniff"
