@@ -244,7 +244,7 @@ page_start('Relevés, tableau de bord Rubriqua', $css . '
       <div class="sticky acts">
         <button type="button" class="btn-dark" id="preview">Voir l’aperçu du mail</button>
         <button type="button" class="btn-red" id="send"<?= $cur['statut'] === 'envoye' ? ' disabled' : '' ?>>Envoyer le relevé</button>
-        <span class="note" id="status"><?= $cur['statut'] === 'envoye' ? 'Déjà envoyé.' : 'Enregistrement automatique.' ?></span>
+        <span class="note" id="sendhint" style="color:var(--red);font-weight:700"></span><span class="note" id="status"><?= $cur['statut'] === 'envoye' ? 'Déjà envoyé.' : 'Enregistrement automatique.' ?></span>
       </div>
       <section class="card" id="pv" hidden style="display:flex;flex-direction:column;gap:10px"><b id="pvs" style="color:var(--ink)"></b><iframe class="preview" id="pvf" title="Aperçu du mail" sandbox></iframe></section>
     <?php endif; ?>
@@ -387,6 +387,8 @@ page_start('Relevés, tableau de bord Rubriqua', $css . '
       return '<div class="opp"><input type="checkbox" data-og="' + i + '"' + (o.garder ? ' checked' : '') + ' aria-label="Garder dans le mail"><span class="st ' + l[0] + '">' + l[1] + '</span><div style="display:flex;flex-direction:column;gap:6px"><input type="text" data-ot="' + i + '" value="' + esc(o.titre) + '"><textarea data-ox="' + i + '" rows="2">' + esc(o.texte) + '</textarea></div></div>';
     }).join('') : '<p class="note">Les opportunités apparaissent quand au moins deux réponses par question sont collées.</p>';
     $('send').disabled = SENT || A.filled < expected;
+    if (!SENT) $('send').title = A.filled < expected ? 'Collez les ' + (expected - A.filled) + ' réponses manquantes pour envoyer' : '';
+    $('sendhint').textContent = !SENT && A.filled < expected ? 'Il manque ' + (expected - A.filled) + ' réponse' + (expected - A.filled > 1 ? 's' : '') + ' sur ' + expected + ' pour envoyer.' : '';
   }
 
   // ---------- Enregistrement ----------

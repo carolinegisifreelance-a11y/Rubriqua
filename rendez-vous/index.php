@@ -64,11 +64,11 @@ input:focus,textarea:focus,.d:focus-visible,.s:focus-visible,.go:focus-visible{o
 </style>
 </head>
 <body>
-<div class="bar"><div class="in"><a href="/"><img src="/assets/images/logo/logo-rubriqua-agence-seo-geo-growth-fond-sombre.svg" alt="Rubriqua" width="131" height="28"></a><span>Échange offert, sans engagement</span></div></div>
+<div class="bar"><div class="in"><a href="/"><img src="/assets/images/logo/logo-rubriqua-agence-seo-geo-growth-fond-sombre.svg" alt="Rubriqua" width="131" height="28"></a><span>Échange gratuit, sans engagement</span></div></div>
 <section class="hero"><div class="in">
   <span class="ctx" id="ctx" hidden></span>
-  <h1 id="h1">Choisissez un créneau pour en parler avec un spécialiste SEO et GEO</h1>
-  <p id="lead">Un échange en visio pour regarder votre visibilité sur Google et dans les IA, et repérer les actions les plus utiles pour votre site.</p>
+  <h1 id="h1">Choisissez un créneau pour échanger avec notre expert SEO et GEO</h1>
+  <p id="lead">Un échange gratuit en visio pour parler de votre site et voir comment améliorer sa visibilité sur Google et dans les IA.</p>
 </div></section>
 
 <div class="in">
@@ -144,7 +144,7 @@ input:focus,textarea:focus,.d:focus-visible,.s:focus-visible,.go:focus-visible{o
       if (!r.ok) return msg('Réservation indisponible', r.message);
       data = r; data.jours = r.jours;
       if (r.contexte) { $('ctx').textContent = r.contexte; $('ctx').hidden = false; }
-      $('lead').textContent = r.duree + ' minutes en visio pour regarder votre visibilité sur Google et dans les IA, et repérer les actions les plus utiles pour votre site. L’échange est offert et sans engagement.';
+      $('lead').textContent = 'Un échange gratuit de ' + r.duree + ' minutes en visio pour parler de votre site et voir comment améliorer sa visibilité sur Google et dans les IA.';
       var f = $('form');
       if (r.nom && !f.nom.value) f.nom.value = r.nom;
       if (r.email && !f.email.value) f.email.value = r.email;

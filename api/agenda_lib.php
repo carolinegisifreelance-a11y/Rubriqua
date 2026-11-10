@@ -270,7 +270,7 @@ function ics_event(array $r, string $visio, bool $forClient): string {
     $esc = fn($s) => str_replace(["\\", ";", ",", "\n"], ["\\\\", "\\;", "\\,", "\\n"], (string)$s);
     $title = $forClient ? 'Échange avec Rubriqua' : 'Rubriqua, ' . ($r['site'] !== '' ? preg_replace('/^www\./', '', (string)parse_url($r['site'], PHP_URL_HOST) ?: $r['site']) : $r['nom']);
     $min = (int)round((DateTime::createFromFormat('Y-m-d H:i', $r['fin'], tz())->getTimestamp() - DateTime::createFromFormat('Y-m-d H:i', $r['debut'], tz())->getTimestamp()) / 60);
-    $desc = $forClient ? 'Échange de ' . $min . ' minutes avec un spécialiste SEO et GEO.' . ($visio !== '' ? "\nVisio : " . $visio : '')
+    $desc = $forClient ? 'Échange gratuit de ' . $min . ' minutes avec l’expert SEO et GEO de Rubriqua.' . ($visio !== '' ? "\nVisio : " . $visio : '')
                        : $r['nom'] . ' · ' . $r['email'] . ($r['tel'] !== '' ? ' · ' . $r['tel'] : '') . ($r['site'] !== '' ? "\nSite : " . $r['site'] : '') . ($r['sujet'] !== '' ? "\n" . $r['sujet'] : '') . ($visio !== '' ? "\nVisio : " . $visio : '');
     $l = ['BEGIN:VEVENT', 'UID:rdv-' . $r['jeton'] . '@rubriqua.com', 'DTSTAMP:' . gmdate('Ymd\THis\Z'), 'DTSTART:' . $f($r['debut']), 'DTEND:' . $f($r['fin']),
           'SUMMARY:' . $esc($title), 'DESCRIPTION:' . $esc($desc)];
@@ -285,5 +285,5 @@ function ics_wrap(string $events, string $name = 'Rubriqua'): string {
 function google_add_url(array $r, string $visio): string {
     $f = fn($s) => DateTime::createFromFormat('Y-m-d H:i', $s, tz())->setTimezone(new DateTimeZone('UTC'))->format('Ymd\THis\Z');
     return 'https://calendar.google.com/calendar/render?action=TEMPLATE&text=' . rawurlencode('Échange avec Rubriqua') . '&dates=' . $f($r['debut']) . '/' . $f($r['fin'])
-        . '&details=' . rawurlencode('Échange avec un spécialiste SEO et GEO.' . ($visio !== '' ? "\nVisio : " . $visio : '')) . ($visio !== '' ? '&location=' . rawurlencode($visio) : '');
+        . '&details=' . rawurlencode('Échange gratuit avec l’expert SEO et GEO de Rubriqua.' . ($visio !== '' ? "\nVisio : " . $visio : '')) . ($visio !== '' ? '&location=' . rawurlencode($visio) : '');
 }
