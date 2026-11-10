@@ -134,7 +134,7 @@
       var nom = f.querySelector('input[name="nom"]');
       if (nom && !nom.value.trim()) { say('Merci d’indiquer votre nom.', true); nom.focus(); return; }
       var prod = f.querySelector('input[name="produits"]');
-      if (prod && prod.required && !prod.value.trim()) { say('Indiquez vos produits ou services clés pour que nous posions les bonnes questions.', true); prod.focus(); return; }
+      if (prod && prod.required && !prod.value.trim()) { say('Indiquez vos produits, services ou thèmes clés pour que nous posions les bonnes questions.', true); prod.focus(); return; }
       var body = new URLSearchParams(new FormData(f));
       body.set('type', f.getAttribute('data-demande')); body.set('url', current); body.set('t', String(opened));
       btn.disabled = true; say('Envoi en cours…');

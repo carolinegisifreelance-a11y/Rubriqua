@@ -21,6 +21,7 @@ function config(): array {
         'dashboard_hash'=> '',            // password_hash() du mot de passe du tableau de bord
         'dashboard_password' => '',       // ou le mot de passe lui-même, s'il est fourni par un secret
         'site_host'     => 'rubriqua.com',
+        'anthropic_key' => '',            // clé de l'API Claude, pour proposer les questions des relevés
     ];
     $file = __DIR__ . '/config.php';
     $local = is_file($file) ? (require $file) : [];

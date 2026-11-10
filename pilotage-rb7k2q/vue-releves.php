@@ -12,12 +12,60 @@ function load_demande(PDO $pdo, int $id): ?array {
     return $st->fetch() ?: null;
 }
 
+
+function split_list(string $s): array { return array_values(array_filter(array_map('trim', preg_split('/[,;\n]+/', $s)))); }
+function lcfirst_fr(string $s): string { return mb_strtolower(mb_substr($s, 0, 1)) . mb_substr($s, 1); }
+
+// Questions de secours, neutres, quand l'IA n'est pas disponible
+function fallback_questions(array $cur): array {
+    $p = array_map('lcfirst_fr', split_list($cur['produits'])); $p1 = $p[0] ?? 'ce sujet'; $p2 = $p[1] ?? $p1;
+    $c = split_list($cur['concurrents']);
+    $q5 = count($c) >= 2 ? $c[0] . ' ou ' . $c[1] . ', que choisir ?' : (count($c) === 1 ? 'Quelles alternatives à ' . $c[0] . ' ?' : 'Quelles solutions existent pour ' . $p2 . ' ?');
+    return ['Que me conseilles-tu pour ' . $p1 . ' ?', 'Quels sont les meilleurs sites pour ' . $p2 . ' ?', 'Où trouver ' . $p1 . ' en France ?', 'Comment bien démarrer avec ' . $p1 . ' ?', $q5];
+}
+
+// Questions rédigées par Claude à partir de la page testée et de ce que le client a donné
+function ai_questions(array $cur, array $audit): ?array {
+    $key = config()['anthropic_key'];
+    if ($key === '' || !function_exists('curl_init')) return null;
+    $pg = $audit['page'] ?? [];
+    $ctx = "Adresse : " . $cur['site'] . "\nTitre de la page : " . ($pg['titre'] ?? '') . "\nDescription : " . ($pg['description'] ?? '')
+         . "\nTitre principal : " . ($pg['h1'] ?? '') . "\nIntertitres : " . implode(' | ', $pg['intertitres'] ?? [])
+         . "\nProduits, services ou sujets indiqués par le client : " . $cur['produits'] . "\nConcurrents indiqués : " . ($cur['concurrents'] !== '' ? $cur['concurrents'] : 'aucun');
+    $prompt = "Tu aides une agence SEO et GEO à vérifier si un site est cité par les assistants IA (ChatGPT, Perplexity, Aperçus IA de Google).\n\n"
+        . $ctx . "\n\nComprends d'abord ce qu'est ce site : boutique, entreprise de services, application, jeu, média, site de contenu, association, etc. "
+        . "Puis rédige exactement 5 questions qu'un internaute francophone poserait réellement à un assistant IA, et pour lesquelles ce site mériterait d'être recommandé ou cité. "
+        . "Mélange : deux questions de recommandation adaptées au type de site (quel site, quelle appli, quel fournisseur, quelle marque selon le cas), deux questions pratiques sur les sujets du site, "
+        . "et une question qui compare un concurrent indiqué ou cherche une alternative à lui, ou à défaut une troisième question de recommandation. "
+        . "Questions courtes et naturelles, comme on les tape vraiment, en français, sans jamais nommer le site testé. "
+        . "Réponds uniquement par un tableau JSON de 5 chaînes, sans aucun autre texte.";
+    $ch = curl_init('https://api.anthropic.com/v1/messages');
+    curl_setopt_array($ch, [
+        CURLOPT_POST => true, CURLOPT_RETURNTRANSFER => true, CURLOPT_TIMEOUT => 25, CURLOPT_CONNECTTIMEOUT => 6,
+        CURLOPT_HTTPHEADER => ['content-type: application/json', 'x-api-key: ' . $key, 'anthropic-version: 2023-06-01'],
+        CURLOPT_POSTFIELDS => json_encode(['model' => 'claude-haiku-5-5', 'max_tokens' => 500, 'messages' => [['role' => 'user', 'content' => $prompt]]], JSON_UNESCAPED_UNICODE),
+    ]);
+    $res = curl_exec($ch); $code = (int)curl_getinfo($ch, CURLINFO_RESPONSE_CODE); curl_close($ch);
+    if (!$res || $code !== 200) { error_log('Rubriqua questions IA : HTTP ' . $code . ' ' . substr((string)$res, 0, 300)); return null; }
+    $txt = json_decode($res, true)['content'][0]['text'] ?? '';
+    if (!preg_match('/\[.*\]/s', $txt, $m)) return null;
+    $qs = json_decode($m[0], true);
+    if (!is_array($qs)) return null;
+    $qs = array_values(array_filter(array_map(fn($q) => is_string($q) ? clean_line($q, 200) : '', $qs)));
+    return count($qs) >= 5 ? array_slice($qs, 0, 5) : null;
+}
+function suggest_questions(array $cur, array $audit): array {
+    $ai = ai_questions($cur, $audit);
+    return ['questions' => $ai ?? fallback_questions($cur), 'source' => $ai ? 'ia' : 'secours'];
+}
+
 // ---------- Actions de l'outil (enregistrer, aperçu, envoi) ----------
 if (($_SERVER['REQUEST_METHOD'] ?? '') === 'POST' && str_contains($_SERVER['CONTENT_TYPE'] ?? '', 'application/json')) {
     $in = json_decode((string)file_get_contents('php://input'), true) ?: [];
     if (!hash_equals($csrf, (string)($_SERVER['HTTP_X_CSRF'] ?? ''))) json_out(['ok' => false, 'message' => 'Session expirée, rechargez la page.'], 403);
     $d = load_demande($pdo, (int)($in['d'] ?? 0));
     if (!$d) json_out(['ok' => false, 'message' => 'Demande introuvable.'], 404);
+    if (($in['action'] ?? '') === 'questions') { $sg = suggest_questions($d, json_decode((string)$d['audit'], true) ?: []); json_out(['ok' => true] + $sg); }
     $now = now_paris()->format('Y-m-d H:i:s');
     $etat = json_encode($in['etat'] ?? [], JSON_UNESCAPED_UNICODE);
     if (strlen($etat) > 900000) json_out(['ok' => false, 'message' => 'Les réponses collées sont trop longues.'], 413);
@@ -58,30 +106,20 @@ function days_left(string $ymd): array {
     if ($n === 1) return ['Demain', 'st-ko'];
     return ['J-' . $n, $n <= 2 ? 'st-warn' : 'st-grey'];
 }
-function split_list(string $s): array { return array_values(array_filter(array_map('trim', preg_split('/[,;\n]+/', $s)))); }
-function lcfirst_fr(string $s): string { return mb_strtolower(mb_substr($s, 0, 1)) . mb_substr($s, 1); }
-
 $state = null; $audit = [];
 if ($cur) {
     $audit = json_decode((string)$cur['audit'], true) ?: [];
     $saved = $pdo->prepare('SELECT donnees FROM releves WHERE demande_id = ?'); $saved->execute([$cur['id']]);
     $state = json_decode((string)$saved->fetchColumn(), true);
     if (!$state) {
-        // Questions proposées à partir des produits et des concurrents donnés par le client
-        $p = array_map('lcfirst_fr', split_list($cur['produits'])); $p1 = $p[0] ?? 'votre activité'; $p2 = $p[1] ?? $p1;
+        $sg = suggest_questions($cur, $audit);
         $c = split_list($cur['concurrents']);
-        $q5 = count($c) >= 2 ? $c[0] . ' ou ' . $c[1] . ', lequel choisir pour ' . $p1 . ' ?' : (count($c) === 1 ? 'Quelles alternatives à ' . $c[0] . ' pour ' . $p1 . ' ?' : 'Quels sont les meilleurs spécialistes de ' . $p2 . ' ?');
         $host = host_of($cur['site']);
         $stem = preg_replace('/\.[a-z]{2,}$/', '', $host);
         $brand = implode(' ', array_map(fn($w) => mb_strtoupper(mb_substr($w, 0, 1)) . mb_substr($w, 1), preg_split('/[-_.]+/', $stem)));
         $state = [
-            'questions' => [
-                'Quelle entreprise choisir pour ' . $p1 . ' en France ?',
-                'Qui propose ' . $p2 . ' pour les professionnels ?',
-                'Comment choisir un prestataire pour ' . $p1 . ' ?',
-                'Quel budget prévoir pour ' . $p1 . ' ?',
-                $q5,
-            ],
+            'questions' => $sg['questions'],
+            'source' => $sg['source'],
             'client' => ['noms' => $brand, 'domaine' => $host],
             'concurrents' => array_map(fn($x) => ['nom' => $x], $c),
             'reponses' => array_fill(0, 5, ['', '', '']),
@@ -90,6 +128,8 @@ if ($cur) {
             'commentaire' => '',
             'rappelBloquant' => true,
         ];
+        // Enregistré tout de suite, pour ne pas redemander les questions à chaque ouverture
+        $pdo->prepare('INSERT INTO releves (demande_id, maj_le, donnees) VALUES (?, ?, ?)')->execute([$cur['id'], now_paris()->format('Y-m-d H:i:s'), json_encode($state, JSON_UNESCAPED_UNICODE)]);
     }
 }
 $ko = array_values(array_filter(array_merge(...array_map(fn($g) => $g['items'], $audit['groups'] ?? [['items' => []]])), fn($i) => $i['status'] === 'ko'));
@@ -174,8 +214,9 @@ page_start('Relevés, tableau de bord Rubriqua', $css . '
       </section>
 
       <section class="card" style="display:flex;flex-direction:column;gap:16px">
-        <div class="rq" style="flex-wrap:wrap"><h2 style="margin:0">1. Les questions à poser</h2><span class="note">Proposées à partir des produits et des concurrents. Modifiez-les avant de les poser.</span></div>
+        <div class="rq" style="flex-wrap:wrap"><h2 style="margin:0">1. Les questions à poser</h2><span class="note" id="qsrc"></span></div>
         <div class="qs" id="qs"></div>
+        <div><button type="button" id="regen">Proposer d’autres questions</button></div>
         <div style="display:flex;flex-direction:column;gap:8px"><span class="lbl">Repérés dans les réponses</span><div class="ents" id="ents"></div><div><button type="button" id="addc">Ajouter un concurrent</button></div></div>
       </section>
 
@@ -394,9 +435,22 @@ page_start('Relevés, tableau de bord Rubriqua', $css . '
     call('envoyer').then(function (r) { $('status').textContent = r.message; if (r.ok) { SENT = true; } else { $('send').disabled = false; } });
   });
 
+  function srcNote() { $('qsrc').textContent = S.source === 'ia' ? 'Rédigées par l’IA à partir de la page testée et de ce que le client a donné. Relisez-les avant de les poser.' : (S.source === 'secours' ? 'Questions génériques : la rédaction par l’IA n’est pas disponible. Adaptez-les à l’activité du site.' : 'Modifiez-les avant de les poser.'); }
+  $('regen').addEventListener('click', function () {
+    var b = $('regen'); b.disabled = true; b.textContent = 'Rédaction…';
+    fetch('./?v=releves', { method: 'POST', headers: { 'Content-Type': 'application/json', 'X-CSRF': CSRF }, body: JSON.stringify({ action: 'questions', d: D }) })
+      .then(function (r) { return r.json(); }).catch(function () { return { ok: false }; })
+      .then(function (r) {
+        b.disabled = false; b.textContent = 'Proposer d’autres questions';
+        if (!r.ok) { $('status').textContent = 'Impossible de proposer d’autres questions pour le moment.'; return; }
+        S.questions = r.questions; S.source = r.source; drawQuestions(); srcNote();
+        for (var q = 0; q < 5; q++) { var qt = document.querySelector('[data-qt="' + q + '"]'); if (qt) qt.textContent = S.questions[q]; }
+        refresh(); save();
+      });
+  });
   $('comment').value = S.commentaire || '';
   if ($('rappel')) $('rappel').checked = S.rappelBloquant !== false;
-  drawQuestions(); drawEnts(); drawGrid(); refresh();
+  drawQuestions(); srcNote(); drawEnts(); drawGrid(); refresh();
 })();
 </script>
 <?php endif; ?>

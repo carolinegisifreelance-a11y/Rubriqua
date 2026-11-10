@@ -28,7 +28,7 @@ $conseils = !empty($_POST['conseils']);
 
 if (!filter_var($email, FILTER_VALIDATE_EMAIL)) out(false, 'Merci d’indiquer une adresse e-mail valide.', 422);
 if ($type === 'complet' && $nom === '') out(false, 'Merci d’indiquer votre nom.', 422);
-if ($releve && $produits === '') out(false, 'Indiquez vos produits ou services clés pour que nous posions les bonnes questions.', 422);
+if ($releve && $produits === '') out(false, 'Indiquez vos produits, services ou thèmes clés pour que nous posions les bonnes questions.', 422);
 
 try {
     $pdo = db();

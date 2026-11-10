@@ -152,7 +152,7 @@ CSS;
 
 function page_start(string $title, string $css): void {
     echo '<!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">'
-       . '<meta name="robots" content="noindex, nofollow"><link rel="icon" href="/favicon.ico?v=202611101142" sizes="32x32"><link rel="icon" href="/favicon.svg?v=202611101142" type="image/svg+xml"><link rel="apple-touch-icon" href="/assets/images/logo/icone-rubriqua-agence-seo-geo-growth-180.png?v=202611101142"><title>' . h($title) . '</title><style>' . $css . '</style></head><body>';
+       . '<meta name="robots" content="noindex, nofollow"><link rel="icon" href="/favicon.ico?v=202611101151" sizes="32x32"><link rel="icon" href="/favicon.svg?v=202611101151" type="image/svg+xml"><link rel="apple-touch-icon" href="/assets/images/logo/icone-rubriqua-agence-seo-geo-growth-180.png?v=202611101151"><title>' . h($title) . '</title><style>' . $css . '</style></head><body>';
 }
 
 if (!$logged) {

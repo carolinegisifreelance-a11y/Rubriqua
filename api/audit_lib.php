@@ -205,6 +205,7 @@ function run_audit(string $raw): array {
     $text = $bodyNode ? preg_replace('/\s+/u', ' ', $bodyNode->textContent) : '';
     $words = preg_match_all('/[\p{L}\p{N}][\p{L}\p{N}\'’-]*/u', $text);
     $h1 = $q('//h1')->length;
+    $h1Text = trim(preg_replace('/\s+/u', ' ', $q('//h1')->item(0)?->textContent ?? ''));
     $h2 = $q('//h2')->length;
     $headings = [];
     foreach ($q('//h2|//h3') as $h) $headings[] = trim($h->textContent);
@@ -339,6 +340,7 @@ function run_audit(string $raw): array {
 
     return [
         'ok' => true, 'url' => $final, 'host' => $u['host'], 'score' => $score,
+        'page' => ['titre' => mb_substr($title, 0, 200), 'description' => mb_substr($desc, 0, 300), 'h1' => mb_substr($h1Text, 0, 200), 'intertitres' => array_values(array_slice(array_filter(array_map(fn($x) => mb_substr(trim(preg_replace('/\s+/u', ' ', $x)), 0, 120), $headings)), 0, 12))],
         'counts' => $count, 'total' => count($all), 'verdict' => $verdict, 'conclusion' => $conclusion, 'groups' => $out,
     ];
 }
