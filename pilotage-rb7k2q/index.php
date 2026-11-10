@@ -34,7 +34,7 @@ if (is_file($resetFlag)) { setting_delete($pdo, 'totp_secret'); setting_delete($
 $secret = setting_get($pdo, 'totp_secret');
 // Remise à zéro des statistiques de visite, demandée depuis GitHub (action vider-statistiques). Les demandes de contact sont conservées.
 $wipeFlag = dirname(config()['sqlite_path']) . '/.vider-statistiques';
-if (is_file($wipeFlag)) { $pdo->exec('DELETE FROM visites'); $pdo->exec('DELETE FROM clics'); @unlink($wipeFlag); }
+if (is_file($wipeFlag)) { $pdo->exec('DELETE FROM visites'); $pdo->exec('DELETE FROM clics'); $pdo->exec('DELETE FROM compteurs'); @unlink($wipeFlag); }
 
 // Session : 2 heures d'inactivité ou 12 heures au total, puis nouvelle connexion
 if (!empty($_SESSION['ok']) && (time() - ($_SESSION['t'] ?? 0) > 7200 || time() - ($_SESSION['since'] ?? 0) > 43200)) logout();
@@ -225,6 +225,15 @@ if ($view !== 'stats') {
     exit;
 }
 
+// Adresses IP exclues des statistiques
+if (($_SERVER['REQUEST_METHOD'] ?? '') === 'POST' && isset($_POST['ips']) && hash_equals($csrf, (string)($_POST['csrf'] ?? ''))) {
+    $list = array_filter(array_map('trim', preg_split('/[\s,;]+/', (string)$_POST['ips'])), fn($x) => filter_var($x, FILTER_VALIDATE_IP));
+    if (isset($_POST['moi'])) $list[] = client_ip();
+    setting_set($pdo, 'ip_exclues', implode(', ', array_values(array_unique($list))));
+    header('Location: ./?ip=1#ip', true, 303); exit;
+}
+$ips = ip_exclues($pdo);
+
 // Période
 $periods = [7 => '7 jours', 30 => '30 jours', 90 => '90 jours', 365 => '12 mois'];
 $days = (int)($_GET['p'] ?? 30);
@@ -406,6 +415,17 @@ page_start('Tableau de bord Rubriqua', $css);
         <?php if ($m['message'] !== ''): ?><p><?= h($m['message']) ?></p><?php endif; ?>
       </article>
     <?php endforeach; ?>
+  </section>
+
+  <section class="card" id="ip">
+    <h2>Adresses IP exclues</h2>
+    <?php if (isset($_GET['ip'])): ?><p class="flash" style="margin:0 0 12px">Liste enregistrée.</p><?php endif; ?>
+    <form method="post" style="display:flex;flex-direction:column;gap:10px">
+      <input type="hidden" name="csrf" value="<?= h($csrf) ?>">
+      <input type="text" name="ips" value="<?= h(implode(', ', $ips)) ?>" placeholder="Adresses séparées par des virgules">
+      <div style="display:flex;flex-wrap:wrap;gap:10px;align-items:center"><button class="btn-dark">Enregistrer</button><?php if (!in_array(client_ip(), $ips, true)): ?><button name="moi" value="1">Exclure mon adresse actuelle, <?= h(client_ip()) ?></button><?php else: ?><span class="note">Votre adresse actuelle, <?= h(client_ip()) ?>, est exclue.</span><?php endif; ?></div>
+    </form>
+    <p class="note" style="margin:10px 0 0">Les visites et les audits GEO lancés depuis ces adresses ne sont pas comptés. Une box internet change parfois d’adresse : revenez ici si vos visites réapparaissent.</p>
   </section>
 
   <p class="note">Mesure sans cookie. Un visiteur correspond à un appareil sur une journée : la même personne revenue trois jours compte pour trois. Un visiteur déjà venu est un appareil passé sur le site dans les 13 derniers mois, d’après une date gardée dans son navigateur, sans identifiant. Les robots et vos propres visites, une fois exclues avec le bouton du haut, ne sont pas comptés. Données conservées 25 mois.</p>

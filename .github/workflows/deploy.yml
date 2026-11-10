@@ -9,7 +9,7 @@
 #              WordPress redevient visible.
 #   reinitialiser-2fa : désactive la double authentification du tableau de bord (téléphone perdu ou changé).
 #              À la connexion suivante, un nouveau QR code s'affiche pour l'associer à la nouvelle application.
-#   vider-statistiques : efface les visites et les clics enregistrés (les demandes de contact sont gardées).
+#   vider-statistiques : efface les visites, les clics et le compteur des audits GEO (les demandes de contact sont gardées).
 #              L'effacement a lieu à la prochaine ouverture du tableau de bord.
 # Réglages (Settings, Secrets and variables, Actions) :
 #   SSH_HOST, SSH_USER, SSH_PASS : compte SFTP et SSH créé dans IONOS

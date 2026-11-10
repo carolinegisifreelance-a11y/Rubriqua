@@ -171,6 +171,14 @@ function purge(PDO $pdo): void {
     $pdo->prepare('DELETE FROM compteurs WHERE jour < ?')->execute([now_paris()->modify('-25 months')->format('Y-m-d')]);
 }
 
+// Adresses IP exclues des statistiques (celles de Rubriqua). Seule cette liste est gardée, jamais l'adresse des visiteurs.
+function ip_exclues(PDO $pdo): array {
+    $v = setting_get($pdo, 'ip_exclues');
+    if ($v === null) { $v = '86.202.84.222'; setting_set($pdo, 'ip_exclues', $v); }
+    return array_values(array_filter(array_map('trim', preg_split('/[\s,;]+/', $v))));
+}
+function ip_exclue(PDO $pdo): bool { return in_array(client_ip(), ip_exclues($pdo), true); }
+
 // Réglages enregistrés en base (clé, valeur)
 function setting_get(PDO $pdo, string $key): ?string {
     $st = $pdo->prepare('SELECT valeur FROM reglages WHERE cle = ?');

@@ -15,6 +15,8 @@ if ($ua === '' || preg_match('/bot|crawl|spider|slurp|preview|headless|lighthous
     http_response_code(204); exit;
 }
 
+try { if (ip_exclue(db())) { http_response_code(204); exit; } } catch (Throwable $e) {}
+
 $in = json_decode(file_get_contents('php://input', false, null, 0, 4000) ?: '', true);
 if (!is_array($in)) { http_response_code(204); exit; }
 

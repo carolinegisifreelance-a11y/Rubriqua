@@ -348,6 +348,7 @@ function run_audit(string $raw): array {
 function count_audit(): void {
     try {
         $pdo = db(); $day = today();
+        if (ip_exclue($pdo)) return;
         $st = $pdo->prepare('UPDATE compteurs SET n = n + 1 WHERE jour = ? AND cle = ?'); $st->execute([$day, 'audit']);
         if (!$st->rowCount()) $pdo->prepare('INSERT INTO compteurs (jour, cle, n) VALUES (?, ?, 1)')->execute([$day, 'audit']);
     } catch (Throwable $e) { error_log('Rubriqua compteur : ' . $e->getMessage()); }
