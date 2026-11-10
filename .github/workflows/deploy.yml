@@ -150,6 +150,8 @@ jobs:
 
       - name: Vérifications
         if: inputs.action == 'apercu' || inputs.action == 'basculer'
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
         run: |
           COOKIE=""
           if [ "${{ inputs.action }}" = "apercu" ]; then COOKIE="rb_apercu=1"; fi
@@ -162,5 +164,6 @@ jobs:
           echo "Mesure d'audience   : $(curl -s -o /dev/null -w '%{http_code}' -b "$COOKIE" -X POST -H 'Origin: https://rubriqua.com' -A 'Mozilla/5.0 Verification' --data '{"p":"/","r":"","w":1400}' https://rubriqua.com/api/hit.php)"
           echo "Audit GEO (test)    : $(curl -s -X POST -H 'Origin: https://rubriqua.com' --data 'url=fr.wikipedia.org/wiki/Lyon' https://rubriqua.com/api/audit.php | head -c 160)"
           echo "Audit Rubriqua bloqué : $(curl -s -X POST -H 'Origin: https://rubriqua.com' --data 'url=rubriqua.com' https://rubriqua.com/api/audit.php | head -c 160)"
+          echo "Test IA (questions) : $(curl -s https://api.anthropic.com/v1/messages -H "x-api-key: $ANTHROPIC_API_KEY" -H 'anthropic-version: 2023-06-01' -H 'content-type: application/json' --data '{"model":"claude-haiku-5-5","max_tokens":200,"messages":[{"role":"user","content":"Donne 2 questions courtes sur l apprentissage du coréen, en tableau JSON de chaînes, sans autre texte."}]}' | head -c 400)"
           echo "État technique      : $(curl -s -b "$COOKIE" https://rubriqua.com/api/etat.php)"
           echo "Formulaire (champ piège) : $(curl -s -b "$COOKIE" -H 'Accept: application/json' -H 'Origin: https://rubriqua.com' --data 'nom=Robot&email=robot@exemple.fr&societe_web=x' https://rubriqua.com/api/contact.php)"

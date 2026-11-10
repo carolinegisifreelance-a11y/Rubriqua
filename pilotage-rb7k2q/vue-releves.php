@@ -43,20 +43,23 @@ function ai_questions(array $cur, array $audit): ?array {
     curl_setopt_array($ch, [
         CURLOPT_POST => true, CURLOPT_RETURNTRANSFER => true, CURLOPT_TIMEOUT => 25, CURLOPT_CONNECTTIMEOUT => 6,
         CURLOPT_HTTPHEADER => ['content-type: application/json', 'x-api-key: ' . $key, 'anthropic-version: 2023-06-01'],
-        CURLOPT_POSTFIELDS => json_encode(['model' => 'claude-haiku-5-5', 'max_tokens' => 500, 'messages' => [['role' => 'user', 'content' => $prompt]]], JSON_UNESCAPED_UNICODE),
+        CURLOPT_POSTFIELDS => json_encode(['model' => 'claude-haiku-5-5', 'max_tokens' => 800, 'messages' => [['role' => 'user', 'content' => $prompt]]], JSON_UNESCAPED_UNICODE | JSON_INVALID_UTF8_SUBSTITUTE),
     ]);
-    $res = curl_exec($ch); $code = (int)curl_getinfo($ch, CURLINFO_RESPONSE_CODE); curl_close($ch);
-    if (!$res || $code !== 200) { error_log('Rubriqua questions IA : HTTP ' . $code . ' ' . substr((string)$res, 0, 300)); return null; }
-    $txt = json_decode($res, true)['content'][0]['text'] ?? '';
-    if (!preg_match('/\[.*\]/s', $txt, $m)) return null;
+    $res = curl_exec($ch); $code = (int)curl_getinfo($ch, CURLINFO_RESPONSE_CODE); $cerr = curl_error($ch); curl_close($ch);
+    $fail = function (string $why) { $GLOBALS['ia_err'] = $why; error_log('Rubriqua questions IA : ' . $why); return null; };
+    if (!$res) return $fail('pas de réponse (' . $cerr . ')');
+    $j = json_decode($res, true);
+    if ($code !== 200) return $fail('HTTP ' . $code . ', ' . ($j['error']['message'] ?? substr((string)$res, 0, 200)));
+    $txt = implode("\n", array_map(fn($b) => ($b['type'] ?? '') === 'text' ? (string)$b['text'] : '', $j['content'] ?? []));
+    if (!preg_match('/\[.*\]/s', $txt, $m)) return $fail('réponse sans liste : ' . mb_substr($txt, 0, 160));
     $qs = json_decode($m[0], true);
-    if (!is_array($qs)) return null;
-    $qs = array_values(array_filter(array_map(fn($q) => is_string($q) ? clean_line($q, 200) : '', $qs)));
-    return count($qs) >= 5 ? array_slice($qs, 0, 5) : null;
+    if (!is_array($qs)) return $fail('liste illisible : ' . mb_substr($m[0], 0, 160));
+    $qs = array_values(array_filter(array_map(fn($q) => is_string($q) ? clean_line($q, 200) : (is_array($q) ? clean_line((string)($q['question'] ?? reset($q)), 200) : ''), $qs)));
+    return count($qs) >= 5 ? array_slice($qs, 0, 5) : $fail(count($qs) . ' questions seulement');
 }
 function suggest_questions(array $cur, array $audit): array {
     $ai = ai_questions($cur, $audit);
-    return ['questions' => $ai ?? fallback_questions($cur), 'source' => $ai ? 'ia' : 'secours'];
+    return ['questions' => $ai ?? fallback_questions($cur), 'source' => $ai ? 'ia' : 'secours', 'erreur' => $ai ? '' : ($GLOBALS['ia_err'] ?? 'clé absente')];
 }
 
 // ---------- Actions de l'outil (enregistrer, aperçu, envoi) ----------
@@ -443,7 +446,7 @@ page_start('Relevés, tableau de bord Rubriqua', $css . '
       .then(function (r) {
         b.disabled = false; b.textContent = 'Proposer d’autres questions';
         if (!r.ok) { $('status').textContent = 'Impossible de proposer d’autres questions pour le moment.'; return; }
-        S.questions = r.questions; S.source = r.source; drawQuestions(); srcNote();
+        S.questions = r.questions; S.source = r.source; drawQuestions(); srcNote(); if (r.erreur) $('qsrc').textContent += ' Détail : ' + r.erreur;
         for (var q = 0; q < 5; q++) { var qt = document.querySelector('[data-qt="' + q + '"]'); if (qt) qt.textContent = S.questions[q]; }
         refresh(); save();
       });
