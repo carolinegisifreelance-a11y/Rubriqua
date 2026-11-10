@@ -1,0 +1,15 @@
+# Diagnostic de la délivrabilité des e-mails : lit les enregistrements DNS de rubriqua.com (SPF, DKIM, DMARC, MX).
+name: Diagnostic e-mail
+on:
+  workflow_dispatch:
+jobs:
+  dns:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Enregistrements DNS
+        run: |
+          D=rubriqua.com
+          for q in "$D TXT" "_dmarc.$D TXT" "$D MX" "s1-ionos._domainkey.$D CNAME" "s2-ionos._domainkey.$D CNAME" "s42582890._domainkey.$D CNAME" "default._domainkey.$D TXT" "www.$D A" "$D A"; do
+            set -- $q; echo "== $1 $2"; dig +short "$1" "$2" @1.1.1.1
+          done
+          echo "== Serveur SMTP IONOS"; dig +short smtp.ionos.fr A @1.1.1.1
