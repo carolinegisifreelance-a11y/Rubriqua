@@ -506,3 +506,28 @@ a.tile-main:hover { border-color: var(--red-dark); background: var(--red-dark); 
 .visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 .nowrap { white-space: nowrap; }
 .faq-grid > * { min-width: 0; }
+/* Accueil : encart Audit GEO gratuit et carrousel du glossaire */
+.au-band-home { background: var(--white); padding: 0 0 96px; }
+.gl-home { background: var(--beige); padding-top: 0; }
+.gl-marquee { padding: 4px 0 8px; -webkit-mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent); mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent); }
+.gl-track { gap: 16px; animation-duration: 70s; }
+.gl-card { flex: none; width: 300px; background: var(--white); border-radius: 12px; padding: 24px; display: flex; flex-direction: column; gap: 10px; text-decoration: none; color: var(--text); border: 1px solid #ece9e4; transition: border-color .2s, transform .2s; }
+.gl-card:hover { border-color: var(--red-light); transform: translateY(-2px); }
+.gl-card .tag { align-self: flex-start; }
+.gl-card b { font-size: 20px; color: var(--ink); letter-spacing: -0.01em; }
+.gl-card p { margin: 0; font-size: 15px; line-height: 1.55; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+.gl-card-go { margin-top: auto; font-size: 14px; font-weight: 800; color: var(--red); }
+@media (max-width: 760px) { .au-band-home { padding-bottom: 64px; } .gl-card { width: 260px; padding: 20px; } }
+/* Étapes numérotées, partout : numéros centrés sur leur colonne, ligne du premier au dernier numéro, en gris foncé */
+.steps { --n: 4; }
+.steps .step { align-items: center; text-align: center; padding-right: 0; }
+.steps::before, .steps::after { left: calc((100% - (var(--n) - 1) * 24px) / (2 * var(--n))); }
+.steps::before { right: calc((100% - (var(--n) - 1) * 24px) / (2 * var(--n))); }
+.steps::after { background: var(--grey); }
+.steps.is-in::after { width: calc(100% - (100% - (var(--n) - 1) * 24px) / var(--n)); }
+.steps.is-in .step-num { background: var(--grey); border-color: var(--grey); color: var(--white); }
+@media (max-width: 760px) {
+  .steps .step { align-items: flex-start; text-align: left; }
+  .steps::before, .steps::after { display: none; }
+  .steps .step:not(:last-child)::after { content: ""; position: absolute; left: 31px; top: 64px; bottom: -32px; width: 2px; background: var(--grey); }
+}
