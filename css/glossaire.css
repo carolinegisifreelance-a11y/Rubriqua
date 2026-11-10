@@ -127,3 +127,4 @@ div.gl-row:target { background: #fbf1f0; }
   .roas-fields { grid-template-columns: 1fr; }
   .roas-results { grid-template-columns: 1fr 1fr; }
 }
+.df-card .df-card-sub { font-size: 14px; color: #cfcbc4; }

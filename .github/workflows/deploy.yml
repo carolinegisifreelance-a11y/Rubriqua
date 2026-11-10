@@ -151,9 +151,10 @@ jobs:
           COOKIE=""
           if [ "${{ inputs.action }}" = "apercu" ]; then COOKIE="rb_apercu=1"; fi
           check() { printf "%-34s %s\n" "$1" "$(curl -s -o /dev/null -w '%{http_code}' -b "$COOKIE" -A 'Mozilla/5.0 Verification' "https://rubriqua.com$1")"; }
-          for p in / /agence-seo-startup/ /glossaire/ /seogeo/ /blog/ /comment-faire-un-audit-seo/ /contact/ /pilotage-rb7k2q/ /sitemap.xml /robots.txt /api/lib.php /api/config.php /donnees/ /page-qui-n-existe-pas/ /refonte-site/ /category/seo/ /categorie/seo/ /how-to-run-a-technical-seo-audit-on-your-site/ /xmlrpc.php; do check "$p"; done
+          for p in / /agence-seo-startup/ /audit-geo-gratuit/ /glossaire/ /seogeo/ /blog/ /comment-faire-un-audit-seo/ /contact/ /pilotage-rb7k2q/ /sitemap.xml /robots.txt /api/lib.php /api/config.php /donnees/ /page-qui-n-existe-pas/ /refonte-site/ /category/seo/ /categorie/seo/ /how-to-run-a-technical-seo-audit-on-your-site/ /xmlrpc.php; do check "$p"; done
           echo "Titre avec le site : $(curl -s -b "$COOKIE" https://rubriqua.com/ | grep -o '<title>[^<]*' )"
           echo "Titre sans cookie   : $(curl -s https://rubriqua.com/ | grep -o '<title>[^<]*' )"
           echo "Mesure d'audience   : $(curl -s -o /dev/null -w '%{http_code}' -b "$COOKIE" -X POST -H 'Origin: https://rubriqua.com' -A 'Mozilla/5.0 Verification' --data '{"p":"/","r":"","w":1400}' https://rubriqua.com/api/hit.php)"
+          echo "Audit GEO (test)    : $(curl -s -X POST -H 'Origin: https://rubriqua.com' --data 'url=rubriqua.com' https://rubriqua.com/api/audit.php | head -c 160)"
           echo "État technique      : $(curl -s -b "$COOKIE" https://rubriqua.com/api/etat.php)"
           echo "Formulaire (champ piège) : $(curl -s -b "$COOKIE" -H 'Accept: application/json' -H 'Origin: https://rubriqua.com' --data 'nom=Robot&email=robot@exemple.fr&societe_web=x' https://rubriqua.com/api/contact.php)"

@@ -480,3 +480,24 @@ a.tile-main:hover { border-color: var(--red-dark); background: var(--red-dark); 
   .footer-grid > div:first-child { grid-column: 1 / -1; }
 }
 
+
+/* Encarts vers l'outil Audit GEO gratuit (page SEO et GEO, glossaire) */
+.au-link-form { display: flex; flex-wrap: wrap; gap: 8px; background: var(--white); border-radius: 10px; padding: 6px; }
+.au-link-form input { flex: 999 1 200px; min-width: 0; font: inherit; font-size: 16px; font-weight: 600; border: 0; border-radius: 6px; padding: 12px 14px; color: var(--ink); background: var(--white); }
+.au-link-form input:focus { outline: 2px solid var(--red-light); outline-offset: 2px; }
+.au-link-form .btn { flex: 1 1 150px; white-space: nowrap; }
+.au-link-note { font-size: 13px; color: #a9a49d; }
+.au-band { background: var(--beige); padding: 72px 0 0; }
+.au-band-box { color: var(--white); border-radius: 12px; padding: 48px; display: flex; flex-wrap: wrap; align-items: center; gap: 28px 56px; }
+.au-band-box > div { flex: 1 1 380px; min-width: 0; display: flex; flex-direction: column; gap: 12px; }
+.au-band-box h2 { font-size: clamp(28px, 3vw, 36px); line-height: 1.15; }
+.au-band-box p { font-size: 17px; line-height: 1.6; color: #cfcbc4; }
+.au-band-box form { flex: 1 1 420px; }
+.audit-tool { font-size: 15px; line-height: 1.6; color: #f6dcda; padding-top: 14px; border-top: 1px solid rgba(255, 255, 255, .25); margin-top: auto; }
+.audit-tool a { color: var(--white); font-weight: 800; text-decoration-color: rgba(255, 255, 255, .6); text-decoration-thickness: 2px; text-underline-offset: 4px; }
+.gl-tool { color: var(--white); border-radius: 12px; padding: 28px; display: flex; flex-direction: column; gap: 14px; }
+.gl-tool-tag { font-size: 13px; font-weight: 800; color: var(--red-light); }
+.gl-tool b { font-size: 24px; letter-spacing: -0.02em; line-height: 1.25; }
+.gl-tool p { font-size: 16px !important; line-height: 1.6 !important; color: #cfcbc4 !important; }
+@media (max-width: 760px) { .au-band { padding-top: 48px; } .au-band-box { padding: 28px; } .gl-tool { padding: 22px; } }
+.visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
