@@ -18,7 +18,7 @@
   };
   var LABELS = { ok: 'Validé', warn: 'À améliorer', ko: 'Bloquant' };
   var STEPS = ['Lecture de la page sans JavaScript', 'Vérification du robots.txt pour les robots de ChatGPT, Perplexity, Claude, Copilot et Google', 'Recherche des données structurées', 'Analyse des signaux de confiance et du contenu'];
-  var busy = false, timers = [];
+  var busy = false, timers = [], current = '', opened = 0;
 
   var hostOf = function (u) { return u.replace(/^https?:\/\//i, '').replace(/\/$/, ''); };
   var showError = function (msg) { errorBox.textContent = msg; errorBox.hidden = false; };
@@ -63,7 +63,8 @@
             '<div><b>' + esc(i.name) + '</b><p>' + esc(i.note) + '</p></div><span class="au-st au-st-' + i.status + '">' + LABELS[i.status] + '</span></div>';
         }).join('') + '</div>';
     }).join('');
-    var site = $('[data-audit-site]'); if (site) site.value = d.url;
+    current = d.url; opened = Date.now();
+    result.querySelectorAll('[data-demande] .form-status').forEach(function (el) { el.hidden = true; });
     var ring = $('[data-audit-score]');
     ring.style.setProperty('--au-c', d.score >= 80 ? '#5fae73' : (d.score >= 50 ? '#e0973a' : '#EF8D86'));
     ring.style.setProperty('--au-p', 0);
@@ -99,6 +100,7 @@
       form.querySelector('button').disabled = false;
       if (!d.ok) { showError(d.message || 'L’analyse n’a pas pu aboutir.'); input.focus(); return; }
       render(d);
+      if (wantComplet) { wantComplet = false; openComplet(true); }
     });
   };
 
@@ -108,8 +110,48 @@
     result.hidden = true; input.value = ''; window.scrollTo({ top: 0, behavior: 'smooth' }); input.focus({ preventScroll: true });
   });
 
-  // Adresse transmise depuis un encart du site
-  var given = new URLSearchParams(location.search).get('url');
+  // Demande d'audit complet : le formulaire s'ouvre sous les priorités
+  var complet = result.querySelector('#au-complet'), opener = result.querySelector('[data-complet-open]');
+  var openComplet = function (scroll) {
+    complet.hidden = false; opener.setAttribute('aria-expanded', 'true');
+    if (scroll) complet.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    complet.querySelector('input[name="nom"]').focus({ preventScroll: true });
+  };
+  opener.addEventListener('click', function () { complet.hidden ? openComplet(false) : (complet.hidden = true, opener.setAttribute('aria-expanded', 'false')); });
+
+  // Relevé de citations : deux champs apparaissent quand la case est cochée
+  var tog = result.querySelector('[data-releve-toggle]'), fields = result.querySelector('[data-releve-fields]');
+  tog.addEventListener('change', function () { fields.hidden = !tog.checked; fields.querySelector('input[name="produits"]').required = tog.checked; if (tog.checked) fields.querySelector('input').focus(); });
+
+  // Envoi du rapport par e-mail ou de la demande d'audit complet
+  result.querySelectorAll('form[data-demande]').forEach(function (f) {
+    var status = f.querySelector('.form-status'), btn = f.querySelector('button[type="submit"]');
+    var say = function (msg, err) { status.textContent = msg; status.hidden = false; status.classList.toggle('is-error', !!err); };
+    f.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var email = f.querySelector('input[name="email"]');
+      if (!email.value.trim() || !email.checkValidity()) { say('Merci d’indiquer une adresse e-mail valide.', true); email.focus(); return; }
+      var nom = f.querySelector('input[name="nom"]');
+      if (nom && !nom.value.trim()) { say('Merci d’indiquer votre nom.', true); nom.focus(); return; }
+      var prod = f.querySelector('input[name="produits"]');
+      if (prod && prod.required && !prod.value.trim()) { say('Indiquez vos produits ou services clés pour que nous posions les bonnes questions.', true); prod.focus(); return; }
+      var body = new URLSearchParams(new FormData(f));
+      body.set('type', f.getAttribute('data-demande')); body.set('url', current); body.set('t', String(opened));
+      btn.disabled = true; say('Envoi en cours…');
+      fetch('/api/demande.php', { method: 'POST', body: body, headers: { 'Accept': 'application/json' } })
+        .then(function (r) { return r.json(); })
+        .catch(function () { return { ok: false, message: 'Connexion impossible. Vérifiez votre connexion et réessayez.' }; })
+        .then(function (d) {
+          btn.disabled = false;
+          say(d.message || (d.ok ? 'C’est envoyé.' : 'L’envoi a échoué.'), !d.ok);
+          if (d.ok) { f.querySelectorAll('input[type="text"], input[type="email"], textarea').forEach(function (i) { if (i.name !== 'societe_web') i.value = ''; }); }
+        });
+    });
+  });
+
+  // Adresse transmise depuis un encart du site ou depuis le mail du rapport (&complet=1)
+  var params = new URLSearchParams(location.search), wantComplet = params.get('complet') === '1';
+  var given = params.get('url');
   if (given) { input.value = given; run(given); }
 })();
 

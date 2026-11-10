@@ -68,6 +68,19 @@ function schema(PDO $pdo): void {
     $pdo->exec("CREATE TABLE IF NOT EXISTS clics (
         id $id, jour CHAR(10) NOT NULL, heure CHAR(5) NOT NULL, page VARCHAR(300) NOT NULL,
         cible VARCHAR(300) NOT NULL, libelle VARCHAR(80) NOT NULL DEFAULT '', visiteur CHAR(16) NOT NULL)");
+    // Audit GEO : compteur anonyme des tests, contacts qui ont laissé leur e-mail, demandes et relevés
+    $pdo->exec("CREATE TABLE IF NOT EXISTS compteurs (jour CHAR(10) NOT NULL, cle VARCHAR(20) NOT NULL, n INT NOT NULL DEFAULT 0, PRIMARY KEY (jour, cle))");
+    $pdo->exec("CREATE TABLE IF NOT EXISTS contacts (
+        id $id, cree_le CHAR(19) NOT NULL, maj_le CHAR(19) NOT NULL, email VARCHAR(200) NOT NULL UNIQUE,
+        nom VARCHAR(120) NOT NULL DEFAULT '', site VARCHAR(300) NOT NULL DEFAULT '',
+        conseils TINYINT NOT NULL DEFAULT 0, conseils_le CHAR(19) NOT NULL DEFAULT '', jeton CHAR(32) NOT NULL)");
+    $pdo->exec("CREATE TABLE IF NOT EXISTS demandes (
+        id $id, cree_le CHAR(19) NOT NULL, contact_id INT NOT NULL, type VARCHAR(10) NOT NULL,
+        site VARCHAR(300) NOT NULL, score INT NULL, audit TEXT NOT NULL, produits VARCHAR(300) NOT NULL DEFAULT '',
+        concurrents VARCHAR(300) NOT NULL DEFAULT '', message TEXT NOT NULL, statut VARCHAR(12) NOT NULL DEFAULT 'nouveau',
+        echeance CHAR(10) NOT NULL DEFAULT '', envoye_le CHAR(19) NOT NULL DEFAULT '', mail_ok TINYINT NOT NULL DEFAULT 0)");
+    $pdo->exec("CREATE TABLE IF NOT EXISTS releves (
+        demande_id INT PRIMARY KEY, maj_le CHAR(19) NOT NULL, donnees TEXT NOT NULL)");
     // Nouveau visiteur (1) ou appareil déjà venu (0), ajouté en novembre 2026
     $cols = is_sqlite($pdo)
         ? array_column($pdo->query("PRAGMA table_info(visites)")->fetchAll(PDO::FETCH_ASSOC), 'name')
@@ -138,12 +151,18 @@ function clean_line(string $s, int $max): string {
     return mb_substr($s, 0, $max);
 }
 
-// Nettoyage des données anciennes (visites 25 mois, messages 3 ans).
+// Nettoyage des données anciennes (visites 25 mois, messages et contacts 3 ans).
 function purge(PDO $pdo): void {
     if (random_int(1, 50) !== 1) return;
     $pdo->prepare('DELETE FROM visites WHERE jour < ?')->execute([now_paris()->modify('-25 months')->format('Y-m-d')]);
     $pdo->prepare('DELETE FROM clics WHERE jour < ?')->execute([now_paris()->modify('-25 months')->format('Y-m-d')]);
     $pdo->prepare('DELETE FROM messages WHERE cree_le < ?')->execute([now_paris()->modify('-3 years')->format('Y-m-d H:i:s')]);
+    // Contacts sans échange depuis 3 ans, avec leurs demandes et relevés
+    $old = now_paris()->modify('-3 years')->format('Y-m-d H:i:s');
+    $pdo->prepare('DELETE FROM releves WHERE demande_id IN (SELECT d.id FROM demandes d JOIN contacts c ON c.id = d.contact_id WHERE c.maj_le < ?)')->execute([$old]);
+    $pdo->prepare('DELETE FROM demandes WHERE contact_id IN (SELECT id FROM contacts WHERE maj_le < ?)')->execute([$old]);
+    $pdo->prepare('DELETE FROM contacts WHERE maj_le < ?')->execute([$old]);
+    $pdo->prepare('DELETE FROM compteurs WHERE jour < ?')->execute([now_paris()->modify('-25 months')->format('Y-m-d')]);
 }
 
 // Réglages enregistrés en base (clé, valeur)

@@ -68,12 +68,20 @@ if (($_SERVER['REQUEST_METHOD'] ?? '') === 'POST') {
             unset($_SESSION['pw'], $_SESSION['totp_pending']);
             $_SESSION['ok'] = true; $_SESSION['since'] = time(); $_SESSION['t'] = time();
             $_SESSION['csrf'] = bin2hex(random_bytes(16));
-            header('Location: ./', true, 303); exit;
+            $next = (string)($_SESSION['next'] ?? ''); unset($_SESSION['next']);
+            header('Location: ./' . ($next !== '' ? '?' . $next : ''), true, 303); exit;
         } else { usleep(600000); $error = 'Code incorrect ou expiré.'; }
     }
 }
 
 $logged = !empty($_SESSION['ok']);
+// Lien reçu par e-mail (une demande, un contact) : la page demandée s'ouvre après la connexion
+if (!$logged && !empty($_GET['v']) && preg_match('/^[a-z]+$/', (string)$_GET['v'])) $_SESSION['next'] = http_build_query(array_intersect_key($_GET, ['v' => 1, 'd' => 1, 'c' => 1]));
+if ($logged) {
+    require __DIR__ . '/../api/audit_lib.php';
+    // Autorise le test des pages de Rubriqua dans l'audit GEO, depuis ce navigateur
+    if (!is_owner()) owner_cookie_set($https);
+}
 $css = <<<CSS
 @font-face{font-family:Manrope;src:url(/assets/fonts/manrope-latin-wght-normal.woff2) format("woff2");font-weight:200 800;font-display:swap}
 :root{--red:#991915;--red-light:#EF8D86;--ink:#1C1C1C;--text:#3b3936;--muted:#77726b;--line:#e4e0d9;--beige:#F4F2EE;--white:#fff;--ok:#2f6b3a}
@@ -130,11 +138,21 @@ td.p{word-break:break-all}
 .key{font-family:ui-monospace,monospace;font-size:14px;color:var(--ink);word-break:break-all}
 .err{color:var(--red);font-weight:700;margin:0}
 .note{font-size:13px;color:var(--muted)}
+.tabs a .count{display:inline-block;background:var(--red);color:#fff;border-radius:9px;padding:0 6px;font-size:11px;margin-left:4px}
+.st{display:inline-block;font-size:12px;font-weight:800;padding:2px 8px;border-radius:4px;white-space:nowrap}
+.st-ok{background:#e8f1ea;color:#2f6b3a}.st-warn{background:#fbefe0;color:#8a4b08}.st-ko{background:#f6e8e7;color:#991915}.st-grey{background:#efede9;color:#5c5853}.st-dark{background:var(--ink);color:#fff}
+.lbl{font-size:12px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+input[type=text],input[type=email],input[type=search],textarea{font:inherit;font-size:14px;color:var(--ink);background:#fff;border:1px solid #d9d4cc;border-radius:6px;padding:9px 11px;width:100%}
+textarea{resize:vertical}
+.btn-dark{background:var(--ink);color:#fff;border-color:var(--ink)}.btn-red{background:var(--red);color:#fff;border-color:var(--red)}
+button:disabled{opacity:.45;cursor:not-allowed}
+.flash{background:#e8f1ea;color:#2f6b3a;font-weight:700;border-radius:8px;padding:10px 14px;margin:0}
+.flash.err{background:#f6e8e7;color:var(--red)}
 CSS;
 
 function page_start(string $title, string $css): void {
     echo '<!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">'
-       . '<meta name="robots" content="noindex, nofollow"><link rel="icon" href="/favicon.ico?v=202611101057" sizes="32x32"><link rel="icon" href="/favicon.svg?v=202611101057" type="image/svg+xml"><link rel="apple-touch-icon" href="/assets/images/logo/icone-rubriqua-agence-seo-geo-growth-180.png?v=202611101057"><title>' . h($title) . '</title><style>' . $css . '</style></head><body>';
+       . '<meta name="robots" content="noindex, nofollow"><link rel="icon" href="/favicon.ico?v=202611101142" sizes="32x32"><link rel="icon" href="/favicon.svg?v=202611101142" type="image/svg+xml"><link rel="apple-touch-icon" href="/assets/images/logo/icone-rubriqua-agence-seo-geo-growth-180.png?v=202611101142"><title>' . h($title) . '</title><style>' . $css . '</style></head><body>';
 }
 
 if (!$logged) {
@@ -164,6 +182,21 @@ if (!$logged) {
     }
     if ($step2) echo '<button type="submit" name="logout" value="1" formnovalidate class="link">Annuler</button>';
     echo '</form></main></body></html>';
+    exit;
+}
+
+// Onglets
+$view = in_array($_GET['v'] ?? '', ['contacts', 'releves'], true) ? $_GET['v'] : 'stats';
+function tabs(string $view, int $todo): string {
+    $t = ['stats' => 'Statistiques', 'contacts' => 'Contacts', 'releves' => 'Relevés'];
+    $o = '<nav class="seg tabs" aria-label="Rubriques">';
+    foreach ($t as $k => $l) $o .= '<a href="./' . ($k === 'stats' ? '' : '?v=' . $k) . '"' . ($k === $view ? ' aria-current="page"' : '') . '>' . h($l) . ($k === 'releves' && $todo ? ' <span class="count">' . $todo . '</span>' : '') . '</a>';
+    return $o . '</nav>';
+}
+$todo = (int)$pdo->query("SELECT COUNT(*) FROM demandes WHERE type = 'releve' AND statut <> 'envoye'")->fetchColumn();
+if ($view !== 'stats') {
+    define('RB_ADMIN', true);
+    require __DIR__ . '/vue-' . $view . '.php';
     exit;
 }
 
@@ -303,6 +336,7 @@ page_start('Tableau de bord Rubriqua', $css);
   <header class="top">
     <div class="brand"><b>Tableau de bord</b><span>rubriqua.com, du <?= h((new DateTime($start))->format('d/m/Y')) ?> au <?= h($end->format('d/m/Y')) ?></span></div>
     <div class="tools">
+      <?= tabs($view, $todo) ?>
       <nav class="seg" aria-label="Période"><?php foreach ($periods as $d => $l): ?><a href="?p=<?= $d ?>"<?= $d === $days ? ' aria-current="page"' : '' ?>><?= h($l) ?></a><?php endforeach; ?></nav>
       <button type="button" id="ignore">Ne pas compter mes visites</button>
       <form method="post"><input type="hidden" name="csrf" value="<?= h($csrf) ?>"><button name="logout" value="1">Se déconnecter</button></form>

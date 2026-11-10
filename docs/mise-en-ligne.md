@@ -80,3 +80,11 @@ La connexion demande le mot de passe, puis un code à 6 chiffres affiché par un
 - Pages d'entrée et parcours : une visite regroupe les pages vues par un même visiteur sans pause de plus de 30 minutes.
 - Clics : liens et boutons cliqués, avec leur texte et leur destination.
 - Remise à zéro : dans GitHub, onglet Actions, lancer Mise en ligne avec l'action vider-statistiques. Les visites et les clics sont effacés à la prochaine ouverture du tableau de bord. Les demandes de contact sont gardées.
+
+## Audit GEO, rapports et relevés (novembre 2026)
+
+- `api/audit_lib.php` contient le moteur de l'audit, utilisé par `api/audit.php` (résultat à l'écran) et `api/demande.php` (rapport par e-mail, relevé, audit complet).
+- Les pages de rubriqua.com et rubriqua.fr ne peuvent être testées que depuis un navigateur connecté au tableau de bord (cookie `rb_proprio`, valable 12 heures).
+- Les e-mails envoyés aux visiteurs sont dans `api/emails.php`. Ils partent par la boîte SMTP IONOS configurée dans les secrets.
+- Tableau de bord, onglets Contacts (`?v=contacts`) et Relevés (`?v=releves`). Les relevés sont promis sous 5 jours ouvrés (constante `RELEVE_JOURS`).
+- Désinscription des conseils : `api/desinscription.php?j=…`, lien présent dans chaque e-mail envoyé à un inscrit.

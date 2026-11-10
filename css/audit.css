@@ -68,15 +68,12 @@
 .au-concl { min-width: 0; background: var(--white); border-radius: 12px; padding: 32px; display: flex; flex-direction: column; gap: 16px; }
 .au-concl h3 { font-size: 22px; }
 .au-concl p { font-size: 15px; line-height: 1.65; color: var(--text); }
-.au-concl .btn { align-self: flex-start; margin-top: auto; }
 .au-prio { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; }
 .au-prio li { display: grid; grid-template-columns: 32px minmax(0, 1fr) auto; gap: 14px; align-items: center; padding: 12px 0; border-top: 1px solid #ece9e4; }
 .au-prio li:first-child { border-top: 0; }
 .au-prio-n { width: 32px; height: 32px; border-radius: 50%; background: var(--ink); color: var(--white); font-weight: 800; font-size: 14px; display: flex; align-items: center; justify-content: center; }
 .au-prio b { font-size: 16px; line-height: 1.35; }
 .au-concl .au-concl-main { font-size: 17px; line-height: 1.7; color: var(--ink); }
-.au-next .au-cta { min-width: 0; margin: 0; color: var(--white); padding: 32px; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); align-content: start;
-  background-color: var(--black); background-image: linear-gradient(#232323 1px, transparent 1px), linear-gradient(90deg, #232323 1px, transparent 1px); background-size: 44px 44px; }
 .au-cta label { min-width: 0; }
 .au-cta input { width: 100%; box-sizing: border-box; background: var(--white); color: var(--ink); }
 .au-cta h3 { font-size: 24px; line-height: 1.25; }
@@ -136,8 +133,7 @@
 }
 @media (max-width: 760px) {
   .au-next { grid-template-columns: 1fr; }
-  .au-next .au-cta { grid-template-columns: 1fr; }
-  /* Sur mobile : score, priorités et formulaire d'abord, détail des critères ensuite */
+    /* Sur mobile : score, priorités et formulaire d'abord, détail des critères ensuite */
   .au-summary { order: 1; }
   .au-next { order: 2; }
   .au-groups { order: 3; }
@@ -166,6 +162,47 @@
   .au-cmp { grid-template-columns: 1fr; }
   .au-cmp-title { margin-top: 64px; }
 }
+
+/* Résultat, novembre 2026 : liens rapides, priorités encadrées, rapport par e-mail, audit complet */
+.au-jump { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 6px; }
+.au-btn-ghost { background: transparent; color: var(--white); border: 1px solid var(--white); }
+.au-btn-ghost:hover { background: rgba(255,255,255,.08); color: var(--white); }
+.au-concl { border: 2px solid var(--red); scroll-margin-top: 90px; outline: none; }
+.au-concl h3 { color: var(--red); }
+.au-concl-acts { display: flex; flex-wrap: wrap; gap: 12px; margin-top: auto; }
+.au-mobile-only { display: none; }
+.au-complet { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 14px; padding-top: 18px; border-top: 1px solid #ece9e4; }
+.au-complet[hidden] { display: none; }
+.au-complet .full { grid-column: 1 / -1; }
+.au-complet label { display: flex; flex-direction: column; gap: 6px; font-size: 14px; font-weight: 700; color: var(--ink); min-width: 0; }
+.au-complet input, .au-complet textarea { font: inherit; font-size: 15px; width: 100%; box-sizing: border-box; border: 1px solid #d9d4cc; border-radius: 6px; padding: 11px 12px; background: var(--white); color: var(--ink); }
+.au-complet-intro { grid-column: 1 / -1; font-size: 15px; }
+.au-next .au-cta { min-width: 0; margin: 0; color: var(--white); padding: 32px; border-radius: 12px; display: flex; flex-direction: column; gap: 14px; background-color: #161616; }
+.au-cta label { display: flex; flex-direction: column; gap: 6px; font-size: 13px; font-weight: 700; color: #cfcbc4; }
+.au-cta input[type=email], .au-cta input[type=text] { font: inherit; font-size: 15px; border: 0; border-radius: 6px; padding: 12px; width: 100%; box-sizing: border-box; background: var(--white); color: var(--ink); }
+.au-cta .au-check { flex-direction: row; align-items: flex-start; gap: 10px; font-size: 14px; font-weight: 500; line-height: 1.5; color: var(--white); cursor: pointer; }
+.au-check input { flex: none; width: 18px; height: 18px; margin: 2px 0 0; accent-color: var(--white); }
+.au-releve { display: flex; flex-direction: column; gap: 12px; padding-left: 28px; }
+.au-releve[hidden] { display: none; }
+.au-releve-note { font-size: 12px; color: #a9a49d; line-height: 1.5; }
+.au-btn-light { align-self: flex-start; background: transparent; color: var(--white); border: 1px solid var(--white); }
+.au-btn-light:hover { background: var(--white); color: var(--ink); }
+.au-cta .form-note { font-size: 12px; line-height: 1.5; color: #a9a49d; margin: 0; }
+.au-cta .form-status { margin: 0; font-weight: 700; color: var(--white); }
+.au-complet .form-status { margin: 0; font-weight: 700; color: var(--ink); }
+.form-status.is-error { color: var(--red-light); }
+.au-complet .form-status.is-error { color: var(--red); }
+.au-groups { scroll-margin-top: 90px; outline: none; }
+@media (max-width: 760px) {
+  .au-jump { justify-content: center; }
+  .au-jump .btn { flex: 1 1 100%; justify-content: center; }
+  .au-mobile-only { display: inline-flex; }
+  .au-concl-acts .btn { flex: 1 1 100%; justify-content: center; text-align: center; }
+  .au-complet { grid-template-columns: 1fr; }
+  .au-next .au-cta { padding: 24px; }
+  .au-btn-light { align-self: stretch; text-align: center; justify-content: center; }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .au-typed, .au-ans, .au-src1, .au-src2, .au-summary, .au-group, .au-row, .au-run-steps li { animation: none; }
   .au-typed { border-right: 0; }

@@ -3,18 +3,18 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="icon" href="/favicon.ico?v=202611101057" sizes="32x32">
-<link rel="icon" href="/favicon.svg?v=202611101057" type="image/svg+xml">
-<link rel="apple-touch-icon" href="/assets/images/logo/icone-rubriqua-agence-seo-geo-growth-180.png?v=202611101057">
+<link rel="icon" href="/favicon.ico?v=202611101142" sizes="32x32">
+<link rel="icon" href="/favicon.svg?v=202611101142" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/assets/images/logo/icone-rubriqua-agence-seo-geo-growth-180.png?v=202611101142">
 <title>Audit GEO gratuit en 30 secondes - Rubriqua</title>
 <meta name="description" content="Audit GEO gratuit : vérifiez en 30 secondes si ChatGPT, Perplexity, Gemini et les Aperçus IA peuvent lire votre page. Score sur 100, 17 critères.">
 <link rel="canonical" href="https://rubriqua.com/audit-geo-gratuit/">
 <link rel="preload" href="../assets/fonts/manrope-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="../css/fonts.css?v=202611101057">
-<link rel="stylesheet" href="../css/style.css?v=202611101057">
-<link rel="stylesheet" href="../css/services.css?v=202611101057">
-<link rel="stylesheet" href="../css/seogeo.css?v=202611101057">
-<link rel="stylesheet" href="../css/audit.css?v=202611101057">
+<link rel="stylesheet" href="../css/fonts.css?v=202611101142">
+<link rel="stylesheet" href="../css/style.css?v=202611101142">
+<link rel="stylesheet" href="../css/services.css?v=202611101142">
+<link rel="stylesheet" href="../css/seogeo.css?v=202611101142">
+<link rel="stylesheet" href="../css/audit.css?v=202611101142">
 <script type="application/ld+json" id="schema">
 {
  "@context": "https://schema.org",
@@ -150,7 +150,7 @@
      "name": "Que deviennent les adresses testées ?",
      "acceptedAnswer": {
       "@type": "Answer",
-      "text": "Elles ne sont pas enregistrées. L’outil lit la page au moment du test, affiche le résultat, puis oublie l’adresse."
+      "text": "Elles ne sont pas enregistrées. L’outil lit la page au moment du test, affiche le résultat, puis oublie l’adresse. Si vous demandez le rapport par e-mail, nous gardons votre e-mail, l’adresse testée et le résultat pour vous l’envoyer et assurer le suivi. Ces données sont supprimées après 3 ans sans échange, ou plus tôt sur simple demande."
      }
     }
    ],
@@ -169,7 +169,7 @@
 <header class="site-header">
   <div class="container header-inner">
     <a class="brand" href="/" aria-label="Rubriqua, accueil">
-      <img class="brand-logo" src="/assets/images/logo/logo-rubriqua-agence-seo-geo-growth-fond-sombre.svg?v=202611101057" alt="Rubriqua" width="170" height="32">
+      <img class="brand-logo" src="/assets/images/logo/logo-rubriqua-agence-seo-geo-growth-fond-sombre.svg?v=202611101142" alt="Rubriqua" width="170" height="32">
     </a>
     <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="menu">Menu</button>
     <nav id="menu" class="main-nav" aria-label="Navigation principale">
@@ -198,7 +198,7 @@
         <input id="au-url" name="url" type="text" inputmode="url" autocomplete="url" placeholder="www.votre-site.fr" required>
         <button class="btn btn-primary btn-lg" type="submit">Lancer l’audit</button>
       </form>
-      <p class="au-note">Une page analysée, avec le robots.txt et le plan du site du domaine. Score sur 100, 17 critères, sans inscription. Les adresses testées ne sont pas conservées.</p>
+      <p class="au-note">Une page analysée, avec le robots.txt et le plan du site du domaine. Score sur 100, 17 critères, sans inscription. Les adresses testées ne sont pas conservées, sauf si vous demandez le rapport par e-mail.</p>
       <p class="au-error" data-audit-error role="alert" hidden></p>
     </div>
     <div class="ai-card au-ill reveal" aria-hidden="true">
@@ -236,33 +236,49 @@
         <span class="au-for">Résultat pour <b data-audit-host></b></span>
         <h2 id="au-verdict" data-audit-verdict></h2>
         <div class="au-counts" data-audit-counts></div>
+        <div class="au-jump"><a class="btn au-btn-ghost" href="#au-prio">Voir mes priorités <span aria-hidden="true">↓</span></a><a class="btn au-btn-ghost" href="#au-detail">Voir le détail des 17 critères <span aria-hidden="true">↓</span></a></div>
         <span class="au-calc">Calcul du score : un critère validé compte un point, un critère à améliorer un demi-point.</span>
       </div>
     </div>
-    <div class="au-groups" data-audit-groups></div>
     <div class="au-next">
-      <div class="au-concl">
+      <div class="au-concl" id="au-prio" tabindex="-1">
         <h3>Vos priorités</h3>
         <ol class="au-prio" data-audit-prio></ol>
         <p class="au-concl-main" data-audit-conclusion></p>
-        <p>Ce test vérifie que votre page est prête à être citée. Il ne dit pas si les IA vous citent vraiment. Pour le savoir, il faut poser les questions de vos clients à chaque IA et comparer avec vos concurrents.</p>
-        <p>Pour un diagnostic de tout le site, avec vos citations réelles et un plan d’action, parlons-en.</p>
-        <a class="btn btn-outline" href="/contact/">Demander un audit SEO et GEO complet</a>
+        <p>Ce test vérifie que votre page est prête à être citée. Il ne dit pas si les IA vous citent vraiment.</p>
+        <div class="au-concl-acts">
+          <button type="button" class="btn btn-primary" data-complet-open aria-expanded="false" aria-controls="au-complet">Demander un audit SEO et GEO complet</button>
+          <a class="btn btn-outline au-mobile-only" href="#au-detail">Voir le résultat en détail <span aria-hidden="true">↓</span></a>
+        </div>
+        <form class="au-complet" id="au-complet" data-demande="complet" hidden novalidate>
+          <div class="hp-field" aria-hidden="true"><label>Ne pas remplir<input type="text" name="societe_web" tabindex="-1" autocomplete="off"></label></div>
+          <p class="au-complet-intro">Votre résultat est joint à la demande. Nous revenons vers vous sous 48 heures avec nos premières remarques.</p>
+          <label>Nom<input type="text" name="nom" autocomplete="name" required></label>
+          <label>E-mail professionnel<input type="email" name="email" autocomplete="email" required></label>
+          <label class="full">Ce que vous aimeriez améliorer, facultatif<textarea name="message" rows="3"></textarea></label>
+          <button class="btn btn-primary full" type="submit">Envoyer ma demande</button>
+          <p class="form-note full">Vos données servent uniquement à répondre à votre demande. <a href="/politique-de-confidentialite/">Politique de confidentialité</a></p>
+          <p class="form-status full" role="status" aria-live="polite" hidden></p>
+        </form>
       </div>
-      <form class="contact-form au-cta grid-bg" action="/api/contact.php" method="post" data-contact>
+      <form class="au-cta grid-bg" data-demande="rapport" novalidate>
         <div class="hp-field" aria-hidden="true"><label>Ne pas remplir<input type="text" name="societe_web" tabindex="-1" autocomplete="off"></label></div>
-        <input type="hidden" name="t" value=""><input type="hidden" name="page" value="">
-        <h3 class="full">Testez vos citations dans les IA, c’est offert</h3>
-        <p class="full au-cta-text">Nous posons 10 questions de vos clients à ChatGPT, Perplexity, Gemini et aux Aperçus IA. Vous recevez leurs réponses, les sources citées et les concurrents mentionnés.</p>
-        <label>Nom<input type="text" name="nom" autocomplete="name" required></label>
+        <h3>Recevez ce rapport par e-mail</h3>
+        <p class="au-cta-text">Le score, les 17 critères et vos priorités, pour les garder ou les transmettre à votre équipe.</p>
         <label>E-mail professionnel<input type="email" name="email" autocomplete="email" required></label>
-        <label class="full">Votre activité en une phrase<input type="text" name="message" placeholder="Ex. usinage de pièces inox pour l’agroalimentaire"></label>
-        <label class="full">Site<input type="text" inputmode="url" name="site" data-audit-site></label>
-        <button class="btn btn-primary btn-lg full" type="submit">Recevoir mon test de citation</button>
-        <p class="form-note full">Vos données servent uniquement à répondre à votre demande. <a href="/politique-de-confidentialite/">Politique de confidentialité</a></p>
-        <p class="form-status full" role="status" aria-live="polite" hidden></p>
+        <label class="au-check"><input type="checkbox" name="releve" value="1" data-releve-toggle><span>Je veux aussi un relevé offert de mes citations : 5 questions de mes clients posées à ChatGPT, Perplexity et aux Aperçus IA, comparées à mes concurrents.</span></label>
+        <div class="au-releve" data-releve-fields hidden>
+          <label>Vos produits ou services clés, 2 ou 3<input type="text" name="produits" placeholder="Ex. joints sur mesure, pièces silicone alimentaire"></label>
+          <label>Vos concurrents, facultatif<input type="text" name="concurrents" placeholder="Sites ou noms, séparés par une virgule"></label>
+          <span class="au-releve-note">Sans concurrents, nous repérons ceux que les IA citent. Relevé envoyé sous 5 jours ouvrés.</span>
+        </div>
+        <label class="au-check"><input type="checkbox" name="conseils" value="1"><span>Recevoir aussi nos conseils SEO et GEO, un e-mail par mois. Désinscription en un clic.</span></label>
+        <button class="btn au-btn-light" type="submit">M’envoyer l’audit par e-mail</button>
+        <p class="form-note">Votre e-mail sert à envoyer ce rapport et, si vous l’avez demandé, le relevé. Vous ne recevrez nos conseils que si vous cochez la case. <a href="/politique-de-confidentialite/">Politique de confidentialité</a></p>
+        <p class="form-status" role="status" aria-live="polite" hidden></p>
       </form>
     </div>
+    <div class="au-groups" id="au-detail" tabindex="-1" data-audit-groups></div>
     <button type="button" class="au-again" data-audit-again>Tester une autre page</button>
   </div>
 </section>
@@ -353,7 +369,7 @@
       </div>
       <div class="faq-item">
         <button type="button" class="faq-q" aria-expanded="false">Que deviennent les adresses testées&nbsp;?<span class="faq-icon" aria-hidden="true"></span></button>
-        <div class="faq-a"><div><p>Elles ne sont pas enregistrées. L’outil lit la page au moment du test, affiche le résultat, puis oublie l’adresse.</p></div></div>
+        <div class="faq-a"><div><p>Elles ne sont pas enregistrées. L’outil lit la page au moment du test, affiche le résultat, puis oublie l’adresse. Si vous demandez le rapport par e-mail, nous gardons votre e-mail, l’adresse testée et le résultat pour vous l’envoyer et assurer le suivi. Ces données sont supprimées après 3 ans sans échange, ou plus tôt sur simple demande.</p></div></div>
       </div>
     </div>
   </div>
@@ -365,7 +381,7 @@
   <div class="container">
     <div class="footer-grid">
       <div>
-        <img class="footer-logo" src="/assets/images/logo/logo-rubriqua-agence-seo-geo-growth-fond-sombre.svg?v=202611101057" alt="Rubriqua" width="191" height="36" loading="lazy">
+        <img class="footer-logo" src="/assets/images/logo/logo-rubriqua-agence-seo-geo-growth-fond-sombre.svg?v=202611101142" alt="Rubriqua" width="191" height="36" loading="lazy">
         <p>SEO, GEO et growth marketing pour toutes les organisations.</p>
         <a class="footer-social" href="https://www.linkedin.com/company/rubriqua-seo" target="_blank" rel="noopener" aria-label="Rubriqua sur LinkedIn"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path fill="currentColor" d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13zM7.12 20.45H3.56V9h3.56v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.73V1.73C24 .77 23.2 0 22.22 0z"/></svg><span>LinkedIn</span></a>
       </div>
@@ -378,7 +394,7 @@
   </div>
 </footer>
 
-<script src="../js/main.js?v=202611101057"></script>
-<script src="../js/audit.js?v=202611101057"></script>
+<script src="../js/main.js?v=202611101142"></script>
+<script src="../js/audit.js?v=202611101142"></script>
 </body>
 </html>
