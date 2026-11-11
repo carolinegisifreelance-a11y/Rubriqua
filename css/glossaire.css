@@ -128,3 +128,31 @@ div.gl-row:target { background: #fbf1f0; }
   .roas-results { grid-template-columns: 1fr 1fr; }
 }
 .df-card .df-card-sub { font-size: 14px; color: #cfcbc4; }
+
+/* Visuel de la page Cannibalisation SEO : positions de deux URL sur 12 semaines */
+.yoyo { margin: 28px 0; background: var(--white); border: 1px solid var(--line); border-radius: 12px; padding: 24px; display: flex; flex-direction: column; gap: 16px; }
+.yoyo-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-start; gap: 14px; }
+.yoyo figcaption { display: flex; flex-direction: column; gap: 4px; min-width: 0; flex: 1 1 260px; }
+.yoyo figcaption b { font-size: 18px; color: var(--ink); line-height: 1.3; }
+.yoyo figcaption span { font-size: 13px; color: var(--muted); }
+.yoyo-switch { display: inline-flex; background: var(--beige); border-radius: 8px; padding: 4px; gap: 4px; flex: none; }
+.yoyo-switch button { font: inherit; font-size: 14px; font-weight: 700; border: 0; background: transparent; color: var(--text); padding: 8px 14px; border-radius: 6px; cursor: pointer; }
+.yoyo-switch button[aria-pressed="true"] { background: var(--ink); color: var(--white); }
+.yoyo-chart { overflow-x: auto; }
+.yoyo-chart svg { display: block; width: 100%; height: auto; }
+.yo-grid { stroke: #ece8e1; stroke-width: 1; }
+.yo-ax { fill: #8a857e; font-size: 12px; font-family: inherit; }
+.yo-line { fill: none; stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; }
+.yo-line.yo-a { stroke: var(--red); }
+.yo-line.yo-b { stroke: var(--ink); }
+.yo-line.yo-site { stroke: #c9c3ba; stroke-width: 2; stroke-dasharray: 5 5; }
+.yoyo.is-double .yo-line.yo-site { opacity: 0; }
+.yo-dot.yo-a { fill: var(--red); }
+.yo-dot.yo-b { fill: var(--ink); }
+.yoyo-legend { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px 20px; font-size: 13px; color: var(--text); }
+.yoyo-legend li { display: flex; align-items: center; gap: 8px; min-width: 0; overflow-wrap: anywhere; }
+.yoyo-legend i { flex: none; width: 18px; height: 4px; border-radius: 2px; }
+.yl-a { background: var(--red); } .yl-b { background: var(--ink); } .yl-s { background: repeating-linear-gradient(90deg, #c9c3ba 0 5px, transparent 5px 10px); }
+.yoyo-verdict { margin: 0 !important; font-size: 15px; line-height: 1.6; padding: 12px 14px; border-radius: 8px; background: #f6e8e7; color: var(--ink); }
+.yoyo.is-double .yoyo-verdict { background: #e8f1ea; }
+@media (max-width: 560px) { .yoyo { padding: 18px; } .yoyo-switch { width: 100%; } .yoyo-switch button { flex: 1; padding: 8px 6px; } }
