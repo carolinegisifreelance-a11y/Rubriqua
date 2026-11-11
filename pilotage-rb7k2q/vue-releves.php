@@ -62,6 +62,14 @@ function suggest_questions(array $cur, array $audit): array {
     return ['questions' => $ai ?? fallback_questions($cur), 'source' => $ai ? 'ia' : 'secours', 'erreur' => $ai ? '' : ($GLOBALS['ia_err'] ?? 'clé absente')];
 }
 
+// ---------- Suppression d'une demande de relevé (le contact est gardé) ----------
+if (($_SERVER['REQUEST_METHOD'] ?? '') === 'POST' && isset($_POST['supprimer_releve']) && hash_equals($csrf, (string)($_POST['csrf'] ?? ''))) {
+    $id = (int)$_POST['supprimer_releve'];
+    $pdo->prepare('DELETE FROM releves WHERE demande_id = ?')->execute([$id]);
+    $pdo->prepare("DELETE FROM demandes WHERE id = ? AND type = 'releve'")->execute([$id]);
+    header('Location: ./?v=releves&supprime=1', true, 303); exit;
+}
+
 // ---------- Actions de l'outil (enregistrer, aperçu, envoi) ----------
 if (($_SERVER['REQUEST_METHOD'] ?? '') === 'POST' && str_contains($_SERVER['CONTENT_TYPE'] ?? '', 'application/json')) {
     $in = json_decode((string)file_get_contents('php://input'), true) ?: [];
@@ -167,6 +175,9 @@ page_start('Relevés, tableau de bord Rubriqua', $css . '
 .cmp i{display:block;height:12px;border-radius:3px;background:#5c5853}
 .opp{display:grid;grid-template-columns:22px 150px minmax(0,1fr);gap:10px 12px;align-items:start;border-top:1px solid var(--line);padding:12px 0}
 .opp input[type=text]{font-weight:700}
+.del summary{cursor:pointer;color:var(--red);font-weight:700;list-style:none}
+.del summary::-webkit-details-marker{display:none}
+.del form{display:flex;flex-direction:column;gap:8px;align-items:flex-start;margin-top:8px}
 .acts{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
 .preview{width:100%;height:900px;border:1px solid var(--line);border-radius:8px;background:#e9e6e0}
 .sticky{position:sticky;bottom:0;background:var(--beige);padding:12px 0;border-top:1px solid var(--line)}
@@ -176,9 +187,8 @@ page_start('Relevés, tableau de bord Rubriqua', $css . '
 <main class="wrap">
   <header class="top">
     <div class="brand"><b>Relevés</b><span>Relevés de citations offerts, à envoyer sous 5 jours ouvrés</span></div>
-    <div class="tools">
-    </div>
   </header>
+  <?php if (isset($_GET['supprime'])): ?><p class="flash">Relevé supprimé. Le contact est toujours dans Contacts.</p><?php endif; ?>
 
   <div class="rl">
     <aside class="card reqs">
@@ -208,6 +218,7 @@ page_start('Relevés, tableau de bord Rubriqua', $css . '
             <dt>Concurrents</dt><dd><?= $cur['concurrents'] !== '' ? h($cur['concurrents']) : '<span class="note">Non renseignés, à repérer dans les réponses</span>' ?></dd>
             <dt>Conseils par e-mail</dt><dd><?= $cur['conseils'] ? 'Oui' : 'Non' ?></dd>
             <dt>Fiche contact</dt><dd><a href="./?v=contacts&amp;c=<?= (int)$cur['cid'] ?>">Ouvrir la fiche et ses étiquettes</a></dd>
+            <dt>Relevé</dt><dd><details class="del"><summary>Supprimer ce relevé</summary><form method="post"><input type="hidden" name="csrf" value="<?= h($csrf) ?>"><span class="note">La demande et les réponses collées sont effacées. Le contact reste dans Contacts.</span><button class="btn-red" name="supprimer_releve" value="<?= (int)$cur['id'] ?>">Confirmer la suppression</button></form></details></dd>
           </dl>
         </div>
         <div style="display:flex;flex-direction:column;gap:10px;min-width:0">
