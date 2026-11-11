@@ -164,7 +164,7 @@ CSS;
 
 function page_start(string $title, string $css): void {
     echo '<!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">'
-       . '<meta name="robots" content="noindex, nofollow"><link rel="icon" href="/favicon.ico?v=202611102249" sizes="32x32"><link rel="icon" href="/favicon.svg?v=202611102249" type="image/svg+xml"><link rel="apple-touch-icon" href="/assets/images/logo/icone-rubriqua-agence-seo-geo-growth-180.png?v=202611102249"><title>' . h($title) . '</title><style>' . $css . '</style></head><body>' . ($GLOBALS['topbar'] ?? '');
+       . '<meta name="robots" content="noindex, nofollow"><link rel="icon" href="/favicon.ico?v=202611111127" sizes="32x32"><link rel="icon" href="/favicon.svg?v=202611111127" type="image/svg+xml"><link rel="apple-touch-icon" href="/assets/images/logo/icone-rubriqua-agence-seo-geo-growth-180.png?v=202611111127"><title>' . h($title) . '</title><style>' . $css . '</style></head><body>' . ($GLOBALS['topbar'] ?? '');
 }
 
 if (!$logged) {
@@ -210,7 +210,7 @@ function tabs(string $view, int $todo, int $rdv = 0): string {
     return $o . '</nav>';
 }
 function topbar(string $view, int $todo, int $rdv, string $csrf): string {
-    return '<header class="menu"><div class="menu-in"><a class="menu-brand" href="./"><img src="/assets/images/logo/logo-rubriqua-agence-seo-geo-growth-fond-sombre.svg?v=202611102249" alt="Rubriqua" width="112" height="24"><span>Tableau de bord</span></a>'
+    return '<header class="menu"><div class="menu-in"><a class="menu-brand" href="./"><img src="/assets/images/logo/logo-rubriqua-agence-seo-geo-growth-fond-sombre.svg?v=202611111127" alt="Rubriqua" width="112" height="24"><span>Tableau de bord</span></a>'
         . tabs($view, $todo, $rdv)
         . '<form method="post" class="menu-out"><input type="hidden" name="csrf" value="' . h($csrf) . '"><button name="logout" value="1">Se déconnecter</button></form></div></header>';
 }
