@@ -200,3 +200,16 @@
   .hero .actions { width: 100%; }
   .hero .actions .btn, .sg-cta .btn { width: 100%; justify-content: center; text-align: center; }
 }
+
+/* Page Refonte SEO : extrait de plan de redirection dans l'en-tête */
+.redir-card { gap: 14px; }
+.redir-rows { display: flex; flex-direction: column; gap: 8px; }
+.redir-row { display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1.15fr) auto; align-items: center; gap: 8px; font-size: 13px; background: var(--beige); border-radius: 8px; padding: 9px 10px; }
+.redir-row span { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 12px; }
+.redir-old { color: #8a857e; text-decoration: line-through; text-decoration-color: #c9c3ba; }
+.redir-new { color: var(--ink); font-weight: 700; }
+.redir-arrow { color: var(--red); font-weight: 800; font-family: inherit !important; }
+.redir-row em { font-style: normal; font-size: 11px; font-weight: 800; color: #2f6b3a; background: #e8f1ea; border-radius: 4px; padding: 2px 6px; }
+.redir-foot { display: flex; gap: 10px; align-items: flex-start; border-top: 1px solid var(--line); padding-top: 12px; }
+.redir-foot p { margin: 0; font-size: 14px; }
+.redir-ok { flex: none; width: 22px; height: 22px; border-radius: 50%; background: #2f6b3a; color: #fff; display: grid; place-items: center; font-size: 13px; font-weight: 800; }
