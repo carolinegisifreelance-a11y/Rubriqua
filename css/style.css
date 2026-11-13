@@ -532,3 +532,25 @@ a.tile-main:hover { border-color: var(--red-dark); background: var(--red-dark); 
   .steps::before, .steps::after { display: none; }
   .steps .step:not(:last-child)::after { content: ""; position: absolute; left: 31px; top: 64px; bottom: -32px; width: 2px; background: var(--grey); }
 }
+
+/* Encarts vers la page Refonte SEO (services et accueil) */
+.rf-sub, .rf-band { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: 16px; text-decoration: none; color: var(--ink); }
+.rf-ico { flex: none; width: 40px; height: 40px; border-radius: var(--radius-sm); background: #f6e8e7; display: inline-flex; align-items: center; justify-content: center; }
+.rf-ico svg { width: 20px; height: 20px; fill: none; stroke: var(--red); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.rf-txt { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.rf-txt b { font-size: 17px; letter-spacing: -0.01em; }
+.rf-txt span { font-size: 15px; color: var(--grey); line-height: 1.5; }
+.rf-go { font-size: 14px; font-weight: 800; color: var(--red); white-space: nowrap; }
+.rf-go::after { content: " →"; }
+.rf-sub { margin: 0 20px 0 120px; padding: 16px 20px; background: var(--beige); border-radius: 0 0 var(--radius-sm) var(--radius-sm); border-bottom: 1px solid var(--line); transition: background .2s; }
+.rf-sub:hover { background: #ece8e1; }
+.rf-band { margin-top: 16px; padding: 22px 26px; background: var(--white); border: 1px solid var(--line); border-radius: var(--radius); transition: border-color .2s; }
+.rf-band:hover { border-color: var(--red); }
+.rf-band .rf-ico { width: 48px; height: 48px; }
+.rf-band .rf-txt b { font-size: 19px; }
+@media (max-width: 760px) {
+  .rf-sub { margin: 0; border-radius: 0; }
+  .rf-sub, .rf-band { grid-template-columns: auto minmax(0, 1fr); }
+  .rf-go { grid-column: 2; }
+  .rf-band { padding: 18px; }
+}
