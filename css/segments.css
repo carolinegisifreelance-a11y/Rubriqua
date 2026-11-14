@@ -346,8 +346,15 @@
 .pc-main p { flex-basis: 100%; margin: 0; font-size: 14px; line-height: 1.5; color: var(--muted); }
 .pc-price { text-align: right; font-weight: 800; font-size: 15px; white-space: nowrap; }
 .pc-price small { display: block; font-size: 12px; font-weight: 600; color: var(--muted); }
-.pc-audits { display: flex; flex-direction: column; gap: 12px; }
-.pc-audits h3 { margin: 0; font-size: 18px; }
+.pc-audits { display: block; }
+.pc-audits[open] .pc-table-wrap { margin-top: 12px; }
+.pc-audits .pc-note { margin-top: 10px; }
+.pc-audits summary { list-style: none; display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 14px 18px; border: 1px solid #e3dfd8; border-radius: var(--radius-sm); font-weight: 700; font-size: 16px; cursor: pointer; }
+.pc-audits summary::-webkit-details-marker { display: none; }
+.pc-audits summary:hover { border-color: var(--black); }
+.pc-chev { width: 10px; height: 10px; border-right: 2px solid currentColor; border-bottom: 2px solid currentColor; transform: rotate(45deg) translateY(-3px); transition: transform .2s; flex: none; }
+.pc-audits[open] .pc-chev { transform: rotate(-135deg) translateY(-3px); }
+.pc-audits[open] summary { border-color: var(--black); }
 .pc-table-wrap { overflow-x: auto; }
 .pc-table { width: 100%; border-collapse: collapse; font-size: 14px; }
 .pc-table th, .pc-table td { text-align: left; padding: 11px 12px; border-bottom: 1px solid #ece9e4; vertical-align: top; }
