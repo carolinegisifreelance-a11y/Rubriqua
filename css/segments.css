@@ -191,11 +191,11 @@
 .sg-result .sg-small { order: -1; font-size: 12px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; color: var(--muted, #77726b); }
 
 /* Section Pourquoi suivie des résultats (fond différent) : marge du bas */
-.sg-why:has(+ .sg-results), .sg-why:has(+ #recherches), .sg-why:has(+ [aria-labelledby="titre-phares"]) { padding-bottom: 96px; }
+.sg-why:has(+ .sg-results), .sg-why:has(+ #recherches), .sg-why:has(+ [aria-labelledby="titre-phares"]), .sg-why:has(+ [aria-labelledby="titre-canaux"]) { padding-bottom: 96px; }
 /* Étapes : réglages communs dans style.css, trois colonnes ici */
 .sg-steps-3 { --n: 3; }
 @media (max-width: 760px) {
-  .sg-why:has(+ .sg-results), .sg-why:has(+ #recherches), .sg-why:has(+ [aria-labelledby="titre-phares"]) { padding-bottom: 64px; }
+  .sg-why:has(+ .sg-results), .sg-why:has(+ #recherches), .sg-why:has(+ [aria-labelledby="titre-phares"]), .sg-why:has(+ [aria-labelledby="titre-canaux"]) { padding-bottom: 64px; }
 }
 @media (max-width: 760px) {
   .hero .actions { width: 100%; }
@@ -313,3 +313,24 @@
 .phare-tag { position: absolute; top: 22px; right: 22px; font-size: 12px; font-weight: 800; color: var(--ink); background: var(--red-light); border-radius: 4px; padding: 3px 8px; }
 @media (max-width: 1024px) { .phares { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 @media (max-width: 640px) { .phares { grid-template-columns: 1fr; } .phare { padding: 22px; } .fiche-test .btn { width: 100%; justify-content: center; text-align: center; } }
+
+/* Page PME : choisir ses canaux d'acquisition */
+.cx { display: flex; flex-direction: column; gap: 20px; }
+.cx-radio { position: absolute; opacity: 0; pointer-events: none; }
+.cx-tabs { display: flex; flex-wrap: wrap; gap: 8px; }
+.cx-tab { padding: 10px 16px; border: 1px solid #d9d5ce; border-radius: 999px; font-size: 14px; font-weight: 700; cursor: pointer; background: var(--white); transition: background .15s, color .15s; }
+.cx-tab:hover { border-color: var(--black); }
+.cx-radio:focus-visible + .cx-radio, .cx:has(.cx-radio:focus-visible) .cx-tabs { outline: 2px solid var(--red); outline-offset: 4px; border-radius: 12px; }
+.cx-txt { display: none; margin: 0; max-width: 760px; font-size: 16px; line-height: 1.6; }
+.cx-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+.cx-card { position: relative; background: var(--beige); border: 1px solid transparent; border-radius: var(--radius); padding: 24px; display: flex; flex-direction: column; gap: 10px; transition: border-color .15s, box-shadow .15s; }
+.cx-card h3 { margin: 0; font-size: 18px; }
+.cx-card p { margin: 0; font-size: 14px; line-height: 1.55; color: var(--muted); }
+.cx-card dl { margin: 6px 0 0; display: grid; gap: 8px; }
+.cx-card dl div { display: flex; justify-content: space-between; gap: 12px; font-size: 13px; border-top: 1px solid #e3dfd8; padding-top: 8px; }
+.cx-card dt { color: var(--muted); }
+.cx-card dd { margin: 0; font-weight: 700; text-align: right; }
+.cx-card a { margin-top: auto; font-size: 14px; font-weight: 700; color: var(--red); }
+.cx-pick { visibility: hidden; position: absolute; top: 14px; right: 14px; background: var(--red); color: var(--white); font-size: 11px; font-weight: 800; padding: 4px 8px; border-radius: 999px; }
+@media (max-width: 900px) { .cx-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 560px) { .cx-grid { grid-template-columns: 1fr; } .cx-tabs { flex-wrap: nowrap; overflow-x: auto; padding-bottom: 4px; } .cx-tab { white-space: nowrap; } }
