@@ -287,3 +287,27 @@
   .fiche { grid-template-columns: 1fr; gap: 24px; }
 }
 @media (max-width: 640px) { .parc { grid-template-columns: 1fr; } .parc-step::after { display: none; } .fiche-mock { padding: 20px; } }
+
+/* Industrie V3 : fiche en noir, lien test, onglet autres, services phares */
+.fiche-pin, .fiche-notes li::before, .fiche-form { background: var(--ink) !important; }
+.fiche-form .fiche-pin { background: var(--white) !important; color: var(--ink); }
+.fiche-test { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 14px 24px; text-decoration: none; color: var(--ink); background: var(--beige); border-radius: var(--radius); padding: 20px 24px; }
+.fiche-test > span:first-child { display: flex; flex-direction: column; gap: 2px; font-size: 15px; color: var(--grey); min-width: 0; }
+.fiche-test b { font-size: 18px; color: var(--ink); }
+.btn-dark { background: var(--ink); color: var(--white); border-color: var(--ink); }
+.btn-dark:hover { background: #000; }
+.sect-tabs .sect-other { background: transparent; border: 1px dashed #cfc9bf; color: var(--grey); }
+.sect-tabs .sect-other[aria-selected="true"] { background: var(--ink); color: var(--white); border-style: solid; }
+.phares { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+.phare { position: relative; background: var(--white); border-radius: var(--radius); padding: 26px; display: flex; flex-direction: column; gap: 10px; min-width: 0; }
+.phare h3 { font-size: 20px; letter-spacing: -0.01em; }
+.phare p { margin: 0; font-size: 15px; color: var(--grey); line-height: 1.6; }
+.phare a { margin-top: auto; padding-top: 6px; font-size: 14px; font-weight: 800; color: var(--red); text-decoration: none; }
+.phare a::after { content: " →"; }
+.phare.is-new { background: var(--ink); }
+.phare.is-new h3 { color: var(--white); }
+.phare.is-new p { color: #cfcbc4; }
+.phare.is-new a { color: var(--red-light); }
+.phare-tag { position: absolute; top: 22px; right: 22px; font-size: 12px; font-weight: 800; color: var(--ink); background: var(--red-light); border-radius: 4px; padding: 3px 8px; }
+@media (max-width: 1024px) { .phares { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 640px) { .phares { grid-template-columns: 1fr; } .phare { padding: 22px; } .fiche-test .btn { width: 100%; justify-content: center; text-align: center; } }
