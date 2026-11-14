@@ -334,3 +334,35 @@
 .cx-pick { visibility: hidden; position: absolute; top: 14px; right: 14px; background: var(--red); color: var(--white); font-size: 11px; font-weight: 800; padding: 4px 8px; border-radius: 999px; }
 @media (max-width: 900px) { .cx-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 @media (max-width: 560px) { .cx-grid { grid-template-columns: 1fr; } .cx-tabs { flex-wrap: nowrap; overflow-x: auto; padding-bottom: 4px; } .cx-tab { white-space: nowrap; } }
+
+/* Parcours : échange, audit, proposition, accompagnement mensuel */
+.pc { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; counter-reset: none; }
+.pc-step { position: relative; background: var(--white); border-radius: var(--radius); padding: 26px 22px; display: flex; flex-direction: column; gap: 10px; min-width: 0; }
+.pc-step:not(:last-child)::after { content: ""; position: absolute; top: 44px; right: -14px; width: 12px; height: 12px; border-top: 2px solid var(--red); border-right: 2px solid var(--red); transform: rotate(45deg); z-index: 1; }
+.pc-num { width: 36px; height: 36px; border-radius: 50%; background: var(--black); color: var(--white); display: grid; place-items: center; font-weight: 800; font-size: 15px; }
+.pc-tag { display: inline-flex; align-items: center; gap: 6px; align-self: flex-start; font-size: 12px; font-weight: 700; color: var(--red); background: #fbeceb; padding: 4px 10px; border-radius: 999px; }
+.pc-tag svg { width: 14px; height: 14px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.pc-step h3 { margin: 4px 0 0; font-size: 19px; }
+.pc-step p { margin: 0; font-size: 14px; line-height: 1.55; color: var(--muted); }
+.pc-price { margin-top: auto; padding-top: 10px; border-top: 1px solid #ece9e4; font-weight: 800; font-size: 15px; }
+.pc-price small { display: block; margin-top: 2px; font-size: 13px; font-weight: 600; }
+.pc-month { background: var(--red); color: var(--white); }
+.pc-month p, .pc-month .pc-price small { color: #f6dcda; }
+.pc-month .pc-price { border-color: rgba(255,255,255,.25); }
+.pc-month .pc-num { background: var(--white); color: var(--red); }
+.pc-month .pc-tag { background: rgba(255,255,255,.16); color: var(--white); }
+.pc-month .btn { margin-top: 6px; }
+.pc-audits { background: var(--white); border-radius: var(--radius); padding: 28px; display: flex; flex-direction: column; gap: 18px; }
+.pc-audits-title { margin: 0; font-size: 20px; }
+.pc-audit-grid { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 14px; }
+.pc-audit { border: 1px solid #ece9e4; border-radius: var(--radius-sm); padding: 16px; display: flex; flex-direction: column; gap: 10px; min-width: 0; }
+.pc-audit-top { display: flex; flex-direction: column; gap: 4px; }
+.pc-audit h4 { margin: 0; font-size: 15px; }
+.pc-audit h4 a { color: inherit; text-decoration: none; }
+.pc-audit h4 a:hover { color: var(--red); }
+.pc-audit-top span { font-size: 12px; font-weight: 700; color: var(--red); }
+.pc-audit ul { margin: 0; padding-left: 16px; display: flex; flex-direction: column; gap: 6px; font-size: 13px; line-height: 1.45; color: var(--muted); }
+.pc-note { margin: 0; font-size: 13px; color: var(--muted); }
+@media (max-width: 1100px) { .pc-audit-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+@media (max-width: 900px) { .pc { grid-template-columns: repeat(2, minmax(0, 1fr)); } .pc-step::after { display: none; } }
+@media (max-width: 560px) { .pc, .pc-audit-grid { grid-template-columns: 1fr; } .pc-audits { padding: 20px; } }
