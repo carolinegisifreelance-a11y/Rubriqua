@@ -379,18 +379,25 @@
 }
 
 
-/* Page industrie : recherches par secteur et page créée */
+
+/* Page industrie : recherches par secteur, résultats Google simulés */
 .sect-tabs button { background: var(--white); }
-.sect-cols { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 16px; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; color: var(--grey); padding-top: 6px; }
-.sect-rows { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; }
-.sect-rows li { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); grid-template-areas: "type page" "ex page"; column-gap: 16px; row-gap: 8px; padding: 16px 0; border-top: 1px solid var(--line); align-items: start; }
-.sect-type { grid-area: type; font-size: 13px; font-weight: 700; color: var(--grey); }
-.sect-ex { grid-area: ex; justify-self: start; display: inline-flex; align-items: center; gap: 8px; background: var(--beige); border-radius: 999px; padding: 9px 14px; font-size: 15px; color: var(--ink); min-width: 0; overflow-wrap: anywhere; }
-.sect-ex svg { flex: none; width: 15px; height: 15px; fill: none; stroke: var(--grey); stroke-width: 2.2; stroke-linecap: round; }
-.sect-page { grid-area: page; align-self: center; font-size: 15px; font-weight: 700; color: var(--ink); padding-left: 16px; border-left: 2px solid var(--ink); }
-@media (max-width: 640px) {
-  .sect-cols { display: none; }
-  .sect-rows li { grid-template-columns: minmax(0, 1fr); grid-template-areas: "type" "ex" "page"; }
-  .sect-page { font-size: 14px; }
-  .sect-page::before { content: "Notre page, "; font-weight: 500; color: var(--grey); }
+.sect-select { display: none; }
+.sect-head-row { display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; }
+.vc-tag { flex: none; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .04em; color: var(--grey); background: var(--beige); padding: 5px 10px; border-radius: 999px; }
+.vc-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; }
+.vc-res { display: flex; flex-direction: column; gap: 4px; padding: 16px 0; border-top: 1px solid var(--line); min-width: 0; }
+.vc-q { display: inline-flex; align-items: center; gap: 8px; font-size: 13px; color: var(--grey); margin-bottom: 4px; }
+.vc-q svg { flex: none; width: 14px; height: 14px; fill: none; stroke: var(--grey); stroke-width: 2.2; stroke-linecap: round; }
+.vc-url { display: flex; align-items: center; gap: 8px; font-size: 13px; color: #4d5156; overflow-wrap: anywhere; }
+.vc-url i { width: 18px; height: 18px; border-radius: 50%; background: var(--beige); border: 1px solid var(--line); flex: none; }
+.vc-title { font-size: 19px; line-height: 1.3; color: #1a0dab; font-weight: 500; }
+.vc-kind { font-size: 14px; color: var(--grey); }
+@media (max-width: 900px) {
+  .sect { grid-template-columns: minmax(0, 1fr); }
+  .sect-tabs { display: none; }
+  .sect-select { display: flex; flex-direction: column; gap: 6px; font-weight: 700; font-size: 14px; }
+  .sect-select select { font: inherit; font-size: 16px; font-weight: 600; padding: 12px 14px; border-radius: 8px; border: 1px solid var(--ink); background: var(--white); color: var(--ink); }
+  .sect-head-row { flex-direction: column-reverse; gap: 10px; }
+  .vc-title { font-size: 17px; }
 }
