@@ -377,3 +377,13 @@
   .pc-table td.pc-nw { display: inline-block; width: auto; margin-right: 12px; font-size: 13px; }
   .pc-table td.pc-nw:last-child::before { content: "Ensuite, "; font-weight: 500; color: var(--muted); }
 }
+
+/* Page industrie : secteurs accompagnés */
+.secg { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; }
+.secg-item { background: var(--white); border-radius: var(--radius-sm); padding: 16px 18px; display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+.secg-item b { font-size: 15px; }
+.secg-item span { font-size: 13px; line-height: 1.45; color: var(--muted); }
+.secg-other { background: var(--black); color: var(--white); justify-content: center; }
+.secg-other a { color: var(--white); font-size: 14px; font-weight: 700; }
+@media (max-width: 900px) { .secg { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 480px) { .secg { grid-template-columns: 1fr; } }
