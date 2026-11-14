@@ -190,11 +190,11 @@
 .sg-result .sg-small { order: -1; font-size: 12px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; color: var(--muted, #77726b); }
 
 /* Section Pourquoi suivie des résultats (fond différent) : marge du bas */
-.sg-why:has(+ .sg-results), .sg-why:has(+ #recherches) { padding-bottom: 96px; }
+.sg-why:has(+ .sg-results), .sg-why:has(+ #recherches), .sg-why:has(+ [aria-labelledby="titre-phares"]) { padding-bottom: 96px; }
 /* Étapes : réglages communs dans style.css, trois colonnes ici */
 .sg-steps-3 { --n: 3; }
 @media (max-width: 760px) {
-  .sg-why:has(+ .sg-results), .sg-why:has(+ #recherches) { padding-bottom: 64px; }
+  .sg-why:has(+ .sg-results), .sg-why:has(+ #recherches), .sg-why:has(+ [aria-labelledby="titre-phares"]) { padding-bottom: 64px; }
 }
 @media (max-width: 760px) {
   .hero .actions { width: 100%; }
@@ -300,6 +300,7 @@
 .sect-tabs .sect-other[aria-selected="true"] { background: var(--ink); color: var(--white); border-style: solid; }
 .phares { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
 .phare { position: relative; background: var(--white); border-radius: var(--radius); padding: 26px; display: flex; flex-direction: column; gap: 10px; min-width: 0; }
+.sg-white .phare:not(.is-new) { background: var(--beige); }
 .phare h3 { font-size: 20px; letter-spacing: -0.01em; }
 .phare p { margin: 0; font-size: 15px; color: var(--grey); line-height: 1.6; }
 .phare a { margin-top: auto; padding-top: 6px; font-size: 14px; font-weight: 800; color: var(--red); text-decoration: none; }
