@@ -170,3 +170,5 @@
   .sx-bar { grid-template-columns: 104px minmax(0, 1fr) 40px; font-size: 13px; }
   .sx-split-text .btn { align-self: stretch; text-align: center; justify-content: center; }
 }
+.other-grid:has(> :nth-child(6):last-child) { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+@media (max-width: 760px) { .other-grid:has(> :nth-child(6):last-child) { grid-template-columns: 1fr 1fr; } }
