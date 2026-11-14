@@ -118,15 +118,46 @@
   }
 })();
 
+// Origine d'une demande : la page et le bouton cliqués avant d'arriver sur le formulaire de contact
+(function () {
+  'use strict';
+  var clean = function (s, n) { return (s || '').replace(/\s+/g, ' ').trim().slice(0, n); };
+  document.addEventListener('click', function (e) {
+    var a = e.target.closest ? e.target.closest('a[href^="/contact"]') : null;
+    if (!a) return;
+    var card = a.closest('article, .sg-offer, .tile, .svc, li, section');
+    var h = card ? card.querySelector('h3, h2') : null;
+    var from = { p: location.pathname, b: clean(a.textContent, 60), c: h ? clean(h.textContent, 80) : '', t: Date.now() };
+    try { sessionStorage.setItem('rb_from', JSON.stringify(from)); } catch (err) {}
+  }, true);
+})();
+
 // Formulaires de contact : envoi sans recharger la page
 (function () {
   'use strict';
+  var origin = function () {
+    var o = null;
+    try { o = JSON.parse(sessionStorage.getItem('rb_from') || 'null'); } catch (err) {}
+    if (o && o.p && o.p !== location.pathname && Date.now() - o.t < 7200000) return o;
+    try {
+      var r = document.referrer ? new URL(document.referrer) : null;
+      if (r && r.host === location.host && r.pathname !== location.pathname) return { p: r.pathname, b: '', c: '' };
+    } catch (err) {}
+    return null;
+  };
   var forms = document.querySelectorAll('form[data-contact]');
   forms.forEach(function (form) {
     var t = form.querySelector('input[name="t"]');
     var page = form.querySelector('input[name="page"]');
+    var o = origin();
+    var bouton = form.querySelector('input[name="bouton"]');
+    if (!bouton) { bouton = document.createElement('input'); bouton.type = 'hidden'; bouton.name = 'bouton'; form.appendChild(bouton); }
+    var fill = function () {
+      if (page) page.value = o ? o.p : location.pathname;
+      bouton.value = o && o.b ? o.b + (o.c && o.c !== o.b ? ', ' + o.c : '') : '';
+    };
     if (t) t.value = Date.now();
-    if (page) page.value = location.pathname;
+    fill();
     var status = form.querySelector('.form-status');
     var btn = form.querySelector('button[type="submit"]');
     var show = function (ok, msg) {
@@ -146,7 +177,7 @@
         .then(function (r) { return r.json().catch(function () { return { ok: false, message: 'L’envoi a échoué. Merci de réessayer dans quelques minutes.' }; }); })
         .then(function (d) {
           show(d.ok, d.message);
-          if (d.ok) { form.reset(); if (t) t.value = Date.now(); if (page) page.value = location.pathname; }
+          if (d.ok) { form.reset(); if (t) t.value = Date.now(); fill(); }
         })
         .catch(function () { show(false, 'Connexion impossible. Vérifiez votre connexion et réessayez.'); })
         .then(function () { btn.disabled = false; btn.textContent = label; });

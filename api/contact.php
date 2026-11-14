@@ -26,7 +26,8 @@ $nom     = clean_line($_POST['nom'] ?? '', 120);
 $email   = clean_line($_POST['email'] ?? '', 200);
 $site    = clean_line($_POST['site'] ?? '', 300);
 $message = mb_substr(trim(str_replace("\0", '', $_POST['message'] ?? '')), 0, 5000);
-$page    = clean_line($_POST['page'] ?? '', 300);
+$page    = clean_line($_POST['page'] ?? '', 300);    // page d'où vient la demande
+$bouton  = clean_line($_POST['bouton'] ?? '', 150);  // bouton cliqué pour arriver au formulaire, et son bloc
 
 if ($nom === '' || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
     reply(false, 'Merci d’indiquer votre nom et une adresse e-mail valide.', $wantsJson, 422);
@@ -41,7 +42,7 @@ try {
     }
     $created = now_paris()->format('Y-m-d H:i:s');
     $pdo->prepare('INSERT INTO messages (cree_le, nom, email, site, message, page) VALUES (?, ?, ?, ?, ?, ?)')
-        ->execute([$created, $nom, $email, $site, $message, $page]);
+        ->execute([$created, $nom, $email, $site, $message . ($bouton !== '' ? "\n\nBouton cliqué : " . $bouton : ''), $page]);
     $id = $pdo->lastInsertId();
 } catch (Throwable $e) {
     error_log('Rubriqua contact : ' . $e->getMessage());
@@ -50,7 +51,9 @@ try {
 
 $body = "Nouvelle demande depuis rubriqua.com\n\n"
       . "Nom : $nom\nE-mail : $email\nSite : " . ($site ?: 'non renseigné') . "\n"
-      . "Page : " . ($page ?: 'non renseignée') . "\n\nMessage :\n" . ($message ?: '(vide)') . "\n";
+      . "Venu de la page : " . ($page ?: 'non renseignée') . "\n"
+      . ($bouton !== '' ? "Bouton cliqué : $bouton\n" : '')
+      . "\nMessage :\n" . ($message ?: '(vide)') . "\n";
 $sent = send_mail('Nouvelle demande de ' . $nom, $body, $email, $nom);
 
 if ($pdo && $id && $sent) {
