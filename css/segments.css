@@ -234,7 +234,7 @@
 .sect-tabs button { font: inherit; text-align: left; font-size: 15px; font-weight: 700; color: var(--ink); background: var(--beige); border: 1px solid transparent; border-radius: 8px; padding: 11px 14px; cursor: pointer; }
 .sect-tabs button:hover { border-color: var(--line); }
 .sect-tabs button[aria-selected="true"] { background: var(--ink); color: var(--white); }
-.sect-panel { background: var(--beige); border-radius: var(--radius); padding: 32px; display: flex; flex-direction: column; gap: 14px; min-height: 100%; }
+.sect-panel { background: var(--white); border-radius: var(--radius); padding: 32px; display: flex; flex-direction: column; gap: 14px; min-height: 100%; }
 .sect-head h3 { font-size: 26px; letter-spacing: -0.02em; margin: 0 0 6px; }
 .sect-head p { margin: 0; color: var(--grey); font-size: 16px; }
 .sect-q { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; }
@@ -378,12 +378,19 @@
   .pc-table td.pc-nw:last-child::before { content: "Ensuite, "; font-weight: 500; color: var(--muted); }
 }
 
-/* Page industrie : secteurs accompagnés */
-.secg { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; }
-.secg-item { background: var(--white); border-radius: var(--radius-sm); padding: 16px 18px; display: flex; flex-direction: column; gap: 4px; min-width: 0; }
-.secg-item b { font-size: 15px; }
-.secg-item span { font-size: 13px; line-height: 1.45; color: var(--muted); }
-.secg-other { background: var(--black); color: var(--white); justify-content: center; }
-.secg-other a { color: var(--white); font-size: 14px; font-weight: 700; }
-@media (max-width: 900px) { .secg { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
-@media (max-width: 480px) { .secg { grid-template-columns: 1fr; } }
+
+/* Page industrie : recherches par secteur et page créée */
+.sect-tabs button { background: var(--white); }
+.sect-cols { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 16px; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; color: var(--grey); padding-top: 6px; }
+.sect-rows { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; }
+.sect-rows li { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); grid-template-areas: "type page" "ex page"; column-gap: 16px; row-gap: 8px; padding: 16px 0; border-top: 1px solid var(--line); align-items: start; }
+.sect-type { grid-area: type; font-size: 13px; font-weight: 700; color: var(--grey); }
+.sect-ex { grid-area: ex; justify-self: start; display: inline-flex; align-items: center; gap: 8px; background: var(--beige); border-radius: 999px; padding: 9px 14px; font-size: 15px; color: var(--ink); min-width: 0; overflow-wrap: anywhere; }
+.sect-ex svg { flex: none; width: 15px; height: 15px; fill: none; stroke: var(--grey); stroke-width: 2.2; stroke-linecap: round; }
+.sect-page { grid-area: page; align-self: center; font-size: 15px; font-weight: 700; color: var(--ink); padding-left: 16px; border-left: 2px solid var(--ink); }
+@media (max-width: 640px) {
+  .sect-cols { display: none; }
+  .sect-rows li { grid-template-columns: minmax(0, 1fr); grid-template-areas: "type" "ex" "page"; }
+  .sect-page { font-size: 14px; }
+  .sect-page::before { content: "Notre page, "; font-weight: 500; color: var(--grey); }
+}
