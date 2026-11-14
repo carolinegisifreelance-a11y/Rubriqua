@@ -214,3 +214,8 @@ div.gl-row:target { background: #fbf1f0; }
 .df-main .slx .slx-item p, .df-main .slx .slx-out p { margin: 0; }
 .df-main .itn .itn-col ul { flex-direction: row; flex-wrap: wrap; gap: 6px; }
 .df-main .slx .slx-item ul { gap: 2px; }
+
+/* Visuel image dans une page définition */
+.df-visuel { margin: 28px 0; display: flex; flex-direction: column; gap: 10px; }
+.df-visuel-img { width: 100%; height: auto; border-radius: 12px; border: 1px solid var(--line); }
+.df-main .df-visuel figcaption { font-size: 13px; line-height: 1.5; color: var(--grey); }
