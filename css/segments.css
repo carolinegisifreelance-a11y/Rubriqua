@@ -226,3 +226,64 @@
 .sg-prof-note { margin: 0; font-size: 15px; color: var(--grey); max-width: 860px; }
 @media (max-width: 1024px) { .sg-prof-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 @media (max-width: 640px) { .sg-prof-grid { grid-template-columns: 1fr; } .sg-prof { padding: 20px; } }
+
+/* Page industrie, proposition B : secteurs, parcours, fiche annotée */
+.sect { display: grid; grid-template-columns: 300px minmax(0, 1fr); gap: 20px; align-items: start; }
+.sect-tabs { display: flex; flex-direction: column; gap: 6px; }
+.sect-tabs button { font: inherit; text-align: left; font-size: 15px; font-weight: 700; color: var(--ink); background: var(--beige); border: 1px solid transparent; border-radius: 8px; padding: 11px 14px; cursor: pointer; }
+.sect-tabs button:hover { border-color: var(--line); }
+.sect-tabs button[aria-selected="true"] { background: var(--ink); color: var(--white); }
+.sect-panel { background: var(--beige); border-radius: var(--radius); padding: 32px; display: flex; flex-direction: column; gap: 14px; min-height: 100%; }
+.sect-head h3 { font-size: 26px; letter-spacing: -0.02em; margin: 0 0 6px; }
+.sect-head p { margin: 0; color: var(--grey); font-size: 16px; }
+.sect-q { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; }
+.sect-q li { display: flex; align-items: center; gap: 10px; background: var(--white); border: 1px solid var(--line); border-radius: 999px; padding: 10px 16px; font-size: 15px; color: var(--ink); min-width: 0; overflow-wrap: anywhere; }
+.sect-q svg, .parc-q svg { flex: none; width: 15px; height: 15px; fill: none; stroke: var(--grey); stroke-width: 2.2; stroke-linecap: round; }
+.sect-make { margin-top: 6px; border-top: 1px solid var(--line); padding-top: 14px; display: flex; flex-direction: column; gap: 4px; }
+.sect-make b { font-size: 14px; color: var(--red); }
+.sect-make span { font-size: 16px; color: var(--ink); }
+.parc { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; counter-reset: none; }
+.parc-step { position: relative; background: var(--white); border-radius: var(--radius); padding: 24px 20px; display: flex; flex-direction: column; gap: 8px; min-width: 0; }
+.parc-step:not(:last-child)::after { content: ""; position: absolute; top: 40px; right: -14px; width: 12px; height: 12px; border-top: 3px solid var(--red); border-right: 3px solid var(--red); transform: rotate(45deg); z-index: 1; }
+.parc-n { width: 36px; height: 36px; border-radius: 50%; background: var(--ink); color: var(--white); display: grid; place-items: center; font-weight: 800; }
+.parc-step b { font-size: 18px; color: var(--ink); line-height: 1.25; }
+.parc-who { font-size: 13px; font-weight: 800; letter-spacing: .05em; text-transform: uppercase; color: var(--grey); }
+.parc-q { display: flex; gap: 8px; align-items: flex-start; font-size: 14px; color: var(--ink); background: var(--beige); border-radius: 8px; padding: 8px 10px; }
+.parc-q svg { margin-top: 3px; }
+.parc-where { font-size: 14px; color: var(--grey); }
+.parc-page { margin-top: auto; font-size: 14px; font-weight: 800; color: var(--red); border-top: 1px solid var(--line); padding-top: 10px; }
+.parc-foot { display: flex; flex-wrap: wrap; gap: 6px 14px; align-items: baseline; background: var(--ink); color: #cfcbc4; border-radius: var(--radius); padding: 16px 22px; font-size: 15px; }
+.parc-foot b { color: var(--white); }
+.fiche { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr); gap: 40px; align-items: center; }
+.fiche-mock { background: var(--beige); border-radius: var(--radius); padding: 28px; display: flex; flex-direction: column; gap: 14px; }
+.fiche-mock > * { position: relative; }
+.fiche-crumb { font-size: 12px; color: var(--grey); }
+.fiche-t b { font-size: 24px; letter-spacing: -0.02em; color: var(--ink); line-height: 1.2; }
+.fiche-t, .fiche-norm, .fiche-tab, .fiche-row, .fiche-form { display: flex; align-items: flex-start; gap: 10px; }
+.fiche-norm { flex-wrap: wrap; align-items: center; }
+.fiche-norm span:not(.fiche-pin) { font-size: 12px; font-weight: 800; color: #2f6b3a; background: #e8f1ea; border-radius: 4px; padding: 3px 8px; }
+.fiche-tab dl { flex: 1; margin: 0; display: grid; grid-template-columns: auto 1fr; background: var(--white); border-radius: 8px; overflow: hidden; font-size: 14px; }
+.fiche-tab dt, .fiche-tab dd { margin: 0; padding: 9px 12px; border-bottom: 1px solid var(--line); }
+.fiche-tab dt { color: var(--grey); }
+.fiche-tab dd { color: var(--ink); font-weight: 700; }
+.fiche-row { align-items: center; }
+.fiche-pdf { flex: 1; font-size: 14px; font-weight: 700; color: var(--ink); background: var(--white); border: 1px dashed #cfc9bf; border-radius: 8px; padding: 10px 12px; }
+.fiche-form { align-items: center; background: var(--red); color: var(--white); border-radius: 8px; padding: 10px 12px; font-weight: 800; font-size: 15px; }
+.fiche-form em { margin-left: auto; font-style: normal; font-weight: 600; font-size: 13px; opacity: .85; }
+.fiche-pin { flex: none; width: 24px; height: 24px; border-radius: 50%; background: var(--red); color: var(--white); display: grid; place-items: center; font-size: 12px; font-weight: 800; }
+.fiche-form .fiche-pin { background: var(--white); color: var(--red); }
+.fiche-notes { margin: 0; padding: 0; list-style: none; counter-reset: fn; display: flex; flex-direction: column; gap: 16px; }
+.fiche-notes li { counter-increment: fn; display: grid; grid-template-columns: 28px minmax(0, 1fr); gap: 4px 12px; }
+.fiche-notes li::before { content: counter(fn); grid-row: span 2; width: 26px; height: 26px; border-radius: 50%; background: var(--red); color: var(--white); display: grid; place-items: center; font-size: 13px; font-weight: 800; }
+.fiche-notes b { font-size: 17px; color: var(--ink); }
+.fiche-notes span { font-size: 15px; color: var(--grey); }
+@media (max-width: 1024px) { .parc { grid-template-columns: repeat(2, minmax(0, 1fr)); } .parc-step:nth-child(2)::after { display: none; } }
+@media (max-width: 860px) {
+  .sect { grid-template-columns: 1fr; }
+  .sect-tabs { flex-direction: row; overflow-x: auto; scrollbar-width: none; margin-inline: -4px; padding-inline: 4px; }
+  .sect-tabs::-webkit-scrollbar { display: none; }
+  .sect-tabs button { flex: none; white-space: nowrap; }
+  .sect-panel { padding: 22px; }
+  .fiche { grid-template-columns: 1fr; gap: 24px; }
+}
+@media (max-width: 640px) { .parc { grid-template-columns: 1fr; } .parc-step::after { display: none; } .fiche-mock { padding: 20px; } }
